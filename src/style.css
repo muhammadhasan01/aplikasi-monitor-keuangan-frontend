@@ -1,0 +1,89 @@
+.center {
+	text-align: center;
+}
+
+.container {
+	width: 95%;
+	margin: auto;
+}
+.column {
+	float: left;
+}
+
+.left {
+	width: 60%;
+}
+
+.right {
+	width: 40%;
+}
+
+.cetak-laporan {
+	text-align: center;
+	margin: 100px auto;
+	padding: 20px;
+	width: 70%;
+	color: #fff;
+	background-color: rgba(0, 110, 184, 0.75);
+	border-radius: 10px;
+}
+
+table {
+	width: 100%;
+	background-color: rgba(66, 166, 221, 0.25);
+	border-collapse: collapse;
+}
+
+table th {
+	color: #fff;
+	background-color: #0054a3;
+}
+
+table tr:nth-child(even) {
+	background-color: rgba(0, 110, 184, 0.25);
+}
+
+table td,
+table th {
+	padding: 5px 15px;
+}
+
+.blue-btn {
+	background-color: #0054a3;
+	color: white;
+	padding: 5px 15px;
+	margin: 15px 0px;
+	border-radius: 5px;
+	border-color: #0054a3;
+}
+
+.btn-verify {
+	background-color: #8dd2a5;
+	padding: 5px 15px;
+	border-radius: 5px;
+	border-color: #8dd2a5;
+}
+
+.btn-reject {
+	background-color: #d28d8d;
+	padding: 5px 15px;
+	border-radius: 5px;
+	border-color: #d28d8d;
+}
+
+.verified {
+	color: #8dd2a5;
+}
+
+.reject {
+	color: #d28d8d;
+}
+
+select {
+	padding: 5px 10px;
+}
+
+label {
+	display: block;
+	margin: 5px;
+}
