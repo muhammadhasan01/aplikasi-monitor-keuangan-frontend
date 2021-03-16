@@ -1,15 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-import Header from './header'
-import FromLogin from './formLogin'
+import Header from './header';
+import Admin from './admin';
+import FromLogin from './formLogin';
 
 function App() {
-  return (
-    <div className="App">
-      <Header/>
-      <FromLogin/>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Admin />
+		</div>
+	);
 }
 
 export default App;
