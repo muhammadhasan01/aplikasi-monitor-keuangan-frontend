@@ -5,7 +5,9 @@ import FromLogin from './formLogin';
 function App() {
 	return (
 		<div className="App">
-			<Admin />
+			<Header />
+			<FromLogin />
+			{/*<Admin />*/}
 		</div>
 	);
 }
