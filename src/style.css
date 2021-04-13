@@ -21,6 +21,7 @@ code {
 	background-color: #0054a3;
 	text-align: left;
 	color: white;
+	overflow: hidden;
 	padding: 5px 15px 15px 15px;
 }
 

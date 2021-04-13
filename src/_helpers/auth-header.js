@@ -1,4 +1,4 @@
-import { authenticationService } from "@/_services";
+import { authenticationService } from "_services";
 
 export const authHeader = () => {
     // Return authorization header with token

@@ -3,6 +3,7 @@ import AdminHome from './adminHome';
 import AdminInputPengeluaran from './adminInputPengeluaran';
 import AdminPaguAnggaran from './adminPaguAnggaran';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { authenticationService } from '_services';
 
 export default function App() {
 	return (
@@ -24,6 +25,9 @@ export default function App() {
 					<Link className="nav" to="/inputpengeluaran">
 						Input Pengeluaran
 					</Link>
+					<div className="nav" onClick={() => authenticationService.logout()}>
+						Logout
+					</div>
 				</nav>
 
 				{/* A <Switch> looks through its children <Route>s and

@@ -10,13 +10,16 @@
     "babel-plugin-polyfill-corejs2": "^0.1.10",
     "babel-plugin-polyfill-corejs3": "^0.1.7",
     "babel-plugin-polyfill-regenerator": "^0.1.6",
+    "dotenv": "^8.2.0",
+    "formik": "^2.2.6",
     "history": "^5.0.0",
+    "jsonwebtoken": "^8.5.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "rxjs": "^6.6.7",
-    "web-vitals": "^1.1.0"
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,6 +46,8 @@
     ]
   },
   "devDependencies": {
-    "config": "^3.3.6"
+    "path": "^0.12.7",
+    "web-vitals": "^1.1.1",
+    "webpack": "^4.44.2"
   }
 }

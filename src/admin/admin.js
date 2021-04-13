@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AdminNav from './adminNav';
-import Header from './header';
+import Header from '../_components/header';
 
 class Admin extends Component {
 	render() {

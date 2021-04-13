@@ -1,5 +1,5 @@
-import config from 'config';
-import { authHeader, handleResponse } from "@/_helpers";
+import { authHeader, handleResponse } from "_helpers";
+import { urlServer } from "_services";
 
 export const userService = {
     getAll
@@ -7,6 +7,6 @@ export const userService = {
 
 function getAll() {
     const requestOption = { method: 'GET', headers: authHeader() }
-    return fetch(`${config.apiUrl}/accounts`, requestOption).then(handleResponse);
+    return fetch(`${urlServer}/accounts`, requestOption).then(handleResponse);
 }
 
