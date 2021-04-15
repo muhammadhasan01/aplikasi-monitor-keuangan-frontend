@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import Header from '../_components/header';
+import Header from '../_components/Header';
+import Navigation from "../_components/Navigation";
 
 class User extends Component {
 	constructor(props) {
 		super(props);
 	}
+
 	render() {
 		const { userInfo } = this.props;
 		return (
 			<div>
-				<Header />
-				{
-					JSON.stringify(userInfo)
-				}
+				<Header userInfo={userInfo} />
+				<Navigation userInfo={userInfo} />
 			</div>
 		);
 	}

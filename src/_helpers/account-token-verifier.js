@@ -7,6 +7,7 @@ export function getUserFromToken(token) {
         const decodedToken = jwt.verify(token, JWT_SECRET);
         const user = {
             username: decodedToken.username,
+            name: decodedToken.name,
             userID: decodedToken.userID,
             unit: decodedToken.unit,
             subunit: decodedToken.subunit,

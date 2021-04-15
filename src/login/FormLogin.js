@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from '_components/header';
+import Header from '_components/Header';
 import { authenticationService } from "_services";
 
 class FormLogin extends Component {
@@ -41,13 +41,10 @@ class FormLogin extends Component {
 					<form onSubmit={this.onSubmitForm}>
 						<input type="text" name="username" placeholder="USERNAME" required /> <br />
 						<input type="password" name="password" placeholder="PASSWORD" required /> <br />
-						<button type="submit" class="login-btn">
+						<button type="submit" className="login-btn">
 							LOGIN
 						</button>
 						<br />
-						<a className="password">
-							Forgot Password?
-						</a>
 						{this.state.invalid ? <div style={{color: 'red'}}>
 							Invalid username/password.
 						</div> : null}

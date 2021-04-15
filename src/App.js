@@ -5,9 +5,9 @@ import { history, getUserFromToken } from "_helpers";
 import { authenticationService } from "_services";
 import { PrivateRoute } from "_components";
 
-import Admin from 'admin/admin';
-import User from 'user/user';
-import FormLogin from 'login/formLogin';
+import Admin from 'admin/Admin';
+import User from 'user/User';
+import FormLogin from 'login/FormLogin';
 require('dotenv').config();
 
 class App extends Component {
@@ -32,17 +32,18 @@ class App extends Component {
 
 	render() {
 		const { currentUser } = this.state;
-		console.log("Ini dia", currentUser);
+		console.log("currentUser", currentUser);
 		return (
 			<div className='container'>
 				<Router history={history}>
 					<Switch>
+						<Route exact path="/login" component={FormLogin} />
 						<PrivateRoute exact path="/"
 									  currentUser={this.state.currentUser}
 									  UserComponent={User}
 									  AdminComponent={Admin}
 						/>
-						<Route exact path="/login" component={FormLogin} />
+
 					</Switch>
 				</Router>
 			</div>
