@@ -51,7 +51,7 @@ class Navigation extends Component {
                     Logout
                 </div>
             </>
-        )
+        );
     }
 
     render() {
