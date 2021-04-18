@@ -36,7 +36,6 @@ class FormLogin extends Component {
 	render() {
 		return (
 			<div>
-				<Header />
 				<div className="form-login-container">
 					<form onSubmit={this.onSubmitForm}>
 						<input type="text" name="username" placeholder="USERNAME" required /> <br />
