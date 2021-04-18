@@ -12,9 +12,7 @@ class Admin extends Component {
 		const { userInfo } = this.props;
 		return (
 			<div>
-				<Header userInfo={userInfo} />
-				<Navigation userInfo={userInfo} />
-				{/*<AdminNav userInfo={userInfo} />*/}
+				ADMIN HOME
 			</div>
 		);
 	}
