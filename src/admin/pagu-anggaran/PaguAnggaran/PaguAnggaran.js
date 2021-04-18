@@ -80,13 +80,6 @@ export default class PaguAnggaran extends Component {
   }
 
   acceptAction(){
-    if (this.state.showNewUserForm) {
-      //this.saveUser();
-      break;
-    } else if (this.state.showEditUserForm) {
-      //this.updateUser();
-      break;
-    }
     this.setState({
       currentAction: "",
       confirmAction: true,
@@ -114,6 +107,20 @@ export default class PaguAnggaran extends Component {
     return ado_elements;
   }
 
+  onChangePagu(e){
+    let pagu_list = this.state.Pagus;
+    pagu_list.forEach(pagu =>{
+      let name = pagu.unit + " " + pagu.subunit + " " + pagu.ADO;
+      if(name === e.target.name){
+        pagu.alokasi = e.target.value;
+        break;
+      }
+    })
+    this.setState({
+      Pagus: pagu_list
+    })
+  }
+
   renderPagus(){
     let pagu_elements = [];
     let ado_list = this.state.ADOs;
@@ -127,7 +134,7 @@ export default class PaguAnggaran extends Component {
       });
 
       pagu_list.forEach(pagu =>{
-        if(pagu.unit === unit.unit){
+        if((pagu.unit === unit.unit) && (pagu.subunit === unit.subunit)){
           ados[pagu.ADO] = pagu.penggunaan;
           total_anggaran += pagu.penggunaan;
         }
@@ -139,6 +146,7 @@ export default class PaguAnggaran extends Component {
           subunit={unit.subunit}
           ados={ados}
           total={total_anggaran}
+          onChange={(e) => this.onChangePagu(e)}
         />
       );
     });
