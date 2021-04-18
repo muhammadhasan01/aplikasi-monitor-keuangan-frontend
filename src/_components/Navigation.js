@@ -13,16 +13,16 @@ class Navigation extends Component {
                 <Link className="nav" to="/">
                     Home
                 </Link>
-                <Link className="nav" to="/paguanggaran">
+                <Link className="nav" to="/pagu-anggaran">
                     Pagu Anggaran
                 </Link>
-                <Link className="nav" to="/pengurusanakun">
+                <Link className="nav" to="/pengurusan-akun">
                     Pengurusan Akun
                 </Link>
-                <Link className="nav" to="/riwayatpengeluaran">
+                <Link className="nav" to="/riwayat-pengeluaran">
                     Riwayat Pengeluaran & Form F11
                 </Link>
-                <Link className="nav" to="/inputpengeluaran">
+                <Link className="nav" to="/input-pengeluaran">
                     Input Pengeluaran
                 </Link>
                 <div className="nav" onClick={() => authenticationService.logout()}>
@@ -55,7 +55,11 @@ class Navigation extends Component {
     }
 
     render() {
-        const { type } = this.props.userInfo;
+        const userInfo = this.props.userInfo;
+        if (!userInfo) {
+            return <div></div>
+        }
+        const { type } = userInfo;
         return (
             <nav>
                 {type === "Admin" ? this.adminNavigation() : this.userNavigation()}
