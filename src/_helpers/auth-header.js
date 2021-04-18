@@ -1,12 +1,13 @@
 import { authenticationService } from "_services";
 
-export const authHeader = () => {
+export default function authHeader() {
     // Return authorization header with token
     const currentUser = authenticationService.currentUserValue;
     if (currentUser && currentUser.token) {
         return {
-            Authorization: `Bearer ${currentUser.token}`
-        };
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${currentUser.token}`
+        }
     }
     return {};
 }
