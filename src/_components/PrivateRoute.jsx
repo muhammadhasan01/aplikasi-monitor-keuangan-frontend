@@ -4,11 +4,10 @@ import { getUserFromToken } from "_helpers";
 
 import { authenticationService } from "_services";
 
-export const PrivateRoute = ({ UserComponent: User, AdminComponent: Admin, ...rest }) => (
+export const PrivateRoute = ({ UserComponent: User, AdminComponent: Admin, UserType: userType, ...rest }) => (
     <Route {...rest} render={ props => {
         const currentUser = authenticationService.currentUserValue;
         const userInfo = getUserFromToken(currentUser);
-        console.log("We have", currentUser, userInfo);
         if (!currentUser || !userInfo) {
             // Not logged in or JWT Token Expired, so redirect to login page with the return url
             authenticationService.logout();
@@ -17,11 +16,16 @@ export const PrivateRoute = ({ UserComponent: User, AdminComponent: Admin, ...re
 
         // Authorized, so return the component
         // and redirect it with its user role/type
-        console.log(userInfo);
-        if (userInfo.type === "User") {
-            return <User userInfo={userInfo} {...props} />
-        } else if (userInfo.type === "Admin") {
-            return <Admin userInfo={userInfo} {...props} />
+        if (!userType || userInfo.type === userType) {
+            if (userInfo.type === "User") {
+                return <User userInfo={userInfo} {...props} />
+            } else if (userInfo.type === "Admin") {
+                return <Admin userInfo={userInfo} {...props} />
+            }
+            return <div>Nah Loh</div>
+        } else {
+            // TODO: Maybe make an error 404 not found component would be better
+            return <div>Error 404 Not Found</div>
         }
     }}/>
 )
