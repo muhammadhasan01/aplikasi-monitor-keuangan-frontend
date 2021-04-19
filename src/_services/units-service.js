@@ -1,6 +1,6 @@
 import axios from "axios";
 import authHeader from "_helpers/auth-header";
-import {urlServer} from "_services/api";
+import { urlServer } from "_services/api";
 
 export const UnitsDataService = {
     getDistinctUnits,
@@ -10,13 +10,13 @@ export const UnitsDataService = {
 
 function getHttp() {
     return axios.create({
-        baseURL: (urlServer + "/accounts"),
+        baseURL: (urlServer + "/units"),
         headers: authHeader()
     });
 }
 
 function getDistinctUnits() {
-    return getHttp().get("/distinct");
+    return getHttp().get("/d");
 }
 
 function getSubUnits() {
