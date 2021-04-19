@@ -4,7 +4,7 @@ import { UserDataService } from "_services/user-service";
 import { UnitsDataService } from "_services/units-service";
 import './AdminPengurusanAkun.css';
 
-export default class AdminPengurusanAkun extends Component {
+export class AdminPengurusanAkun extends Component {
     constructor(props) {
         super(props);
         this.acceptAction = this.acceptAction.bind(this);
