@@ -35,7 +35,11 @@ function PaguAnggaranRow(props){
       <tr>
         <td><p>{props.unit}</p></td>
         <td><p>{props.subunit}</p></td>
-        {this.ADOColumns(props.ados)}
+        {props.editMode ? 
+          this.InputADOColumns(props.ados) 
+            : 
+          this.ADOColumns(props.ados)
+        }
         <td><p>{props.total}</p></td>
       </tr>
     )

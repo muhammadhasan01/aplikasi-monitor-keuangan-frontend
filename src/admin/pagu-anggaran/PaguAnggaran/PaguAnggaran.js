@@ -3,6 +3,7 @@ import UnitsDataService from "../../../_services/units-service";
 import ADODataService from "../../../_services/ado-service";
 import PaguDataService from "../../../_services/pagu-service";
 import ConfirmActionPopup from "./ConfirmActionPopup";
+import NewADOForm from "./NewADOForm";
 import PaguAnggaranRow from "./PaguAnggaranRow";
 
 export default class PaguAnggaran extends Component {
@@ -15,10 +16,15 @@ export default class PaguAnggaran extends Component {
       ADOs: [],
       Pagus: [],
       Units: [],
+      editMode: false,
       currentAction: "",
       confirmAction: true,
       showConfirmAction: false,
-      showNewUserForm: false,
+      showNewADOForm: false,
+      newADO: {
+        name: "",
+        detail: "",
+      },
       showEditUserForm: false
     };
   }
@@ -81,10 +87,11 @@ export default class PaguAnggaran extends Component {
 
   acceptAction(){
     this.setState({
+      editMode: false,
       currentAction: "",
       confirmAction: true,
       showConfirmAction: false,
-      showNewUserForm: false,
+      showNewADOForm: false,
       showEditUserForm: false
     })
   }
@@ -94,6 +101,70 @@ export default class PaguAnggaran extends Component {
       confirmAction: false,
       showConfirmAction: false
     })
+  }
+
+  showNewADOForm(){
+    this.setState({
+      showNewADOForm: true
+    })
+  }
+
+  hideNewADOForm(){
+    this.setState({
+      showNewADOForm: false
+    })
+  }
+
+  submitNewADO(){
+    //pagu_list.forEach(pagu =>{
+    //  PaguDataService
+    //})
+    this.hideNewADOForm();
+  }
+
+  onChangeADOName(e){
+    const name = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        newADO: {
+          ...prevState.currentUser,
+          name: name
+        }
+      };
+    });
+  }
+
+  onChangeADODetail(e){
+    const detail = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        newADO: {
+          ...prevState.currentUser,
+          detail: detail
+        }
+      };
+    });
+  }
+
+  editPagu(){
+    this.setState({
+      editMode: true
+    })
+  }
+
+  cancelEditPagu(){
+    this.setState({
+      editMode: false
+    })
+  }
+
+  submitEditPagu(){
+    let pagu_list = this.state.Pagus;
+    //pagu_list.forEach(pagu =>{
+    //  PaguDataService
+    //})
   }
 
   renderADOs(){
@@ -146,6 +217,7 @@ export default class PaguAnggaran extends Component {
           subunit={unit.subunit}
           ados={ados}
           total={total_anggaran}
+          editMode={false}
           onChange={(e) => this.onChangePagu(e)}
         />
       );
@@ -154,12 +226,14 @@ export default class PaguAnggaran extends Component {
   }
 
   render() {
-    const { currentUser, currentAction, showConfirmAction, showNewUserForm, showEditUserForm } = this.state;
+    const { editMode, showNewADOForm, currentAction, showConfirmAction, showNewUserForm, showEditUserForm } = this.state;
 
     return (
       <div id="pagu-anggaran">
         <div id="pagu-list">
           <h4>Pagu Anggaran</h4>
+          <button onClick={() => this.showNewADOForm()}>+ ADO</button>
+          <button onClick={() => this.editPagu()}>Edit Pagu</button>
           <table id="pagu-table">
             <tr>
               <th><p>Unit</p></th>
@@ -171,13 +245,35 @@ export default class PaguAnggaran extends Component {
             {this.renderPagus()}
           </table>
         </div>
+        {editMode ? (
+          <div id="edit-buttons">
+            <button onClick={() => this.submitEditPagu()}>Submit</button>
+            <button onClick={() => this.cancelEditPagu()}>Cancel</button>
+          </div>
+          ) : (
+            ''
+          )
+        }
+        {showNewADOForm ? (
+          <NewADOForm
+            name={newADO.name}
+            onChangeName={(e) => this.onChangeADOName(e)}
+            detail={newADO.detail}
+            onChangeDetail={(e) => this.onChangeADODetail(e)}
+            hide={() => this.hideNewADOForm()}
+            submit={() => this.submitNewADO()}
+          />
+          ) : (
+            ''
+          )
+        }
         {showConfirmAction ? (
           <div>
             <div class="formDisable"></div>
             <ConfirmActionPopup
               title={currentAction}
-              acceptAction={this.acceptAction}
-              cancelAction={this.cancelAction}
+              acceptAction={() => this.acceptAction()}
+              cancelAction={() => this.cancelAction()}
             />
           </div>
           ) : (
