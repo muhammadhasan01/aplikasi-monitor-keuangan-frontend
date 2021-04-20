@@ -8,7 +8,7 @@ import { PrivateRoute } from "_components";
 import Admin from 'admin/Admin';
 import User from 'user/User';
 import FormLogin from 'login/FormLogin';
-import PaguAnggaran from 'PaguAnggaran/PaguAnggaran';
+import PaguAnggaran from 'admin/pagu-anggaran/PaguAnggaran/PaguAnggaran';
 require('dotenv').config();
 
 class App extends Component {
