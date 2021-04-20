@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { urlServer } from '_services';
-import { handleResponse } from '_helpers';
+import {getUserFromToken, handleResponse} from '_helpers';
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
@@ -9,11 +9,13 @@ export const authenticationService = {
     login,
     logout,
     currentUser: currentUserSubject.asObservable(),
+    get UserInformation() {
+        return getUserFromToken(currentUserSubject.value);
+    },
     get currentUserValue() {
         return currentUserSubject.value;
     }
 };
-
 function login(username, password) {
     const requestOptions = {
         method: 'POST',

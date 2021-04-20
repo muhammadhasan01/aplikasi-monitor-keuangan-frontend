@@ -1,22 +1,22 @@
-import { authHeader, handleResponse } from "_helpers";
+import authHeader from "_helpers/auth-header";
 import { urlServer } from "_services";
-import { authenticationService } from "_services";
+import axios from "axios";
 
-export const rkaService = {
-    loadRKA
+export const RKADataService = {
+    loadAllRKA
 };
 
-function loadRKA(){
-    const requestOption = { 
-        method: 'GET', 
-        headers: authHeader() 
-    }
-
-    const currentUser = authenticationService.currentUserValue;
-    const userInfo = getUserFromToken(currentUser);
-    const { unit, subunit } = userInfo;
-
-    return fetch(`${urlServer}/rka/${unit}/${subunit}`, requestOption).then(handleResponse);
-    
+function getHttp() {
+    return axios.create({
+        baseURL: (urlServer + "/rka"),
+        headers: authHeader()
+    });
 }
 
+function loadAllRKA(unit, subunit){
+    return getHttp().get(`/${unit}/${subunit}`);
+}
+
+function loadRKAADO(unit, subunit, ADO){
+    return getHttp().get(`/${unit}/${subunit}/ADO/${ADO}`)
+}

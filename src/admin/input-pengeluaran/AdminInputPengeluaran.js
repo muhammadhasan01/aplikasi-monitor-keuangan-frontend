@@ -50,8 +50,6 @@ export class AdminInputPengeluaran extends Component {
 		})
 	}
 
-	retrieve
-
 	render() {
 		return (
 			<div className='container'>
