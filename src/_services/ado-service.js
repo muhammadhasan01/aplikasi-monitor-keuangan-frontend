@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const http = axios.create({
-  baseURL: "http://localhost:5000/pagu",
+  baseURL: "http://localhost:5000/ado",
   headers: {
     "Content-type": "application/json"
   }

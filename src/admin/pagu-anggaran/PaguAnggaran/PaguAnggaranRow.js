@@ -1,19 +1,27 @@
 function PaguAnggaranRow(props){
     
-    function ADOColumns(ados){
+    function renderColumns(){
+      if (props.editMode){
+        return InputADOColumns();
+      } else {
+        return ADOColumns();
+      }
+    }
+    
+    function ADOColumns(){
       let elements = [];
-      let ado_list = ados;
+      let ado_list = props.ados;
       ado_list.forEach(ado =>{
         elements.push(
-          <td><p>{ado}</p></td>
+          <td><p>{ado.allocation}</p></td>
         );
       });
       return elements;
     }
 
-    function InputADOColumns(ados){
+    function InputADOColumns(){
       let elements = [];
-      let ado_list = ados;
+      let ado_list = props.ados;
       ado_list.forEach(ado =>{
         elements.push(
           <td>
@@ -21,7 +29,7 @@ function PaguAnggaranRow(props){
               name={props.unit + " " + props.subunit + " " + ado.name}
               type="number"
               required
-              value={ado.value}
+              value={ado.allocation}
               onChange={props.onChange}
               min={0}
             />
@@ -35,11 +43,7 @@ function PaguAnggaranRow(props){
       <tr>
         <td><p>{props.unit}</p></td>
         <td><p>{props.subunit}</p></td>
-        {props.editMode ? 
-          this.InputADOColumns(props.ados) 
-            : 
-          this.ADOColumns(props.ados)
-        }
+        {renderColumns()}
         <td><p>{props.total}</p></td>
       </tr>
     )

@@ -161,7 +161,7 @@ export default class PaguAnggaran extends Component {
   }
 
   submitEditPagu(){
-    let pagu_list = this.state.Pagus;
+    //let pagu_list = this.state.Pagus;
     //pagu_list.forEach(pagu =>{
     //  PaguDataService
     //})
@@ -172,7 +172,7 @@ export default class PaguAnggaran extends Component {
     let ado_list = this.state.ADOs;
     ado_list.forEach(ado =>{
       ado_elements.push(
-        <th><p>{ado.name}</p></th>
+        <th><p>{ado}</p></th>
       );
     });
     return ado_elements;
@@ -184,7 +184,6 @@ export default class PaguAnggaran extends Component {
       let name = pagu.unit + " " + pagu.subunit + " " + pagu.ADO;
       if(name === e.target.name){
         pagu.alokasi = e.target.value;
-        break;
       }
     })
     this.setState({
@@ -197,17 +196,26 @@ export default class PaguAnggaran extends Component {
     let ado_list = this.state.ADOs;
     let pagu_list = this.state.Pagus;
     let unit_list = this.state.Units;
+    let editMode = this.state.editMode;
     unit_list.forEach(unit =>{
       let total_anggaran = 0;
       let ados = [];
       ado_list.forEach(ado =>{
-        ados[ado.name] = 0;
+        let obj = {};
+        obj["name"] = ado;
+        obj["allocation"] = 0;
+        ados.push(obj);
       });
 
       pagu_list.forEach(pagu =>{
         if((pagu.unit === unit.unit) && (pagu.subunit === unit.subunit)){
-          ados[pagu.ADO] = pagu.penggunaan;
-          total_anggaran += pagu.penggunaan;
+          ados.forEach(obj =>{
+            console.log(obj);
+            if(obj["name"] === pagu.ADO){
+              obj["allocation"] = pagu.alokasi;
+            }
+          });
+          total_anggaran += pagu.alokasi;
         }
       });
 
@@ -217,7 +225,7 @@ export default class PaguAnggaran extends Component {
           subunit={unit.subunit}
           ados={ados}
           total={total_anggaran}
-          editMode={false}
+          editMode={editMode}
           onChange={(e) => this.onChangePagu(e)}
         />
       );
@@ -226,14 +234,21 @@ export default class PaguAnggaran extends Component {
   }
 
   render() {
-    const { editMode, showNewADOForm, currentAction, showConfirmAction, showNewUserForm, showEditUserForm } = this.state;
+    const { editMode, showNewADOForm, currentAction, showConfirmAction, newADO } = this.state;
 
     return (
       <div id="pagu-anggaran">
         <div id="pagu-list">
           <h4>Pagu Anggaran</h4>
-          <button onClick={() => this.showNewADOForm()}>+ ADO</button>
-          <button onClick={() => this.editPagu()}>Edit Pagu</button>
+          {editMode ? (
+            ''
+          ) : (
+            <div>
+              <button onClick={() => this.showNewADOForm()}>+ ADO</button>
+              <button onClick={() => this.editPagu()}>Edit Pagu</button>
+            </div>
+          )
+          }
           <table id="pagu-table">
             <tr>
               <th><p>Unit</p></th>
@@ -255,14 +270,17 @@ export default class PaguAnggaran extends Component {
           )
         }
         {showNewADOForm ? (
-          <NewADOForm
-            name={newADO.name}
-            onChangeName={(e) => this.onChangeADOName(e)}
-            detail={newADO.detail}
-            onChangeDetail={(e) => this.onChangeADODetail(e)}
-            hide={() => this.hideNewADOForm()}
-            submit={() => this.submitNewADO()}
-          />
+          <div>
+            <div class="pageDisable"></div>
+            <NewADOForm
+              name={newADO.name}
+              onChangeName={(e) => this.onChangeADOName(e)}
+              detail={newADO.detail}
+              onChangeDetail={(e) => this.onChangeADODetail(e)}
+              hide={() => this.hideNewADOForm()}
+              submit={() => this.submitNewADO()}
+            />
+          </div>
           ) : (
             ''
           )
