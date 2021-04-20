@@ -1,79 +1,77 @@
 import React, { Component } from 'react';
+import { UnitsDataService, ADODataService } from "_services";
 
-class AdminInputPengeluaran extends Component {
+export class AdminInputPengeluaran extends Component {
+	constructor(props) {
+		super(props);
+		this.retrieveUnits = this.retrieveUnits.bind(this);
+		this.retrieveADOs = this.retrieveADOs.bind(this);
+		this.retrieveSubunits = this.retrieveSubunits.bind(this);
+		this.state = {
+			units: [],
+			ADOs: [],
+			subunits: []
+		}
+	}
+
+	componentDidMount() {
+		this.retrieveUnits();
+		this.retrieveADOs();
+		this.retrieveSubunits();
+	}
+
+	retrieveUnits() {
+		UnitsDataService.getDistinctUnits()
+			.then(response => {
+				this.setState({ units: response.data })
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
+
+	retrieveADOs() {
+		ADODataService.getDistinctADO()
+			.then(response => {
+				this.setState({ ADOs: response.data })
+			})
+			.catch(err => {
+				console.log(err);
+			})
+	}
+
+	retrieveSubunits() {
+		UnitsDataService.getSubUnits()
+			.then(response => {
+				this.setState({ subunits: response.data })
+			})
+			.catch(err => {
+				console.log(err);
+		})
+	}
+
+	retrieve
+
 	render() {
 		return (
-			<div class="container w90">
-				<div class="column cekrka">
-					<h2>Input Pengeluaran</h2>
-					<form action="GET">
-						<table>
-							<tr>
-								<td>Unit</td>
-								<td>
-									<select class="w100" name="unit" id="unit">
-										<option value="IF">Teknik Mesin</option>
-										<option value="TM">Teknik Informatika</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td>Ado</td>
-								<td>
-									<select class="w100" name="unit" id="unit">
-										<option value="pendidikan">Pendidikan</option>
-										<option value="penelitian">Penelitian</option>
-										<option value="percobaan">Percobaan</option>
-									</select>
-								</td>
-							</tr>
-						</table>
-						<button class="blue-btn">Lihat RKA</button>
-					</form>
-				</div>
-				<div class="column ubahrka">
-					<h2>Rincian RKA Program Studi Teknik Informatika</h2>
-					<form action="GET">
-						<table class="center data">
-							<tr>
-								<th>Uraian Belanja</th>
-								<th>Alokasi Total</th>
-								<th>Alokasi Triwulan 1</th>
-								<th>Penggunaan Triwulan 1</th>
-
-								<th>Sisa Anggaran Triwulan 1</th>
-								<th>Aksi</th>
-							</tr>
-							<tr>
-								<td>Pembelian Laptop Murah</td>
-								<td>Rp. 1.000.000.000</td>
-
-								<td>Rp. 500.000.000</td>
-								<td>-</td>
-								<td>Rp. 500.000.000</td>
-								<td>
-									<button class="btn-verify">Input Pengeluaran</button>
-									<button class="btn-reject">Edit Pengeluaran</button>
-								</td>
-							</tr>
-							<tr>
-								<td>Pembelian Laptop Banyak</td>
-								<td>Rp. 1.000.000.000</td>
-
-								<td>Rp. 500.000.000</td>
-								<td>-</td>
-								<td>Rp. 500.000.000</td>
-								<td>
-									<button class="btn-verify">Input Pengeluaran</button>
-									<button class="btn-reject">Edit Pengeluaran</button>
-								</td>
-							</tr>
-						</table>
-					</form>
+			<div className='container'>
+				<h2 className='mt-3'>Input Pengeluaran Unit</h2>
+				<div className="form-group">
+					<label htmlFor="select-unit">Select Unit</label>
+					<select className="form-select form-select-sm" id="select-unit">
+						{ this.state.units.map(unit => <option value={unit}>{unit}</option>) }
+					</select>
+					<label htmlFor="select-subunit">Select Subunit</label>
+					<select className="form-select form-select-sm" id="select-subunit">
+						{ this.state.subunits.map(subunit => <option value={subunit}>{subunit}</option>) }
+					</select>
+					<label htmlFor="select-ADO">Select ADO</label>
+					<select className="form-select form-select-sm" id="select-ADO">
+						{ this.state.ADOs.map(ADO => <option value={ADO}>{ADO}</option>) }
+					</select> <br />
+					<button className='btn btn-primary mt-2'>Lihat RKA</button>
 				</div>
 			</div>
 		);
 	}
 }
-
-export default AdminInputPengeluaran;

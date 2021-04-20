@@ -22,7 +22,7 @@ export const PrivateRoute = ({ UserComponent: User, AdminComponent: Admin, UserT
             } else if (userInfo.type === "Admin") {
                 return <Admin userInfo={userInfo} {...props} />
             }
-            return <div>Nah Loh</div>
+            return <div>ERROR</div>
         } else {
             // TODO: Maybe make an error 404 not found component would be better
             return <div>Error 404 Not Found</div>

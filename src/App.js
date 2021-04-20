@@ -5,8 +5,11 @@ import { history, getUserFromToken } from "_helpers";
 import { authenticationService } from "_services";
 import { PrivateRoute } from "_components";
 
-import Admin from 'admin/Admin';
-import AdminPengurusanAkun from 'admin/pengurusan-akun/AdminPengurusanAkun';
+import {
+	Admin,
+	AdminPengurusanAkun,
+	AdminInputPengeluaran
+} from 'admin';
 import User from 'user/User';
 import FormLogin from 'login/FormLogin';
 import Header from "_components/Header";
@@ -46,6 +49,10 @@ class App extends Component {
 					/>
 					<PrivateRoute exact path="/pengurusan-akun"
 								  AdminComponent={AdminPengurusanAkun}
+								  UserType="Admin"
+					/>
+					<PrivateRoute exact path="/input-pengeluaran"
+								  AdminComponent={AdminInputPengeluaran}
 								  UserType="Admin"
 					/>
 				</Router>
