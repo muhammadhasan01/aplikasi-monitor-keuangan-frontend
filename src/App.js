@@ -38,25 +38,23 @@ class App extends Component {
 
 	render() {
 		return (
-			<div className='container'>
-				<Router history={history}>
-					<Header userInfo={ this.state.currentUser } />
-					<Navigation userInfo={ this.state.currentUser } />
-					<Route exact path="/login" component={FormLogin} />
-					<PrivateRoute exact path="/"
-								  UserComponent={User}
-								  AdminComponent={Admin}
-					/>
-					<PrivateRoute exact path="/pengurusan-akun"
-								  AdminComponent={AdminPengurusanAkun}
-								  UserType="Admin"
-					/>
-					<PrivateRoute exact path="/input-pengeluaran"
-								  AdminComponent={AdminInputPengeluaran}
-								  UserType="Admin"
-					/>
-				</Router>
-			</div>
+			<Router history={history}>
+				<Header userInfo={ this.state.currentUser } />
+				<Navigation userInfo={ this.state.currentUser } />
+				<Route exact path="/login" component={FormLogin} />
+				<PrivateRoute exact path="/"
+							  UserComponent={User}
+							  AdminComponent={Admin}
+				/>
+				<PrivateRoute exact path="/pengurusan-akun"
+							  AdminComponent={AdminPengurusanAkun}
+							  UserType="Admin"
+				/>
+				<PrivateRoute exact path="/input-pengeluaran"
+							  AdminComponent={AdminInputPengeluaran}
+							  UserType="Admin"
+				/>
+			</Router>
 		);
 	}
 }
