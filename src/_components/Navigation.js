@@ -61,7 +61,7 @@ class Navigation extends Component {
         }
         const { type } = userInfo;
         return (
-            <nav>
+            <nav className="navbar navbar-expand-lg">
                 {type === "Admin" ? this.adminNavigation() : this.userNavigation()}
             </nav>
         );
