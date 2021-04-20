@@ -4,14 +4,12 @@ import { UnitsDataService, ADODataService } from "_services";
 export class AdminInputPengeluaran extends Component {
 	constructor(props) {
 		super(props);
-		this.retrieveUnits = this.retrieveUnits.bind(this);
-		this.retrieveADOs = this.retrieveADOs.bind(this);
-		this.retrieveSubunits = this.retrieveSubunits.bind(this);
 		this.state = {
 			units: [],
 			ADOs: [],
 			subunits: []
-		}
+		};
+		this.userInput = React.createRef();
 	}
 
 	componentDidMount() {
@@ -20,7 +18,7 @@ export class AdminInputPengeluaran extends Component {
 		this.retrieveSubunits();
 	}
 
-	retrieveUnits() {
+	retrieveUnits = () => {
 		UnitsDataService.getDistinctUnits()
 			.then(response => {
 				this.setState({ units: response.data })
@@ -30,7 +28,7 @@ export class AdminInputPengeluaran extends Component {
 			});
 	}
 
-	retrieveADOs() {
+	retrieveADOs = () => {
 		ADODataService.getDistinctADO()
 			.then(response => {
 				this.setState({ ADOs: response.data })
@@ -40,7 +38,7 @@ export class AdminInputPengeluaran extends Component {
 			})
 	}
 
-	retrieveSubunits() {
+	retrieveSubunits = () => {
 		UnitsDataService.getSubUnits()
 			.then(response => {
 				this.setState({ subunits: response.data })
@@ -50,27 +48,31 @@ export class AdminInputPengeluaran extends Component {
 		})
 	}
 
-	retrieve
+	getRKA = (e) => {
+		e.preventDefault();
+		const node = this.userInput.current;
+		const unit = node[0].value, subunit = node[1].value, ADO = node[2].value;
+	}
 
 	render() {
 		return (
-			<div className='container'>
+			<div className='container-fluid ml-5'>
 				<h2 className='mt-3'>Input Pengeluaran Unit</h2>
-				<div className="form-group">
+				<form className="form-group" ref={this.userInput}>
 					<label htmlFor="select-unit">Select Unit</label>
 					<select className="form-select form-select-sm" id="select-unit">
-						{ this.state.units.map(unit => <option value={unit}>{unit}</option>) }
+						{ this.state.units.map((unit, ID) => <option key={ID} value={unit}>{unit}</option>) }
 					</select>
 					<label htmlFor="select-subunit">Select Subunit</label>
 					<select className="form-select form-select-sm" id="select-subunit">
-						{ this.state.subunits.map(subunit => <option value={subunit}>{subunit}</option>) }
+						{ this.state.subunits.map((subunit, ID) => <option key={ID} value={subunit}>{subunit}</option>) }
 					</select>
 					<label htmlFor="select-ADO">Select ADO</label>
 					<select className="form-select form-select-sm" id="select-ADO">
-						{ this.state.ADOs.map(ADO => <option value={ADO}>{ADO}</option>) }
+						{ this.state.ADOs.map((ADO, ID) => <option key={ID} value={ADO}>{ADO}</option>) }
 					</select> <br />
-					<button className='btn btn-primary mt-2'>Lihat RKA</button>
-				</div>
+					<button className='btn btn-primary mt-2' onClick={this.getRKA}>Lihat RKA</button>
+				</form>
 			</div>
 		);
 	}
