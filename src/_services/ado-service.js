@@ -11,6 +11,10 @@ class ADODataService {
   getADOs() {
     return http.get("");
   }
+  
+  createADO(data) {
+    return http.post("", data);
+  }
 }
 
 export default new ADODataService();

@@ -11,6 +11,10 @@ class PaguDataService {
   getAllPagus() {
     return http.get("");
   }
+
+  updateAlokasiPagu(unit, subunit, ado, year, data) {
+    return http.post(`/${unit}/${subunit}/${ado}/${year}`, data);
+  }
 }
 
 export default new PaguDataService();

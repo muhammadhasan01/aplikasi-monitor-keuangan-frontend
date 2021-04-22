@@ -39,12 +39,19 @@ function PaguAnggaranRow(props){
       return elements;
     }
 
+    const handleClickEdit = () => {
+      if (props.onClickEdit) {
+        props.onClickEdit(props);
+      }
+    }
+
     return (
       <tr>
         <td><p>{props.unit}</p></td>
         <td><p>{props.subunit}</p></td>
         {renderColumns()}
         <td><p>{props.total}</p></td>
+        <td><button onClick={() => handleClickEdit()}>Edit</button></td>
       </tr>
     )
   }

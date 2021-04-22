@@ -4,6 +4,7 @@ import ADODataService from "../../../_services/ado-service";
 import PaguDataService from "../../../_services/pagu-service";
 import ConfirmActionPopup from "./ConfirmActionPopup";
 import NewADOForm from "./NewADOForm";
+import EditPaguForm from "./EditPaguForm";
 import PaguAnggaranRow from "./PaguAnggaranRow";
 
 export default class PaguAnggaran extends Component {
@@ -16,6 +17,7 @@ export default class PaguAnggaran extends Component {
       ADOs: [],
       Pagus: [],
       Units: [],
+      currentUnit: [],
       editMode: false,
       currentAction: "",
       confirmAction: true,
@@ -25,7 +27,7 @@ export default class PaguAnggaran extends Component {
         name: "",
         detail: "",
       },
-      showEditUserForm: false
+      showEditPaguForm: false
     };
   }
 
@@ -88,11 +90,12 @@ export default class PaguAnggaran extends Component {
   acceptAction(){
     this.setState({
       editMode: false,
+      currentUnit: [],
       currentAction: "",
       confirmAction: true,
       showConfirmAction: false,
       showNewADOForm: false,
-      showEditUserForm: false
+      showEditPaguForm: false
     })
   }
 
@@ -116,9 +119,18 @@ export default class PaguAnggaran extends Component {
   }
 
   submitNewADO(){
-    //pagu_list.forEach(pagu =>{
-    //  PaguDataService
-    //})
+    const data = {
+      name: this.state.newADO.name,
+      detail: this.state.newADO.detail
+    }
+    console.log(data);
+    ADODataService.createADO(data)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
     this.hideNewADOForm();
   }
 
@@ -128,7 +140,7 @@ export default class PaguAnggaran extends Component {
     this.setState(function(prevState) {
       return {
         newADO: {
-          ...prevState.currentUser,
+          ...prevState.newADO,
           name: name
         }
       };
@@ -141,30 +153,81 @@ export default class PaguAnggaran extends Component {
     this.setState(function(prevState) {
       return {
         newADO: {
-          ...prevState.currentUser,
+          ...prevState.newADO,
           detail: detail
         }
       };
     });
   }
 
-  editPagu(){
+  showEditPaguForm(e){
+    const unit = e.unit;
+    const subunit = e.subunit;
+    const ados = e.ados;
+    this.setState({
+      currentUnit: {
+        unit: unit,
+        subunit: subunit,
+        ADOs: ados
+      },
+      showEditPaguForm: true
+    })
+  }
+
+  hideEditPaguForm(){
+    this.setState({
+      showEditPaguForm: false
+    })
+  }
+
+  showEditPagu(){
     this.setState({
       editMode: true
     })
   }
 
-  cancelEditPagu(){
+  hideEditPagu(){
     this.setState({
       editMode: false
     })
   }
 
   submitEditPagu(){
-    //let pagu_list = this.state.Pagus;
-    //pagu_list.forEach(pagu =>{
-    //  PaguDataService
-    //})
+    /*
+    PaguDataService.updateAlokasiPagu(unit, subunit, ado, year, data)
+    .then(response => {
+      console.log(response.data);
+      this.hideEditPaguForm();
+    })
+    .catch(e => {
+      console.log(e);
+      this.hideEditPaguForm();
+    });
+    */
+  }
+
+  submitEditAllPagu(){
+    let pagu_list = this.state.Pagus;
+    pagu_list.forEach(pagu =>{
+      if(pagu.changed){
+        const unit = pagu.unit;
+        const subunit = pagu.subunit;
+        const ado = pagu.ADO;
+        const year = pagu.year;
+        const data = {
+          alokasi: pagu.alokasi
+        }
+        PaguDataService.updateAlokasiPagu(unit, subunit, ado, year, data)
+        .then(response => {
+          console.log(response.data);
+          this.hideEditPagu();
+        })
+        .catch(e => {
+          console.log(e);
+          this.hideEditPagu();
+        });
+      }
+    })
   }
 
   renderADOs(){
@@ -184,6 +247,7 @@ export default class PaguAnggaran extends Component {
       let name = pagu.unit + " " + pagu.subunit + " " + pagu.ADO;
       if(name === e.target.name){
         pagu.alokasi = e.target.value;
+        pagu.changed = true;
       }
     })
     this.setState({
@@ -210,7 +274,6 @@ export default class PaguAnggaran extends Component {
       pagu_list.forEach(pagu =>{
         if((pagu.unit === unit.unit) && (pagu.subunit === unit.subunit)){
           ados.forEach(obj =>{
-            console.log(obj);
             if(obj["name"] === pagu.ADO){
               obj["allocation"] = pagu.alokasi;
             }
@@ -227,6 +290,7 @@ export default class PaguAnggaran extends Component {
           total={total_anggaran}
           editMode={editMode}
           onChange={(e) => this.onChangePagu(e)}
+          onClickEdit={(e) => this.showEditPaguForm(e)}
         />
       );
     });
@@ -234,7 +298,8 @@ export default class PaguAnggaran extends Component {
   }
 
   render() {
-    const { editMode, showNewADOForm, currentAction, showConfirmAction, newADO } = this.state;
+    const { editMode, showNewADOForm, showEditPaguForm, showConfirmAction, 
+      currentUnit, newADO, currentAction } = this.state;
 
     return (
       <div id="pagu-anggaran">
@@ -245,7 +310,7 @@ export default class PaguAnggaran extends Component {
           ) : (
             <div>
               <button onClick={() => this.showNewADOForm()}>+ ADO</button>
-              <button onClick={() => this.editPagu()}>Edit Pagu</button>
+              <button onClick={() => this.showEditPagu()}>Edit Pagu</button>
             </div>
           )
           }
@@ -262,8 +327,8 @@ export default class PaguAnggaran extends Component {
         </div>
         {editMode ? (
           <div id="edit-buttons">
-            <button onClick={() => this.submitEditPagu()}>Submit</button>
-            <button onClick={() => this.cancelEditPagu()}>Cancel</button>
+            <button onClick={() => this.submitEditAllPagu()}>Submit</button>
+            <button onClick={() => this.hideEditPagu()}>Cancel</button>
           </div>
           ) : (
             ''
@@ -279,6 +344,22 @@ export default class PaguAnggaran extends Component {
               onChangeDetail={(e) => this.onChangeADODetail(e)}
               hide={() => this.hideNewADOForm()}
               submit={() => this.submitNewADO()}
+            />
+          </div>
+          ) : (
+            ''
+          )
+        }
+        {showEditPaguForm ? (
+          <div>
+            <div class="pageDisable"></div>
+            <EditPaguForm
+              unit={currentUnit.unit}
+              subunit={currentUnit.subunit}
+              ados={currentUnit.ADOs}
+              onChange={(e) => this.onChangePagu(e)}
+              hide={() => this.hideEditPaguForm()}
+              submit={() => this.submitEditPagu()}
             />
           </div>
           ) : (
