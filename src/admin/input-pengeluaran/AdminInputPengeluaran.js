@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { UnitsDataService, ADODataService } from "_services";
+import { UnitsDataService, ADODataService, RKADataService } from "_services";
+import InputUnitADO from './InputUnitADO';
+import RincianRKAPengeluaran from "./RincianRKAPengeluaran";
 
 export class AdminInputPengeluaran extends Component {
 	constructor(props) {
@@ -7,9 +9,10 @@ export class AdminInputPengeluaran extends Component {
 		this.state = {
 			units: [],
 			ADOs: [],
-			subunits: []
+			subunits: [],
+			RKA: null,
+			inputs: null
 		};
-		this.userInput = React.createRef();
 	}
 
 	componentDidMount() {
@@ -48,31 +51,21 @@ export class AdminInputPengeluaran extends Component {
 		})
 	}
 
-	getRKA = (e) => {
-		e.preventDefault();
-		const node = this.userInput.current;
-		const unit = node[0].value, subunit = node[1].value, ADO = node[2].value;
+	getDataRKA = (rka, inputs) => {
+		this.setState({ RKA: rka, inputs: inputs })
 	}
 
 	render() {
 		return (
 			<div className='container-fluid ml-5'>
-				<h2 className='mt-3'>Input Pengeluaran Unit</h2>
-				<form className="form-group" ref={this.userInput}>
-					<label htmlFor="select-unit">Select Unit</label>
-					<select className="form-select form-select-sm" id="select-unit">
-						{ this.state.units.map((unit, ID) => <option key={ID} value={unit}>{unit}</option>) }
-					</select>
-					<label htmlFor="select-subunit">Select Subunit</label>
-					<select className="form-select form-select-sm" id="select-subunit">
-						{ this.state.subunits.map((subunit, ID) => <option key={ID} value={subunit}>{subunit}</option>) }
-					</select>
-					<label htmlFor="select-ADO">Select ADO</label>
-					<select className="form-select form-select-sm" id="select-ADO">
-						{ this.state.ADOs.map((ADO, ID) => <option key={ID} value={ADO}>{ADO}</option>) }
-					</select> <br />
-					<button className='btn btn-primary mt-2' onClick={this.getRKA}>Lihat RKA</button>
-				</form>
+				<div className='row'>
+					<div className='col-3'>
+						<InputUnitADO data={this.state} sendDataRKA={this.getDataRKA}/>
+					</div>
+					<div className='col-8 ml-3 mt-2'>
+						<RincianRKAPengeluaran RKA={this.state.RKA} inputs={this.state.inputs} />
+					</div>
+				</div>
 			</div>
 		);
 	}
