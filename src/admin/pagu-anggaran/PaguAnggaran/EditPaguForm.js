@@ -24,7 +24,7 @@ function EditPaguForm(props){
     return (
       <div id="form-container">
         <h3>{props.unit}</h3>
-        <h2>{props.subunit}</h2>
+        <h4>{props.subunit}</h4>
         <form id="edit-pagu-form">
           {ADOInputs()}
         </form>
