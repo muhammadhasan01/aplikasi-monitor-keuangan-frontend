@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { urlServer } from '_services';
-import {getUserFromToken, handleResponse} from '_helpers';
+import { getUserFromToken, handleResponse } from '_helpers';
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
@@ -16,6 +16,7 @@ export const authenticationService = {
         return currentUserSubject.value;
     }
 };
+
 function login(username, password) {
     const requestOptions = {
         method: 'POST',

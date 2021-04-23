@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { UnitsDataService, ADODataService } from "_services";
+import { UnitsDataService, ADODataService, RKADataService } from "_services";
+import InputUnitADO from './InputUnitADO';
+import RincianRKAPengeluaran from "./RincianRKAPengeluaran";
 
 export class AdminInputPengeluaran extends Component {
 	constructor(props) {
 		super(props);
-		this.retrieveUnits = this.retrieveUnits.bind(this);
-		this.retrieveADOs = this.retrieveADOs.bind(this);
-		this.retrieveSubunits = this.retrieveSubunits.bind(this);
 		this.state = {
 			units: [],
 			ADOs: [],
-			subunits: []
-		}
+			subunits: [],
+			RKA: null,
+			inputs: null
+		};
 	}
 
 	componentDidMount() {
@@ -20,7 +21,7 @@ export class AdminInputPengeluaran extends Component {
 		this.retrieveSubunits();
 	}
 
-	retrieveUnits() {
+	retrieveUnits = () => {
 		UnitsDataService.getDistinctUnits()
 			.then(response => {
 				this.setState({ units: response.data })
@@ -30,7 +31,7 @@ export class AdminInputPengeluaran extends Component {
 			});
 	}
 
-	retrieveADOs() {
+	retrieveADOs = () => {
 		ADODataService.getDistinctADO()
 			.then(response => {
 				this.setState({ ADOs: response.data })
@@ -40,7 +41,7 @@ export class AdminInputPengeluaran extends Component {
 			})
 	}
 
-	retrieveSubunits() {
+	retrieveSubunits = () => {
 		UnitsDataService.getSubUnits()
 			.then(response => {
 				this.setState({ subunits: response.data })
@@ -50,24 +51,20 @@ export class AdminInputPengeluaran extends Component {
 		})
 	}
 
+	getDataRKA = (rka, inputs) => {
+		this.setState({ RKA: rka, inputs: inputs })
+	}
+
 	render() {
 		return (
-			<div className='container'>
-				<h2 className='mt-3'>Input Pengeluaran Unit</h2>
-				<div className="form-group">
-					<label htmlFor="select-unit">Select Unit</label>
-					<select className="form-select form-select-sm" id="select-unit">
-						{ this.state.units.map(unit => <option value={unit}>{unit}</option>) }
-					</select>
-					<label htmlFor="select-subunit">Select Subunit</label>
-					<select className="form-select form-select-sm" id="select-subunit">
-						{ this.state.subunits.map(subunit => <option value={subunit}>{subunit}</option>) }
-					</select>
-					<label htmlFor="select-ADO">Select ADO</label>
-					<select className="form-select form-select-sm" id="select-ADO">
-						{ this.state.ADOs.map(ADO => <option value={ADO}>{ADO}</option>) }
-					</select> <br />
-					<button className='btn btn-primary mt-2'>Lihat RKA</button>
+			<div className='container-fluid ml-5'>
+				<div className='row'>
+					<div className='col-3'>
+						<InputUnitADO data={this.state} sendDataRKA={this.getDataRKA}/>
+					</div>
+					<div className='col-8 ml-3 mt-2'>
+						<RincianRKAPengeluaran RKA={this.state.RKA} inputs={this.state.inputs} />
+					</div>
 				</div>
 			</div>
 		);

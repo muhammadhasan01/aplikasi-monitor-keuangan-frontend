@@ -14,7 +14,6 @@ import User from 'user/User';
 import FormLogin from 'login/FormLogin';
 import Header from "_components/Header";
 import Navigation from "_components/Navigation";
-import RKAMain from "./user/rka/RKA-Main";
 require('dotenv').config();
 
 class App extends Component {
@@ -54,10 +53,6 @@ class App extends Component {
 				<PrivateRoute exact path="/input-pengeluaran"
 							  AdminComponent={AdminInputPengeluaran}
 							  UserType="Admin"
-				/>
-				<PrivateRoute exact path="/pengisian-rka"
-							  UserComponent={RKAMain}
-							  UserType="User"
 				/>
 			</Router>
 		);
