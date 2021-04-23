@@ -1,17 +1,20 @@
 import React, {Component, createRef} from 'react';
 import {ADODataService, authenticationService} from "../../_services";
 import {RKADataService} from "../../_services/rka-service";
+import TambahRKAForm from "./TambahRKAForm";
 
-export class RKAMain extends Component {
+class RKAMain extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			ADO: [],
-			RKA: []
+			RKA: [],
+			showRKAForm: false
 		}
 
 		this.currentADO = createRef();
+
 	}
 
 	componentDidMount() {
@@ -54,10 +57,9 @@ export class RKAMain extends Component {
 		console.log(this.state.RKA);
 	}
 
-	renderRKA = (rka, index) => {
+	renderRKARow = (rka, index) => {
 
-		var data = Object.values(rka.rancangan);
-		var id = data.splice(-1,1);
+		var data = Object.values(rka.rancangan).filter(elmt => typeof elmt !== "string");
 		console.log(data);
 
 		return(
@@ -73,11 +75,19 @@ export class RKAMain extends Component {
 		)
 	}
 
+	tambahRKA = () => {
+		console.log("Tambah RKA");
+		this.setState({showRKAForm: !this.state.showRKAForm})
+	}
+
 	render() {
+		const {showRKAForm} = this.state;
+
 		return (
 			<div class="container-fluid">
 				<div class="row">
-					<div className="col-sm">
+					<div className="col-3">
+
 						<form className="form-group" onSubmit={this.lihatRKA}>
 							<label htmlFor="select-ADO">Select ADO</label>
 							<select className="form-select form-select-sm" id="select-ADO" name="ado"
@@ -87,10 +97,12 @@ export class RKAMain extends Component {
 							</select> <br/>
 							<button className='btn btn-primary mt-2'>Lihat RKA</button>
 						</form>
+
+						<button className='btn btn-primary mt-2' onClick={this.tambahRKA}>Tambah RKA</button>
 					</div>
 
-					<div class="table">
-						<thead class="thead-dark">
+					<div className="table col-9">
+						<thead className=" thead-dark">
 							<th>ADO</th>
 							<th>Kegiatan</th>
 							<th>Subkegiatan</th>
@@ -110,11 +122,20 @@ export class RKAMain extends Component {
 							<th>November</th>
 							<th>Desember</th>
 						</thead>
-						<tbody class="table-striped">
-							{this.state.RKA.map(this.renderRKA)}
+						<tbody className="table-striped">
+							{this.state.RKA.map(this.renderRKARow)}
 						</tbody>
 					</div>
 				</div>
+
+				{showRKAForm ? (
+					<TambahRKAForm
+						ado={this.currentADO.current.value}
+						test='Testing'
+					></TambahRKAForm>
+				) : (
+					''
+				)}
 
 			</div>
 
