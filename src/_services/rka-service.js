@@ -3,7 +3,8 @@ import authHeader from "_helpers/auth-header";
 import {urlServer} from "_services/api";
 
 export const RKADataService = {
-    getRKAUnitADO
+    getRKAUnitADO,
+    loadAllRKA
 }
 
 function getHttp() {
@@ -15,4 +16,8 @@ function getHttp() {
 
 function getRKAUnitADO(unit, subunit, ADO) {
     return getHttp().get(`${unit}/${subunit}/ADO/${ADO}`);
+}
+
+function loadAllRKA(unit, subunit){
+    return getHttp().get(`/${unit}/${subunit}`);
 }

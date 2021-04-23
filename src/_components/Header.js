@@ -6,17 +6,17 @@ class Header extends Component {
     }
 
     showUserInfo(userInfo) {
-        const { name, type, unit } = userInfo;
+        const { name, type, unit, subunit } = userInfo;
         return (
             <div style={{ textAlign: "right" }}>
                 {name} <br />
-                {type === "Admin" ? "Administrator" : unit}
+                {type === "Admin" ? "Administrator" : unit + " - " + subunit}
+
             </div>
         )
     }
 
     render() {
-
         return (
         	<div className="header">
                 <img src="./Logo_STEI.png" name="logo" alt="Logo STEI"/>
