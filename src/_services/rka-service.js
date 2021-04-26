@@ -6,6 +6,7 @@ export const RKADataService = {
     getRKAUnitADO,
     loadAllRKA,
     createRKA
+    inputPengeluaranRKA
 }
 
 function getHttp() {
@@ -25,4 +26,7 @@ function loadAllRKA(unit, subunit){
 
 function createRKA(unit, subunit, data){
     return getHttp().post(`/${unit}/${subunit}`);
+    
+function inputPengeluaranRKA(unit, subunit, body) {
+    return getHttp().put(`/${unit}/${subunit}`, body);
 }
