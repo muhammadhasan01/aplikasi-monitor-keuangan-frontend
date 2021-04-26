@@ -13,6 +13,8 @@ class RKAMain extends Component {
 		this.state = {
 			ADO: [],
 			RKA: [],
+			unit: null,
+			subunit: null,
 			showRKAForm: false,
 			currentADO: "All"
 		}
@@ -29,7 +31,6 @@ class RKAMain extends Component {
 		ADODataService.getDistinctADO()
 			.then(response => {
 				this.setState({ ADO: response.data });
-				console.log(this.state.ADO);
 			})
 			.catch(err => {
 				console.log(err);
@@ -39,10 +40,10 @@ class RKAMain extends Component {
 
 	retrieveAllRKA = () => {
 		const { unit, subunit } = authenticationService.UserInformation;
+		this.setState({unit: unit, subunit: subunit});
 		RKADataService.loadAllRKA(unit, subunit)
 			.then(response => {
 				this.setState( {RKA: response.data});
-				console.log(this.state.RKA);
 			})
 			.catch(err => {
 				console.log(err);
@@ -51,14 +52,14 @@ class RKAMain extends Component {
 
 	lihatRKA = (e) => {
 		console.log("Berhasil Submit");
-		console.log(this.state.currentADO);
+		//TO DO Render Different Table
 
 		e.preventDefault();
 	}
 
 	handleADOChange = (e) => {
-		this.setState({currentADO: e.target.value})
-		console.log(this.currentADO.current.value);
+		this.setState({currentADO: e.target.value});
+		// console.log(this.currentADO.current.value);
 	}
 
 	renderRKARow = (rka, index) => {
@@ -80,12 +81,9 @@ class RKAMain extends Component {
 
 	tambahRKA = () => {
 		console.log("Tambah RKA");
-		this.setState({showRKAForm: !this.state.showRKAForm})
 	}
 
 	render() {
-		const {showRKAForm} = this.state;
-
 		return (
 			<div class="container-fluid">
 				<div class="row">
@@ -101,7 +99,8 @@ class RKAMain extends Component {
 							<button className='btn btn-primary mt-2'>Lihat RKA</button>
 						</form>
 
-						<TambahRKAForm ado={this.state.currentADO}/>
+						<TambahRKAForm ado={this.state.currentADO} unit={this.state.unit} subunit={this.state.subunit}/>
+
 					</div>
 
 					<div className="table col-11">
@@ -131,12 +130,7 @@ class RKAMain extends Component {
 						</tbody>
 					</div>
 				</div>
-				
-
-				
 			</div>
-
-
 		);
 	}
 }

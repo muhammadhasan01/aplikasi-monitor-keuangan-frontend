@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ADODataService} from "../../_services";
+import {ADODataService, RKADataService} from "../../_services";
 import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 
 class TambahRKAForm extends Component {
@@ -19,15 +19,13 @@ class TambahRKAForm extends Component {
         this.renderADOOption();
     }
 
-    renderADOOption(){
+    renderADOOption = () => {
         ADODataService.getDistinctADO()
             .then(response => {
                 this.setState({ ADOOption: response.data });
-                console.log(this.state.ADOOption);
             })
             .catch(err => {
                 console.log(err);
-
             })
     }
 
@@ -40,36 +38,49 @@ class TambahRKAForm extends Component {
     handleShow = () => {
         this.setState({currentADO: this.props.ado})
         this.setShow(true);
+        this.forceUpdate();
     }
 
     handleSubmit = (e) => {
         const data = {
+            "year"                  : new Date().getFullYear(),
             "ADO"                   : e.target.adoSelect.value,
             "kegiatan"              : e.target.kegiatan.value,
             "subkegiatan"           : e.target.subkegiatan.value,
             "rincian_subkegiatan"   : e.target.rincian_subkegiatan.value,
+            "rincian_belanja"       : e.target.rincian_belanja.value,
             "jenis_belanja"         : e.target.jenis_belanja.value,
+            "satuan"                : "kegiatan",
+            "volume"                : Number(4), //To Do Ilangin Implementasinya
             "rancangan": {
-                "januari"   : e.target.Januari.value,
-                "februari"  : e.target.Februari.value,
-                "maret"     : e.target.Maret.value,
-                "april"     : e.target.April.value,
-                "mei"       : e.target.Mei.value,
-                "juni"      : e.target.Juni.value,
-                "juli"      : e.target.Juli.value,
-                "agustus"   : e.target.Agustus.value,
-                "september" : e.target.September.value,
-                "oktober"   : e.target.Oktober.value,
-                "november"  : e.target.November.value,
-                "desember"  : e.target.Desember.value
+                "januari"   : Number(e.target.Januari.value),
+                "februari"  : Number(e.target.Februari.value),
+                "maret"     : Number(e.target.Maret.value),
+                "april"     : Number(e.target.April.value),
+                "mei"       : Number(e.target.Mei.value),
+                "juni"      : Number(e.target.Juni.value),
+                "juli"      : Number(e.target.Juli.value),
+                "agustus"   : Number(e.target.Agustus.value),
+                "september" : Number(e.target.September.value),
+                "oktober"   : Number(e.target.Oktober.value),
+                "november"  : Number(e.target.November.value),
+                "desember"  : Number(e.target.Desember.value)
             }
         };
 
-        // const data = [e.target.adoSelect.value, e.target.kegiatan.value, e.target.subkegiatan.value]
-
         console.log(data);
 
+        RKADataService.createRKA(this.props.unit, this.props.subunit, data)
+            .then(response => {
+                alert(response.data);
+            })
+            .catch(err => {
+                console.log(err);
+                alert(err.message);
+            });
+
         e.preventDefault();
+
     }
 
     render(){
@@ -96,7 +107,7 @@ class TambahRKAForm extends Component {
                                         <Form.Label>ADO</Form.Label>
                                         <Form.Control as="select">
                                             {this.state.ADOOption.map(ado =>
-                                                <option value={ado}>{ado}</option>
+                                                (ado === this.state.currentADO ? <option value={ado} selected>{ado}</option> : <option value={ado}>{ado}</option> )
                                             )}
                                         </Form.Control>
                                     </Form.Group>
