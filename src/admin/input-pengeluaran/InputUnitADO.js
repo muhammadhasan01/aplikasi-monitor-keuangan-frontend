@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {RKADataService} from "../../_services";
+import {RKADataService} from "_services";
 
 class InputUnitADO extends Component {
     constructor(props) {

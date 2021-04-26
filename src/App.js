@@ -8,12 +8,13 @@ import { PrivateRoute } from "_components";
 import {
 	Admin,
 	AdminPengurusanAkun,
-	AdminInputPengeluaran
+	AdminInputPengeluaran,
 } from 'admin';
 import User from 'user/User';
 import FormLogin from 'login/FormLogin';
 import Header from "_components/Header";
 import Navigation from "_components/Navigation";
+import RiwayatPenggunaan from "admin/riwayat-penggunaan/RiwayatPenggunaan";
 require('dotenv').config();
 
 class App extends Component {
@@ -42,6 +43,7 @@ class App extends Component {
 				<Header userInfo={ this.state.currentUser } />
 				<Navigation userInfo={ this.state.currentUser } />
 				<Route exact path="/login" component={FormLogin} />
+				<Route exact path="/riwayat" component={RiwayatPenggunaan} />
 				<PrivateRoute exact path="/"
 							  UserComponent={User}
 							  AdminComponent={Admin}
