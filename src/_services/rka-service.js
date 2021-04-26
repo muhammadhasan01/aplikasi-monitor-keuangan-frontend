@@ -24,8 +24,8 @@ function loadAllRKA(unit, subunit){
     return getHttp().get(`/${unit}/${subunit}`);
 }
 
-function createRKA(unit, subunit, data){
-    return getHttp().post(`/${unit}/${subunit}`);
+function createRKA(unit, subunit, body){
+    return getHttp().post(`/${unit}/${subunit}`, body);
 }
 
 function inputPengeluaranRKA(unit, subunit, body) {
