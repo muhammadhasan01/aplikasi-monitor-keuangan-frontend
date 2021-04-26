@@ -10,7 +10,7 @@ export class AdminInputPengeluaran extends Component {
 			units: [],
 			ADOs: [],
 			subunits: [],
-			RKA: null,
+			RKAs: null,
 			inputs: null
 		};
 	}
@@ -52,7 +52,7 @@ export class AdminInputPengeluaran extends Component {
 	}
 
 	getDataRKA = (rka, inputs) => {
-		this.setState({ RKA: rka, inputs: inputs })
+		this.setState({ RKAs: rka, inputs: inputs })
 	}
 
 	render() {
@@ -63,7 +63,7 @@ export class AdminInputPengeluaran extends Component {
 						<InputUnitADO data={this.state} sendDataRKA={this.getDataRKA}/>
 					</div>
 					<div className='col-8 ml-3 mt-2'>
-						<RincianRKAPengeluaran RKA={this.state.RKA} inputs={this.state.inputs} />
+						<RincianRKAPengeluaran RKAs={this.state.RKAs} inputs={this.state.inputs} />
 					</div>
 				</div>
 			</div>
