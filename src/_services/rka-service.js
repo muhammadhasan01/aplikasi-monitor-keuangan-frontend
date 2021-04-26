@@ -4,7 +4,8 @@ import {urlServer} from "_services/api";
 
 export const RKADataService = {
     getRKAUnitADO,
-    loadAllRKA
+    loadAllRKA,
+    createRKA
 }
 
 function getHttp() {
@@ -20,4 +21,8 @@ function getRKAUnitADO(unit, subunit, ADO) {
 
 function loadAllRKA(unit, subunit){
     return getHttp().get(`/${unit}/${subunit}`);
+}
+
+function createRKA(unit, subunit, data){
+    return getHttp().post(`/${unit}/${subunit}`);
 }

@@ -2,6 +2,9 @@ import React, {Component, createRef} from 'react';
 import {ADODataService, authenticationService} from "../../_services";
 import {RKADataService} from "../../_services/rka-service";
 import TambahRKAForm from "./TambahRKAForm";
+import { Modal, Button } from 'react-bootstrap';
+
+
 
 class RKAMain extends Component {
 	constructor(props) {
@@ -10,11 +13,11 @@ class RKAMain extends Component {
 		this.state = {
 			ADO: [],
 			RKA: [],
-			showRKAForm: false
+			showRKAForm: false,
+			currentADO: "All"
 		}
 
 		this.currentADO = createRef();
-
 	}
 
 	componentDidMount() {
@@ -46,21 +49,21 @@ class RKAMain extends Component {
 			})
 	}
 
-	lihatRKA(e){
-		console.log(this.currentADO.current);
+	lihatRKA = (e) => {
+		console.log("Berhasil Submit");
+		console.log(this.state.currentADO);
 
 		e.preventDefault();
 	}
 
 	handleADOChange = (e) => {
+		this.setState({currentADO: e.target.value})
 		console.log(this.currentADO.current.value);
-		console.log(this.state.RKA);
 	}
 
 	renderRKARow = (rka, index) => {
 
 		var data = Object.values(rka.rancangan).filter(elmt => typeof elmt !== "string");
-		console.log(data);
 
 		return(
 			<tr key={index}>
@@ -86,7 +89,7 @@ class RKAMain extends Component {
 		return (
 			<div class="container-fluid">
 				<div class="row">
-					<div className="col-3">
+					<div className="col-1">
 
 						<form className="form-group" onSubmit={this.lihatRKA}>
 							<label htmlFor="select-ADO">Select ADO</label>
@@ -98,10 +101,11 @@ class RKAMain extends Component {
 							<button className='btn btn-primary mt-2'>Lihat RKA</button>
 						</form>
 
-						<button className='btn btn-primary mt-2' onClick={this.tambahRKA}>Tambah RKA</button>
+						<TambahRKAForm ado={this.state.currentADO}/>
 					</div>
 
-					<div className="table col-9">
+					<div className="table col-11">
+						<h2>Tabel RKA </h2>
 						<thead className=" thead-dark">
 							<th>ADO</th>
 							<th>Kegiatan</th>
@@ -127,16 +131,9 @@ class RKAMain extends Component {
 						</tbody>
 					</div>
 				</div>
+				
 
-				{showRKAForm ? (
-					<TambahRKAForm
-						ado={this.currentADO.current.value}
-						test='Testing'
-					></TambahRKAForm>
-				) : (
-					''
-				)}
-
+				
 			</div>
 
 
