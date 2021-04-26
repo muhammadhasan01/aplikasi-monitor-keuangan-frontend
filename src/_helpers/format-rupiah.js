@@ -1,4 +1,4 @@
-export function formatRupiah(angka, prefix='Rp. '){
+export const formatRupiah = (angka, prefix='Rp. ') => {
     if (isNaN(angka)) {
         return angka;
     }
