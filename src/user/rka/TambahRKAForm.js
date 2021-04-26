@@ -48,7 +48,7 @@ class TambahRKAForm extends Component {
             "kegiatan"              : e.target.kegiatan.value,
             "subkegiatan"           : e.target.subkegiatan.value,
             "rincian_subkegiatan"   : e.target.rincian_subkegiatan.value,
-            "jenis_belanja"         : e.target.jenis.value,
+            "jenis_belanja"         : e.target.jenis_belanja.value,
             "rancangan": {
                 "januari"   : e.target.Januari.value,
                 "februari"  : e.target.Februari.value,
@@ -121,8 +121,8 @@ class TambahRKAForm extends Component {
                                         <Form.Control type="text" placeholder="Masukkan Rincian Belanja" required />
                                     </Form.Group>
 
-                                    <Form.Group controlId="jenis">
-                                        <Form.Label>Jenis</Form.Label>
+                                    <Form.Group controlId="jenis_belanja">
+                                        <Form.Label>Jenis Belanja</Form.Label>
                                         <Form.Control as="select" required>
                                             {this.state.JenisOption.map(jenis => <option>{jenis}</option>)}
                                         </Form.Control>
