@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Button, Modal, Table, Form} from "react-bootstrap";
-import {namaBulanIndonesia, formatRupiah} from "_helpers";
+import { Button, Modal, Table, Form, Alert } from "react-bootstrap";
+import {getSisaAnggaranFromBulan, formatRupiah} from "_helpers";
+import {RKADataService} from "_services";
 
 class ModalInputPengeluaran extends Component {
     constructor(props) {
@@ -8,27 +9,53 @@ class ModalInputPengeluaran extends Component {
         this.state = {
             RKA: null,
             bulan: null,
-            inputPengeluaran: 0
+            inputPengeluaran: 0,
+            showMessage: false
         };
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps) {
         return {
             RKA: nextProps.RKA,
             bulan: nextProps.bulan
         };
     }
 
-    handleInputPengeluaran = (e) => {
-        this.setState({ inputPengeluaran: e.target.value });
+    handleInputPengeluaran = ({ target: { value } }) => {
+        console.log(value);
+        this.setState({ inputPengeluaran: value });
+    }
+
+    handleClickInputPengeluaran = (e) => {
+        e.preventDefault();
+        const { RKA, bulan } = this.state;
+        const { inputPengeluaran } = this.state;
+        const sisaAnggaran = getSisaAnggaranFromBulan(RKA, bulan);
+        if (inputPengeluaran > sisaAnggaran) {
+            alert("Input pengeluaran tidak boleh lebih dari sisa anggaran");
+            return;
+        }
+        const { unit, sub_unit: subunit, rincian_belanja: rb } = RKA;
+        const body = {
+            'rincian_belanja': rb,
+            'amount': Number(inputPengeluaran),
+            'bulan': bulan.toLowerCase()
+        };
+        RKADataService.inputPengeluaranRKA(unit, subunit, body)
+            .then((response) => {
+                const { data } = response;
+                this.props.handleUpdateRKAs(data);
+                this.setState({ showMessage: true });
+            }).catch((err) => {
+                console.log(err)
+        })
     }
 
     render() {
         if (this.state.RKA == null) return null;
-        const { unit, sub_unit: subUnit, rincian_belanja: rincianBelanja, rancangan, penggunaan } = this.state.RKA;
-        const bulan = this.state.bulan;
-        const idBulan = bulan.toLowerCase();
-        const sisaAnggaran = rancangan[idBulan] - penggunaan[idBulan];
+        const { RKA, bulan, showMessage } = this.state;
+        const { rincian_belanja: rincianBelanja } = RKA;
+        const sisaAnggaran = getSisaAnggaranFromBulan(RKA, bulan);
         return (
             <Modal show onHide={this.props.handleClose}>
                 <Modal.Header closeButton>
@@ -61,12 +88,15 @@ class ModalInputPengeluaran extends Component {
                         <div className='container'>
                             <div className='row'>
                                 <Button variant="primary" type="submit"
-                                        className='col text-center'>
+                                        className='col text-center'
+                                        onClick={this.handleClickInputPengeluaran}
+                                >
                                     Masukkan Input Pengeluaran
                                 </Button>
                             </div>
                         </div>
                     </Form>
+                    {showMessage ? <Alert className='mt-3' variant='success'>Successfully Updated!</Alert> : null}
                 </Modal.Body>
             </Modal>
         );

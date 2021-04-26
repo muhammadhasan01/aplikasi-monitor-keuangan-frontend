@@ -38,6 +38,12 @@ class RincianRKAPengeluaran extends Component {
         this.setState({ show: false });
     }
 
+    handleUpdateRKAs = (RKA) => {
+        const { RKAs, idxRKA } = this.state;
+        RKAs[idxRKA] = RKA;
+        this.setState({ RKAs: RKAs });
+    }
+
     render() {
         if (!this.props || !this.props.RKAs || !this.props.inputs) {
             return null;
@@ -91,6 +97,7 @@ class RincianRKAPengeluaran extends Component {
                 {this.state.show ? <ModalInputPengeluaran RKA={RKAs[this.state.idxRKA]}
                                                           bulan={timeSlot}
                                                           handleClose={this.handleCloseModal}
+                                                          handleUpdateRKAs={this.handleUpdateRKAs}
                 /> : null}
             </>
         )
