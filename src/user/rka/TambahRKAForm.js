@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {ADODataService, RKADataService} from "../../_services";
 import {Button, Col, Form, Modal, Row} from "react-bootstrap";
+import {PaguDataService} from "../../_services/pagu-service";
 
 class ModalRKAForm extends Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class ModalRKAForm extends Component {
 
     componentDidMount() {
         this.retrieveADOs();
+        this.retrieveSisaPagu();
     }
 
     retrieveADOs = () => {
@@ -29,6 +31,11 @@ class ModalRKAForm extends Component {
             })
     }
 
+    retrieveSisaPagu = () => {
+
+
+    }
+
     setShow = (boolean) => {
         this.setState({show:boolean});
     }
@@ -36,7 +43,20 @@ class ModalRKAForm extends Component {
     handleClose = () => this.setShow(false);
 
     handleShow = () => {
+
         this.setState({currentADO: this.props.ado})
+        const unit = this.props.unit;
+        const subunit = this.props.subunit;
+        const ado = this.props.ado;
+        const year = new Date().getFullYear();
+        PaguDataService.getSisaPagu(unit, subunit, ado, year)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
         this.setShow(true);
         this.forceUpdate();
     }
@@ -75,8 +95,8 @@ class ModalRKAForm extends Component {
                 alert(response.data);
             })
             .catch(err => {
+                alert(err);
                 console.log(err);
-                alert(err.message);
             });
 
         e.preventDefault();

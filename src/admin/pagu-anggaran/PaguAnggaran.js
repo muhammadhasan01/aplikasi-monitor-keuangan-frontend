@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { ADODataService, UnitsDataService } from "_services";
-import PaguDataService from "_services/pagu-service";
 import ConfirmActionPopup from "./ConfirmActionPopup";
 import NewADOForm from "./NewADOForm";
 import EditPaguForm from "./EditPaguForm";
 import PaguAnggaranRow from "./PaguAnggaranRow";
+import {PaguDataService} from "../../_services/pagu-service";
 
 export class PaguAnggaran extends Component {
   constructor(props) {
