@@ -10,9 +10,8 @@ class User extends Component {
 	render() {
 		const { userInfo } = this.props;
 		return (
-			<div>
-				<Header userInfo={userInfo} />
-				<Navigation userInfo={userInfo} />
+			<div className='container'>
+				User Home
 			</div>
 		);
 	}
