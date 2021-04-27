@@ -3,6 +3,8 @@ import {ADODataService, authenticationService} from "../../_services";
 import {RKADataService} from "../../_services/rka-service";
 import TambahRKAForm from "./TambahRKAForm";
 import { Modal, Button } from 'react-bootstrap';
+import TableRKA from "./TableRKA";
+import ModalRKAForm from "./TambahRKAForm";
 
 
 
@@ -16,7 +18,7 @@ class RKAMain extends Component {
 			unit: null,
 			subunit: null,
 			showRKAForm: false,
-			currentADO: "All"
+			currentADO: "ALL"
 		}
 
 		this.currentADO = createRef();
@@ -50,16 +52,41 @@ class RKAMain extends Component {
 			})
 	}
 
-	lihatRKA = (e) => {
-		console.log("Berhasil Submit");
-		//TO DO Render Different Table
 
+	getRKA = (e) => {
+		this.setState({currentADO: this.currentADO.current.value});
 		e.preventDefault();
+		const unit = this.state.unit;
+		const subunit = this.state.subunit;
+		const ado = this.currentADO.current.value;
+
+		console.log(ado);
+
+		if(ado == "ALL"){
+			RKADataService.loadAllRKA(unit, subunit)
+				.then(response => {
+					console.log("RKA", response.data);
+					this.setState( {RKA: response.data});
+				})
+				.catch(err => {
+					console.log(err);
+				})
+		} else {
+			RKADataService.getRKAUnitADO(unit, subunit, ado)
+				.then(response => {
+					console.log("RKA", response.data);
+					this.setState( {RKA: response.data});
+				}).catch(err => {
+				console.log(err);
+			})
+		}
+
+
 	}
 
 	handleADOChange = (e) => {
 		this.setState({currentADO: e.target.value});
-		// console.log(this.currentADO.current.value);
+		console.log(this.currentADO.current.value);
 	}
 
 	renderRKARow = (rka, index) => {
@@ -79,56 +106,33 @@ class RKAMain extends Component {
 		)
 	}
 
-	tambahRKA = () => {
-		console.log("Tambah RKA");
-	}
-
 	render() {
-		return (
-			<div class="container-fluid">
-				<div class="row">
-					<div className="col-1">
+		const unit = this.state.unit;
+		const subunit = this.state.subunit;
+		const ado = this.state.currentADO;
+		const rka = this.state.RKA;
 
-						<form className="form-group" onSubmit={this.lihatRKA}>
+		return (
+			<div class="container-fluid ml-5">
+				<div class="row">
+					<div className="col-1.75">
+
+						<form className="form-group">
 							<label htmlFor="select-ADO">Select ADO</label>
 							<select className="form-select form-select-sm" id="select-ADO" name="ado"
-									onChange={this.handleADOChange} ref={this.currentADO}>
+									onChange={this.getRKA} ref={this.currentADO}>
 								<option value="ALL">All</option>
 								{this.state.ADO.map(ADO => <option value={ADO}>{ADO}</option>)}
 							</select> <br/>
-							<button className='btn btn-primary mt-2'>Lihat RKA</button>
 						</form>
 
-						<TambahRKAForm ado={this.state.currentADO} unit={this.state.unit} subunit={this.state.subunit}/>
+						<ModalRKAForm ado={ado} unit={unit} subunit={subunit}/>
 
 					</div>
-
-					<div className="table col-11">
-						<h2>Tabel RKA </h2>
-						<thead className=" thead-dark">
-							<th>ADO</th>
-							<th>Kegiatan</th>
-							<th>Subkegiatan</th>
-							<th>Rincian Subkegiatan</th>
-							<th>Rincian Belanja</th>
-							<th>Jenis Belanja</th>
-							<th>Januari</th>
-							<th>Februari</th>
-							<th>Maret</th>
-							<th>April</th>
-							<th>Mei</th>
-							<th>Juni</th>
-							<th>Juli</th>
-							<th>Agustus</th>
-							<th>September</th>
-							<th>Oktober</th>
-							<th>November</th>
-							<th>Desember</th>
-						</thead>
-						<tbody className="table-striped">
-							{this.state.RKA.map(this.renderRKARow)}
-						</tbody>
+					<div className="col-10">
+						<TableRKA ado={ado} unit={unit} subunit={subunit} rka={rka} />
 					</div>
+
 				</div>
 			</div>
 		);

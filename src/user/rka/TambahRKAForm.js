@@ -2,27 +2,27 @@ import React, {Component} from 'react';
 import {ADODataService, RKADataService} from "../../_services";
 import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 
-class TambahRKAForm extends Component {
+class ModalRKAForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             sisa: 0,
             show: false,
-            ADOOption: [],
-            currentADO: null,
+            ADOs: [],
+            currentADO: "All",
             JenisOption: ["Barang", "Jasa", "Modal"]
         }
     }
 
     componentDidMount() {
-        this.renderADOOption();
+        this.retrieveADOs();
     }
 
-    renderADOOption = () => {
+    retrieveADOs = () => {
         ADODataService.getDistinctADO()
             .then(response => {
-                this.setState({ ADOOption: response.data });
+                this.setState({ ADOs: response.data });
             })
             .catch(err => {
                 console.log(err);
@@ -106,7 +106,7 @@ class TambahRKAForm extends Component {
                                     <Form.Group controlId="adoSelect">
                                         <Form.Label>ADO</Form.Label>
                                         <Form.Control as="select">
-                                            {this.state.ADOOption.map(ado =>
+                                            {this.state.ADOs.map(ado =>
                                                 (ado === this.state.currentADO ? <option value={ado} selected>{ado}</option> : <option value={ado}>{ado}</option> )
                                             )}
                                         </Form.Control>
@@ -185,4 +185,4 @@ class TambahRKAForm extends Component {
     }
 }
 
-export default TambahRKAForm;
+export default ModalRKAForm;
