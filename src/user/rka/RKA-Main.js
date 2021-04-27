@@ -1,8 +1,8 @@
 import React, {Component, createRef} from 'react';
-import {ADODataService, authenticationService} from "../../_services";
-import {RKADataService} from "../../_services/rka-service";
+import {ADODataService, authenticationService} from "_services";
+import {RKADataService} from "_services/rka-service";
 import TambahRKAForm from "./TambahRKAForm";
-import { Modal, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 
 
@@ -104,8 +104,9 @@ class RKAMain extends Component {
 					</div>
 
 					<div className="table col-11">
-						<h2>Tabel RKA </h2>
-						<thead className=" thead-dark">
+						<h2>Tabel RKA</h2>
+						<Table responsive striped bordered hover style={{backgroundColor: 'lightblue'}}>
+							<thead className=" thead-dark">
 							<th>ADO</th>
 							<th>Kegiatan</th>
 							<th>Subkegiatan</th>
@@ -124,10 +125,11 @@ class RKAMain extends Component {
 							<th>Oktober</th>
 							<th>November</th>
 							<th>Desember</th>
-						</thead>
-						<tbody className="table-striped">
+							</thead>
+							<tbody className="table-striped">
 							{this.state.RKA.map(this.renderRKARow)}
-						</tbody>
+							</tbody>
+						</Table>
 					</div>
 				</div>
 			</div>
