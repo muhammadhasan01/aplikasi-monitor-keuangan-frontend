@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 
 import { history, getUserFromToken } from "_helpers";
 import { authenticationService } from "_services";
@@ -38,7 +38,7 @@ class App extends Component {
 
 	render() {
 		return (
-			<Router history={history}>
+			<Router>
 				<Header userInfo={ this.state.currentUser } />
 				<Navigation userInfo={ this.state.currentUser } />
 				<Route exact path="/login" component={FormLogin} />
