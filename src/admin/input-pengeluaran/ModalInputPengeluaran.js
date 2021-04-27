@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, Table, Form, Alert } from "react-bootstrap";
-import {getSisaAnggaranFromBulan, formatRupiah} from "_helpers";
+import {getSisaAnggaranFromBulan, formatRupiah, getPenggunaanBulan} from "_helpers";
 import {RKADataService} from "_services";
 
 class ModalInputPengeluaran extends Component {
@@ -22,8 +22,7 @@ class ModalInputPengeluaran extends Component {
     }
 
     handleInputPengeluaran = ({ target: { value } }) => {
-        console.log(value);
-        this.setState({ inputPengeluaran: value });
+        this.setState({ inputPengeluaran: Number(value) });
     }
 
     handleClickInputPengeluaran = (e) => {
@@ -31,8 +30,8 @@ class ModalInputPengeluaran extends Component {
         const { RKA, bulan } = this.state;
         const { inputPengeluaran } = this.state;
         const sisaAnggaran = getSisaAnggaranFromBulan(RKA, bulan);
-        if (inputPengeluaran > sisaAnggaran) {
-            alert("Input pengeluaran tidak boleh lebih dari sisa anggaran");
+        if (inputPengeluaran > sisaAnggaran || inputPengeluaran < 0) {
+            alert("Input pengeluaran tidak beleh invalid atau lebih dari sisa anggaran");
             return;
         }
         const { unit, sub_unit: subunit, rincian_belanja: rb } = RKA;
@@ -55,6 +54,7 @@ class ModalInputPengeluaran extends Component {
         if (this.state.RKA == null) return null;
         const { RKA, bulan, showMessage } = this.state;
         const { rincian_belanja: rincianBelanja } = RKA;
+        const penggunaan = getPenggunaanBulan(RKA, bulan);
         const sisaAnggaran = getSisaAnggaranFromBulan(RKA, bulan);
         return (
             <Modal show onHide={this.props.handleClose}>
@@ -67,6 +67,10 @@ class ModalInputPengeluaran extends Component {
                             <tr>
                                 <td><b>Rincian Belanja</b></td>
                                 <td>{rincianBelanja}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Pengunaan</b></td>
+                                <td>{formatRupiah(penggunaan)}</td>
                             </tr>
                             <tr>
                                 <td><b>Sisa Anggaran</b></td>
