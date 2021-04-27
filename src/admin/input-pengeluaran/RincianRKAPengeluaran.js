@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ModalNotFoundRKA from "./ModalNotFoundRKA";
+import AlertNotFoundRKA from "./AlertNotFoundRKA";
 import { Table, Button } from 'react-bootstrap';
 import { namaBulanIndonesia, formatRupiah } from "_helpers";
 import ModalInputPengeluaran from "./ModalInputPengeluaran";
@@ -52,7 +52,7 @@ class RincianRKAPengeluaran extends Component {
         const { unit, subunit, ADO } = this.props.inputs;
         const title = `Rincian RKA ${ADO} ${subunit} ${unit}`;
         if (RKAs.length === 0) {
-            return <ModalNotFoundRKA heading={`Data Belum Ada`} body={`Data mengenai ${title} belum ada`}/>
+            return <AlertNotFoundRKA heading={`Data Belum Ada`} body={`Data mengenai ${title} belum ada`}/>
         }
         const timeSlot = this.state.timeSlot;
         const lowCaseTimeSlot = timeSlot.toLowerCase();
