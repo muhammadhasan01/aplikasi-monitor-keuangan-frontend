@@ -285,7 +285,9 @@ export class AdminPengurusanAkun extends Component {
         let unit_elements = [];
         let unit_list = this.state.Units;
         if (this.state.currentUser.unit === "") {
-            this.state.currentUser.unit = unit_list[0];
+            const { currentUser } = this.state;
+            currentUser.unit = unit_list[0];
+            this.setState({ currentUser: currentUser });
         }
         unit_list.forEach(unit =>{
             unit_elements.push(
@@ -303,8 +305,10 @@ export class AdminPengurusanAkun extends Component {
         let subunit_elements = [];
         let subunit_list = this.state.SubUnits;
         // TODO: Fix this please, use setState instead
-        if (this.state.currentUser.subunit === ""){
-            this.state.currentUser.subunit = subunit_list[0];
+        if (this.state.currentUser.subunit === "") {
+            const { currentUser } = this.state;
+            currentUser.subunit = subunit_list[0];
+            this.setState({ currentUser: currentUser });
         }
         subunit_list.forEach(subunit => {
             subunit_elements.push(
