@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from '_components/Header';
 import { authenticationService } from "_services";
 
 class FormLogin extends Component {
@@ -46,7 +45,6 @@ class FormLogin extends Component {
 							Invalid username/password.
 						</div> : null}
 					</form>
-
 				</div>
 			</div>
 		);

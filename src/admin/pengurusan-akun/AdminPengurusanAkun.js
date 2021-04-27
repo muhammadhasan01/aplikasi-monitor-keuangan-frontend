@@ -302,6 +302,7 @@ export class AdminPengurusanAkun extends Component {
     renderSubUnitOptions() {
         let subunit_elements = [];
         let subunit_list = this.state.SubUnits;
+        // TODO: Fix this please, use setState instead
         if (this.state.currentUser.subunit === ""){
             this.state.currentUser.subunit = subunit_list[0];
         }

@@ -8,7 +8,8 @@ import { PrivateRoute } from "_components";
 import {
 	Admin,
 	AdminPengurusanAkun,
-	AdminInputPengeluaran
+	AdminInputPengeluaran,
+	PaguAnggaran
 } from 'admin';
 import User from 'user/User';
 import FormLogin from 'login/FormLogin';
@@ -59,6 +60,8 @@ class App extends Component {
 							  UserComponent={RKAMain}
 							  UserType="User"
 				/>
+				<PrivateRoute exact path='/pagu-anggaran'
+									AdminComponent={PaguAnggaran}/>
 			</Router>
 		);
 	}

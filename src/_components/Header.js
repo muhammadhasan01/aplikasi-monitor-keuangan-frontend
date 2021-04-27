@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     showUserInfo(userInfo) {
         const { name, type, unit, subunit } = userInfo;
         return (
