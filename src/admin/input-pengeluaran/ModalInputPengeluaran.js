@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, Table, Form, Alert } from "react-bootstrap";
-import {getSisaAnggaranFromBulan, formatRupiah, getPenggunaanBulan} from "_helpers";
-import {RKADataService} from "_services";
+import { getSisaAnggaranFromBulan, formatRupiah, getPenggunaanBulan } from "_helpers";
+import { pengeluaranDataService } from "_services";
 
 class ModalInputPengeluaran extends Component {
     constructor(props) {
@@ -38,9 +38,11 @@ class ModalInputPengeluaran extends Component {
         const body = {
             'rincian_belanja': rb,
             'amount': Number(inputPengeluaran),
-            'bulan': bulan.toLowerCase()
+            'bulan': bulan.toLowerCase(),
+            'unit': unit,
+            'sub_unit': subunit
         };
-        RKADataService.inputPengeluaranRKA(unit, subunit, body)
+        pengeluaranDataService.inputPengeluaranRKA(body)
             .then((response) => {
                 const { data } = response;
                 this.props.handleUpdateRKAs(data);
