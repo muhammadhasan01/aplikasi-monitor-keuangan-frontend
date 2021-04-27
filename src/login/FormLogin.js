@@ -21,10 +21,8 @@ class FormLogin extends Component {
 		const { username, password } = e.target;
 		authenticationService.login(username.value, password.value)
 			.then(
-				user => {
-					console.log(user);
-					const { from } = this.props.location.state || { from: { pathname: "/" } };
-					this.props.history.push(from);
+				() => {
+					this.props.history.push('/');
 				},
 				error => {
 					console.log(error);
