@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from '_components/Header';
 import { authenticationService } from "_services";
 
 class FormLogin extends Component {
@@ -21,10 +20,8 @@ class FormLogin extends Component {
 		const { username, password } = e.target;
 		authenticationService.login(username.value, password.value)
 			.then(
-				user => {
-					console.log(user);
-					const { from } = this.props.location.state || { from: { pathname: "/" } };
-					this.props.history.push(from);
+				() => {
+					this.props.history.push('/');
 				},
 				error => {
 					console.log(error);
@@ -48,7 +45,6 @@ class FormLogin extends Component {
 							Invalid username/password.
 						</div> : null}
 					</form>
-
 				</div>
 			</div>
 		);

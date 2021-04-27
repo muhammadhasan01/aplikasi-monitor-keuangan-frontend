@@ -3,10 +3,6 @@ import {Link} from "react-router-dom";
 import {authenticationService} from "../_services";
 
 class Navigation extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     adminNavigation() {
         return (
             <>

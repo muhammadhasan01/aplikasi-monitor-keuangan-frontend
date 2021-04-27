@@ -1,6 +1,6 @@
 import React, {Component, createRef} from 'react';
-import {ADODataService, authenticationService} from "../../_services";
-import {RKADataService} from "../../_services/rka-service";
+import {ADODataService, authenticationService} from "_services";
+import {RKADataService} from "_services/rka-service";
 import TambahRKAForm from "./TambahRKAForm";
 import { Modal, Button } from 'react-bootstrap';
 import TableRKA from "./TableRKA";
