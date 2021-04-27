@@ -5,6 +5,7 @@ import {urlServer} from "_services/api";
 export const RKADataService = {
     getRKAUnitADO,
     loadAllRKA,
+    createRKA,
     inputPengeluaranRKA
 }
 
@@ -21,6 +22,10 @@ function getRKAUnitADO(unit, subunit, ADO) {
 
 function loadAllRKA(unit, subunit){
     return getHttp().get(`/${unit}/${subunit}`);
+}
+
+function createRKA(unit, subunit, body){
+    return getHttp().post(`/${unit}/${subunit}`, body);
 }
 
 function inputPengeluaranRKA(unit, subunit, body) {
