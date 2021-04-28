@@ -3,6 +3,7 @@ import authHeader from "_helpers/auth-header";
 import {urlServer} from "_services/api";
 
 export const pengeluaranDataService = {
+    getAllPengeluaran,
     inputPengeluaranRKA
 }
 
@@ -11,6 +12,10 @@ function getHttp() {
         baseURL: (urlServer + "/pengeluaran"),
         headers: authHeader()
     });
+}
+
+function getAllPengeluaran() {
+    return getHttp().get('');
 }
 
 function inputPengeluaranRKA(body) {
