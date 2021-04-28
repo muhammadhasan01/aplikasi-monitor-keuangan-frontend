@@ -6,7 +6,7 @@ import { authenticationService } from "_services";
 import { PrivateRoute } from "_components";
 
 import {
-	Admin,
+	AdminHome,
 	AdminPengurusanAkun,
 	AdminInputPengeluaran,
 	PaguAnggaran
@@ -46,7 +46,7 @@ class App extends Component {
 				<Route exact path="/login" component={FormLogin} />
 				<PrivateRoute exact path="/"
 							  UserComponent={User}
-							  AdminComponent={Admin}
+							  AdminComponent={AdminHome}
 				/>
 				<PrivateRoute exact path="/pengurusan-akun"
 							  AdminComponent={AdminPengurusanAkun}
