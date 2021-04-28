@@ -1,18 +1,13 @@
 import React, { Component } from "react";
-import {RKADataService, UnitsDataService} from "_services"
+import {RKADataService, authenticationService} from "_services"
 import RiwayatPenggunaanRow from "./RiwayatPenggunaanRow";
-import FilterUnitComponent from "./FilterUnitComponent";
 
-export default class RiwayatPenggunaan extends Component {
+export default class RiwayatPenggunaanUser extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      Units: [],
-      Subunits: [],
       RKAs: [],
-      currentUnit: "",
-      currentSubunit: "",
       sortByDate: true,
     };
   }
@@ -22,39 +17,12 @@ export default class RiwayatPenggunaan extends Component {
   }
 
   refreshList() {
-    this.retrieveUnits();
-    this.retrieveSubUnits();
     this.retrieveRKAs();
   }
 
-  retrieveUnits() {
-    UnitsDataService.getDistinctUnits()
-      .then(response => {
-        this.setState({
-          Units: response.data
-        });
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  }
-
-  retrieveSubUnits() {
-    UnitsDataService.getSubUnits()
-      .then(response => {
-        this.setState({
-          Subunits: response.data
-        });
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    }
-
   retrieveRKAs() {
-    RKADataService.getAllRKA()
+    const { unit, subunit } = authenticationService.UserInformation;
+    RKADataService.loadAllRKA(unit, subunit)
       .then(response => {
         this.setState({
           RKAs: response.data
@@ -64,22 +32,6 @@ export default class RiwayatPenggunaan extends Component {
       .catch(e => {
         console.log(e);
       });
-  }
-  
-  onChangeUnit(e) {
-    const unit = e.target.value;
-
-    this.setState({
-      currentUnit: unit
-    });
-  }
-
-  onChangeSubunit(e) {
-    const subunit = e.target.value;
-
-    this.setState({
-      currentSubunit: subunit
-    });
   }
   
   onClickSortByDate(e){
@@ -94,18 +46,6 @@ export default class RiwayatPenggunaan extends Component {
         sortByDate: true
       });
     }
-  }
-
-  filterRKAs(rkas){
-    let filteredRKAs = [];
-    const unit = this.state.currentUnit;
-    const subunit = this.state.currentSubunit;
-    rkas.forEach(rka => {
-      if(((rka.unit === unit) || (unit === "")) && ((rka.sub_unit === subunit) || (subunit === ""))){
-        filteredRKAs.push(rka);
-      }
-    });
-    return filteredRKAs;
   }
 
   sortFunc(a, b){
@@ -134,21 +74,10 @@ export default class RiwayatPenggunaan extends Component {
   }
 
   render() {
-    const { Units, Subunits, currentUnit, currentSubunit } = this.state;
-
     return (
       <div id="riwayat-penggunaan">
         <div id="riwayat-penggunaan-list">
           <h4>Riwayat Penggunaan</h4>
-          <FilterUnitComponent 
-            Units={Units}
-            currentUnit={currentUnit}
-            onChangeUnit={(e) => this.onChangeUnit(e)}
-            Subunits={Subunits}
-            currentSubunit={currentSubunit}
-            onChangeSubunit={(e) => this.onChangeSubunit(e)}
-            onClickSortByDate={(e) => this.onClickSortByDate(e)}
-          />
           <table id="riwayat-penggunaan-table">
             <tr>
               <th><p>Unit</p></th>
