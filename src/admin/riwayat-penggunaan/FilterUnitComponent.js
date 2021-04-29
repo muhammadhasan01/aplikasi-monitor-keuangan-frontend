@@ -1,5 +1,3 @@
-import { ProgressPlugin } from "webpack";
-
 function FilterUnitComponent(props){
 
   function renderUnitOptions(){

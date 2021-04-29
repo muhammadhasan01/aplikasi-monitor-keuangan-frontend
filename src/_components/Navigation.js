@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import {authenticationService} from "../_services";
 
-class Navigation extends Component {
+export class Navigation extends Component {
     adminNavigation() {
         return (
             <>
@@ -63,5 +63,3 @@ class Navigation extends Component {
         );
     }
 }
-
-export default Navigation;

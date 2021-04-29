@@ -1,2 +1,3 @@
 export * from './PrivateRoute';
-export * from './Header';
+export * from './Header.js';
+export * from './Navigation.js';

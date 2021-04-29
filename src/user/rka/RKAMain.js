@@ -4,9 +4,7 @@ import {RKADataService} from "_services/rka-service";
 import TambahRKAForm from "./TambahRKAForm";
 import { Table } from 'react-bootstrap';
 
-
-
-class RKAMain extends Component {
+export class RKAMain extends Component {
 	constructor(props) {
 		super(props);
 
@@ -136,5 +134,3 @@ class RKAMain extends Component {
 		);
 	}
 }
-
-export default RKAMain;

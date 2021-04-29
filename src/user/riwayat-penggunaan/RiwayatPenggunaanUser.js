@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {RKADataService, authenticationService} from "_services"
 import RiwayatPenggunaanRow from "./RiwayatPenggunaanRow";
 
-export default class RiwayatPenggunaanUser extends Component {
+export class RiwayatPenggunaanUser extends Component {
   constructor(props) {
     super(props);
 

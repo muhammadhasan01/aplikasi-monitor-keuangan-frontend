@@ -3,7 +3,7 @@ import {RKADataService, UnitsDataService} from "_services"
 import RiwayatPenggunaanRow from "./RiwayatPenggunaanRow";
 import FilterUnitComponent from "./FilterUnitComponent";
 
-export default class RiwayatPenggunaan extends Component {
+export class RiwayatPenggunaan extends Component {
   constructor(props) {
     super(props);
 

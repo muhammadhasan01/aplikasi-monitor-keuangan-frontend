@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class Header extends Component {
+export class Header extends Component {
     showUserInfo(userInfo) {
         const { name, type, unit, subunit } = userInfo;
         return (
@@ -24,5 +24,3 @@ class Header extends Component {
          );
     }
 }
-
-export default Header;
