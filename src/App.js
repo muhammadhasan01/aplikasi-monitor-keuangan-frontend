@@ -16,6 +16,8 @@ import FormLogin from 'login/FormLogin';
 import Header from "_components/Header";
 import Navigation from "_components/Navigation";
 import RKAMain from "./user/rka/RKA-Main";
+import RiwayatPenggunaan from "admin/riwayat-penggunaan/RiwayatPenggunaan";
+import RiwayatPenggunaanUser from "user/riwayat-penggunaan/RiwayatPenggunaanUser";
 require('dotenv').config();
 
 class App extends Component {
@@ -40,13 +42,17 @@ class App extends Component {
 
 	render() {
 		return (
-			<Router>
+			<Router history={history}>
 				<Header userInfo={ this.state.currentUser } />
 				<Navigation userInfo={ this.state.currentUser } />
 				<Route exact path="/login" component={FormLogin} />
+				<PrivateRoute exact path="/riwayat-penggunaan"
+							  UserComponent={RiwayatPenggunaanUser}
+							  AdminComponent={RiwayatPenggunaan}
+				/>
 				<PrivateRoute exact path="/"
 							  UserComponent={User}
-							  AdminComponent={AdminHome}
+							  AdminComponent={Admin}
 				/>
 				<PrivateRoute exact path="/pengurusan-akun"
 							  AdminComponent={AdminPengurusanAkun}
