@@ -3,6 +3,7 @@ import {ADODataService, authenticationService} from "_services";
 import {RKADataService} from "_services/rka-service";
 import TambahRKAForm from "./TambahRKAForm";
 import { Table } from 'react-bootstrap';
+import {formatRupiah} from "../../_helpers";
 
 export class RKAMain extends Component {
 	constructor(props) {
@@ -72,7 +73,7 @@ export class RKAMain extends Component {
 				<td>{rka.rincian_subkegiatan}</td>
 				<td>{rka.rincian_belanja}</td>
 				<td>{rka.jenis_belanja}</td>
-				{data.map(bulan => <td>{bulan}</td>)}
+				{data.map(bulan => <td>{formatRupiah(bulan)}</td>)}
 			</tr>
 		)
 	}
