@@ -1,10 +1,30 @@
 import React, { Component } from 'react';
-import { Table } from 'react-bootstrap';
-import {formatRupiah, formatTanggal} from "_helpers";
+import { formatRupiah, formatTanggal } from "_helpers";
 import { pengeluaranDataService } from "_services";
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 const title = "Pengeluaran Terakhir";
-const headValues = ["Tanggal", "Jumlah", "Unit", "Subunit", "Rincian Belanja"];
+const columns = [{
+    dataField: 'tanggal',
+    text: 'Tanggal',
+    sort: true,
+    formatter: formatTanggal
+}, {
+    dataField: 'jumlah',
+    text: 'Jumlah',
+    sort: true,
+    formatter: formatRupiah
+}, {
+    dataField: 'unit',
+    text: 'Unit'
+}, {
+    dataField: 'subunit',
+    text: 'Subunit'
+}, {
+    dataField: 'rincianBelanja',
+    text: "Rencana Belanja"
+}];
 
 class PengeluaranTerakhir extends Component {
     constructor(props) {
@@ -34,36 +54,15 @@ class PengeluaranTerakhir extends Component {
         if (!pengeluaran || pengeluaran.length === 0) {
             return <h2>Belum ada pengeluaran terakhir</h2>
         }
+        const data = pengeluaran.map((p, id) => {
+            const { RKA: { unit, sub_unit, rincian_belanja }, jumlah, createdAt: tanggal } = p;
+            return { id: id, jumlah: jumlah, unit: unit, subunit: sub_unit, rincianBelanja: rincian_belanja, tanggal: tanggal }
+        });
         return (
-            <>
+            <div className='container-fluid p-3'>
                 <h2>{title}</h2>
-                <Table responsive striped bordered hover style={{backgroundColor: 'lightblue'}}>
-                    <thead>
-                    {headValues.map((head, idx) => {
-                        return (
-                            <th key={idx} className='center'>
-                                {head}
-                            </th>
-                        )
-                    })}
-                    </thead>
-                    <tbody>
-                    {pengeluaran.map((p, idx) => {
-                        const { RKA: { unit, sub_unit, rincian_belanja }, createdAt: tanggal } = p;
-                        const tanggalFormatted = formatTanggal(tanggal);
-                        return (
-                            <tr key={idx}>
-                                <td>{tanggalFormatted}</td>
-                                <td>{formatRupiah(p.jumlah)}</td>
-                                <td>{unit}</td>
-                                <td>{sub_unit}</td>
-                                <td>{rincian_belanja}</td>
-                            </tr>
-                        )
-                    })}
-                    </tbody>
-                </Table>
-            </>
+                <BootstrapTable classes="table-white" keyField="id" data={ data } columns={ columns } pagination={ paginationFactory() } />
+            </div>
         );
     }
 }
