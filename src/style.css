@@ -15,6 +15,11 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.table-white {
+	background-color: rgb(120, 218, 255);
+	border-radius: 5px;
+}
+
 .header {
 	font-family: Montserrat, arial;
 	font-style: normal;
