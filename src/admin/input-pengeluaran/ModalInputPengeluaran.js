@@ -10,6 +10,7 @@ class ModalInputPengeluaran extends Component {
             RKA: null,
             bulan: null,
             inputPengeluaran: 0,
+            show: false,
             showMessage: false
         };
     }
@@ -17,7 +18,8 @@ class ModalInputPengeluaran extends Component {
     static getDerivedStateFromProps(nextProps) {
         return {
             RKA: nextProps.RKA,
-            bulan: nextProps.bulan
+            bulan: nextProps.bulan,
+            show: nextProps.show
         };
     }
 
@@ -54,12 +56,12 @@ class ModalInputPengeluaran extends Component {
 
     render() {
         if (this.state.RKA == null) return null;
-        const { RKA, bulan, showMessage } = this.state;
+        const { RKA, bulan, show, showMessage } = this.state;
         const { rincian_belanja: rincianBelanja } = RKA;
         const penggunaan = getPenggunaanBulan(RKA, bulan);
         const sisaAnggaran = getSisaAnggaranFromBulan(RKA, bulan);
         return (
-            <Modal show onHide={this.props.handleClose}>
+            <Modal show={show} onHide={this.props.handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Input Pengeluaran</Modal.Title>
                 </Modal.Header>

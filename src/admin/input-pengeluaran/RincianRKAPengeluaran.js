@@ -48,7 +48,7 @@ class RincianRKAPengeluaran extends Component {
         if (!this.props || !this.props.RKAs || !this.props.inputs) {
             return null;
         }
-        const RKAs = this.state.RKAs;
+        const { RKAs, show, idxRKA } = this.state;
         const { unit, subunit, ADO } = this.props.inputs;
         const title = `Rincian RKA ${ADO} ${subunit} ${unit}`;
         if (RKAs.length === 0) {
@@ -94,11 +94,12 @@ class RincianRKAPengeluaran extends Component {
                     })}
                     </tbody>
                 </Table>
-                {this.state.show ? <ModalInputPengeluaran RKA={RKAs[this.state.idxRKA]}
-                                                          bulan={timeSlot}
-                                                          handleClose={this.handleCloseModal}
-                                                          handleUpdateRKAs={this.handleUpdateRKAs}
-                /> : null}
+                <ModalInputPengeluaran  RKA={RKAs[idxRKA]}
+                                        bulan={timeSlot}
+                                        show={show}
+                                        handleClose={this.handleCloseModal}
+                                        handleUpdateRKAs={this.handleUpdateRKAs}
+                />
             </>
         )
     }
