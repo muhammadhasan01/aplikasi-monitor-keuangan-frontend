@@ -7,6 +7,7 @@ import TableRKA from "./TableRKA";
 import ModalRKAForm from "./TambahRKAForm";
 import { Table } from 'react-bootstrap';
 import {formatRupiah} from "../../_helpers";
+import RKATable from "./RKATable";
 
 export class RKAMain extends Component {
 	constructor(props) {
@@ -89,23 +90,6 @@ export class RKAMain extends Component {
 		console.log(this.currentADO.current.value);
 	}
 
-	renderRKARow = (rka, index) => {
-
-		var data = Object.values(rka.rancangan).filter(elmt => typeof elmt !== "string");
-
-		return(
-			<tr key={index}>
-				<td>{rka.ADO}</td>
-				<td>{rka.kegiatan}</td>
-				<td>{rka.subkegiatan}</td>
-				<td>{rka.rincian_subkegiatan}</td>
-				<td>{rka.rincian_belanja}</td>
-				<td>{rka.jenis_belanja}</td>
-				{data.map(bulan => <td>{formatRupiah(bulan)}</td>)}
-			</tr>
-		)
-	}
-
 	render() {
 		const unit = this.state.unit;
 		const subunit = this.state.subunit;
@@ -130,7 +114,8 @@ export class RKAMain extends Component {
 
 					</div>
 					<div className="col-10">
-						<TableRKA ado={ado} unit={unit} subunit={subunit} rka={rka} />
+						{/*<TableRKA ado={ado} unit={unit} subunit={subunit} rka={rka} />*/}
+						<RKATable ado={ado} unit={unit} subunit={subunit} rka={rka} />
 					</div>
 
 				</div>

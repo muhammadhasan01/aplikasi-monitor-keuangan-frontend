@@ -60,9 +60,11 @@ class PengeluaranTerakhir extends Component {
             return <h2>Belum ada pengeluaran terakhir</h2>
         }
         const data = pengeluaran.map((p, id) => {
+            console.log(p)
             const { RKA: { unit, sub_unit, rincian_belanja }, jumlah, createdAt: tanggal } = p;
             return { id, jumlah, unit, sub_unit, rincian_belanja, tanggal }
         });
+        console.log(data)
         return (
             <div className="p-5 mb-lg-5">
                 <h2>{title}</h2>
