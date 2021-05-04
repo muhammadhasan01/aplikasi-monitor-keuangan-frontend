@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { formatRupiah, formatTanggal } from "_helpers";
 import { pengeluaranDataService } from "_services";
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import paginationFactory from 'react-bootstrap-table2-paginator'
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 const title = "Pengeluaran Terakhir";
-const columns = [{
+const columns = [
+    {
     dataField: 'tanggal',
     text: 'Tanggal',
     sort: true,
@@ -17,13 +19,16 @@ const columns = [{
     formatter: formatRupiah
 }, {
     dataField: 'unit',
-    text: 'Unit'
+    text: 'Unit',
+    filter: textFilter()
 }, {
-    dataField: 'subunit',
-    text: 'Subunit'
+    dataField: 'sub_unit',
+    text: 'Subunit',
+    filter: textFilter()
 }, {
-    dataField: 'rincianBelanja',
-    text: "Rencana Belanja"
+    dataField: 'rincian_belanja',
+    text: "Rencana Belanja",
+    filter: textFilter()
 }];
 
 class PengeluaranTerakhir extends Component {
@@ -56,12 +61,19 @@ class PengeluaranTerakhir extends Component {
         }
         const data = pengeluaran.map((p, id) => {
             const { RKA: { unit, sub_unit, rincian_belanja }, jumlah, createdAt: tanggal } = p;
-            return { id: id, jumlah: jumlah, unit: unit, subunit: sub_unit, rincianBelanja: rincian_belanja, tanggal: tanggal }
+            return { id, jumlah, unit, sub_unit, rincian_belanja, tanggal }
         });
         return (
-            <div className='container-fluid p-3'>
+            <div className="p-5 mb-lg-5">
                 <h2>{title}</h2>
-                <BootstrapTable classes="table-white" keyField="id" data={ data } columns={ columns } pagination={ paginationFactory() } />
+                <BootstrapTable
+                                striped
+                                bootstrap4
+                                keyField="id"
+                                data={ data }
+                                columns={ columns }
+                                filter={ filterFactory() }
+                                pagination={ paginationFactory() } />
             </div>
         );
     }
