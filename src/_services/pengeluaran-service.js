@@ -21,3 +21,11 @@ function getAllPengeluaran() {
 function inputPengeluaranRKA(body) {
     return getHttp().post('', body);
 }
+
+function removePengeluaran(id) {
+    return getHttp().delete(`/${id}`);
+}
+
+function undoPengeluaran(id) {
+    return getHttp().delete(`'/${id}/undo`);
+}
