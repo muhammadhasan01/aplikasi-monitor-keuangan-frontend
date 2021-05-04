@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, Table, Form, Alert } from "react-bootstrap";
-import {getSisaAnggaranFromBulan, formatRupiah, getPenggunaanBulan} from "_helpers";
-import {RKADataService} from "_services";
+import { getSisaAnggaranFromBulan, formatRupiah, getPenggunaanBulan } from "_helpers";
+import { pengeluaranDataService } from "_services";
 
 class ModalInputPengeluaran extends Component {
     constructor(props) {
@@ -10,6 +10,7 @@ class ModalInputPengeluaran extends Component {
             RKA: null,
             bulan: null,
             inputPengeluaran: 0,
+            show: false,
             showMessage: false
         };
     }
@@ -17,7 +18,8 @@ class ModalInputPengeluaran extends Component {
     static getDerivedStateFromProps(nextProps) {
         return {
             RKA: nextProps.RKA,
-            bulan: nextProps.bulan
+            bulan: nextProps.bulan,
+            show: nextProps.show
         };
     }
 
@@ -38,9 +40,11 @@ class ModalInputPengeluaran extends Component {
         const body = {
             'rincian_belanja': rb,
             'amount': Number(inputPengeluaran),
-            'bulan': bulan.toLowerCase()
+            'bulan': bulan.toLowerCase(),
+            'unit': unit,
+            'sub_unit': subunit
         };
-        RKADataService.inputPengeluaranRKA(unit, subunit, body)
+        pengeluaranDataService.inputPengeluaranRKA(body)
             .then((response) => {
                 const { data } = response;
                 this.props.handleUpdateRKAs(data);
@@ -52,12 +56,12 @@ class ModalInputPengeluaran extends Component {
 
     render() {
         if (this.state.RKA == null) return null;
-        const { RKA, bulan, showMessage } = this.state;
+        const { RKA, bulan, show, showMessage } = this.state;
         const { rincian_belanja: rincianBelanja } = RKA;
         const penggunaan = getPenggunaanBulan(RKA, bulan);
         const sisaAnggaran = getSisaAnggaranFromBulan(RKA, bulan);
         return (
-            <Modal show onHide={this.props.handleClose}>
+            <Modal show={show} onHide={this.props.handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Input Pengeluaran</Modal.Title>
                 </Modal.Header>

@@ -6,16 +6,25 @@ import { authenticationService } from "_services";
 import { PrivateRoute } from "_components";
 
 import {
-	Admin,
+	AdminHome,
 	AdminPengurusanAkun,
 	AdminInputPengeluaran,
-	PaguAnggaran
+	PaguAnggaran,
+	RiwayatPenggunaan
 } from 'admin';
-import User from 'user/User';
-import FormLogin from 'login/FormLogin';
-import Header from "_components/Header";
-import Navigation from "_components/Navigation";
-import RKAMain from "./user/rka/RKA-Main";
+
+import {
+	User,
+	RKAMain
+} from 'user';
+
+import {
+	Header,
+	Navigation
+} from '_components';
+
+import FormLogin from "./login/FormLogin";
+
 require('dotenv').config();
 
 class App extends Component {
@@ -39,14 +48,19 @@ class App extends Component {
 	}
 
 	render() {
+		const { currentUser } = this.state;
 		return (
-			<Router>
-				<Header userInfo={ this.state.currentUser } />
-				<Navigation userInfo={ this.state.currentUser } />
+			<Router history={history}>
+				<Header userInfo={ currentUser } />
+				<Navigation userInfo={ currentUser } />
 				<Route exact path="/login" component={FormLogin} />
+				<PrivateRoute exact path="/riwayat-pengeluaran"
+							  AdminComponent={RiwayatPenggunaan}
+							  UserType="Admin"
+				/>
 				<PrivateRoute exact path="/"
 							  UserComponent={User}
-							  AdminComponent={Admin}
+							  AdminComponent={AdminHome}
 				/>
 				<PrivateRoute exact path="/pengurusan-akun"
 							  AdminComponent={AdminPengurusanAkun}
@@ -61,7 +75,9 @@ class App extends Component {
 							  UserType="User"
 				/>
 				<PrivateRoute exact path='/pagu-anggaran'
-									AdminComponent={PaguAnggaran}/>
+									AdminComponent={PaguAnggaran}
+									UserType="Admin"
+				/>
 			</Router>
 		);
 	}

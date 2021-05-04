@@ -5,10 +5,10 @@ import TambahRKAForm from "./TambahRKAForm";
 import { Modal, Button } from 'react-bootstrap';
 import TableRKA from "./TableRKA";
 import ModalRKAForm from "./TambahRKAForm";
+import { Table } from 'react-bootstrap';
+import {formatRupiah} from "../../_helpers";
 
-
-
-class RKAMain extends Component {
+export class RKAMain extends Component {
 	constructor(props) {
 		super(props);
 
@@ -101,7 +101,7 @@ class RKAMain extends Component {
 				<td>{rka.rincian_subkegiatan}</td>
 				<td>{rka.rincian_belanja}</td>
 				<td>{rka.jenis_belanja}</td>
-				{data.map(bulan => <td>{bulan}</td>)}
+				{data.map(bulan => <td>{formatRupiah(bulan)}</td>)}
 			</tr>
 		)
 	}
@@ -138,5 +138,3 @@ class RKAMain extends Component {
 		);
 	}
 }
-
-export default RKAMain;

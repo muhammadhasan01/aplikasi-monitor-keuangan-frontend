@@ -8,11 +8,16 @@ body {
 	background-color: rgba(255, 255, 255, 0.5);
 	background-blend-mode: screen;
 	background-repeat: no-repeat; /* Do not repeat the image */
-	background-size: 100%; /* Resize the background image to cover the entire container */
+	background-size: cover; /* Resize the background image to cover the entire container */
 }
 
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.table-white {
+	background-color: rgb(120, 218, 255);
+	border-radius: 5px;
 }
 
 .header {

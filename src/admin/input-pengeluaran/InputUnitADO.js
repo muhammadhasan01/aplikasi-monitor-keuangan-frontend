@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {RKADataService} from "../../_services";
+import {RKADataService} from "_services";
 
 class InputUnitADO extends Component {
     constructor(props) {
@@ -13,7 +13,6 @@ class InputUnitADO extends Component {
         const unit = node[0].value, subunit = node[1].value, ADO = node[2].value;
         RKADataService.getRKAUnitADO(unit, subunit, ADO)
             .then(response => {
-                console.log("RKA", response.data);
                 this.props.sendDataRKA(response.data, { unit, subunit, ADO });
             }).catch(err => {
             console.log(err);
