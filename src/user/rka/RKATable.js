@@ -4,7 +4,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import AlertNotFoundRKA from "../../admin/input-pengeluaran/AlertNotFoundRKA";
-import {Button, ButtonGroup, Form, Table} from "react-bootstrap";
+import {Button, ButtonGroup, Form, Row, Table, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 
 var columns = [
     {
@@ -20,7 +20,8 @@ var columns = [
         dataField: 'subkegiatan',
         text: 'Subkegiatan',
         sort: true,
-        filter: textFilter()
+        filter: textFilter(),
+        minWidth: 500
     }, {
         dataField: 'rincian_subkegiatan',
         text: 'Rincian Subkegiatan',
@@ -41,55 +42,55 @@ var columns = [
         text: "Januari",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'februari',
         text: "Februari",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'maret',
         text: "Maret",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'april',
         text: "April",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'mei',
         text: "Mei",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'juni',
         text: "Juni",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'juli',
         text: "Juli",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'agustus',
         text: "Agustus",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'september',
         text: "September",
         sort: true,
         formatter: formatRupiah,
-        hidden:false
+        hidden:true
     }, {
         dataField: 'oktober',
         text: "Oktober",
@@ -113,6 +114,10 @@ var columns = [
 class TableRKA extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            radio: 1
+        }
     }
 
     componentDidMount() {
@@ -120,28 +125,31 @@ class TableRKA extends Component {
         console.log(this.props.rka);
     }
 
-    renderRKARow = (rka, index) => {
-
-        var data = Object.values(rka.rancangan).filter(elmt => typeof elmt !== "string");
-
-        return(
-            <tr key={index}>
-                <td>{rka.ADO}</td>
-                <td>{rka.kegiatan}</td>
-                <td>{rka.subkegiatan}</td>
-                <td>{rka.rincian_subkegiatan}</td>
-                <td>{rka.rincian_belanja}</td>
-                <td>{rka.jenis_belanja}</td>
-                {data.map(bulan => <td>{formatRupiah(bulan)}</td>)}
-            </tr>
-        )
-    }
 
     clickButton = () => {
         console.log("Button Clicked")
         console.log(columns[9].hidden)
         columns[9].hidden = !columns[9].hidden;
         this.forceUpdate();
+    }
+
+    handleColumnChange = (e) => {
+        const monthOffset = 6;
+        console.log(e);
+        console.log(e.includes(5));
+        for(var i = monthOffset; i < columns.length; i++){
+            columns[i].hidden = true;
+        }
+        var array = [...e];
+        while(array.length != 0){
+            var offset = array.pop();
+            var startIter = monthOffset + (offset - 1) * 3
+            for(var i = startIter; i < startIter + 3; i++){
+                columns[i].hidden = false;
+            }
+        }
+
+        this.forceUpdate()
     }
 
     render(){
@@ -152,13 +160,21 @@ class TableRKA extends Component {
         const title = `Rincian RKA ${ado} ${subunit} ${unit}`;
 
         const data = rka.map((elmt, id) => {
-            console.log(elmt)
             const {ADO, kegiatan, subkegiatan, rincian_subkegiatan, rincian_belanja, jenis_belanja,
-                penggunaan: {januari, februari, maret, april, mei, juni, juli, agustus,september,oktober, november, desember }} = elmt;
+                rancangan: {januari, februari, maret, april, mei, juni, juli, agustus,september,oktober, november, desember }} = elmt;
             return {id, ADO, kegiatan, subkegiatan, rincian_subkegiatan, rincian_belanja, jenis_belanja, januari, februari, maret, april, mei, juni, juli, agustus, september, oktober, november, desember}
         });
 
-        console.log(data);
+        const MyExportCSV = (props) => {
+            const handleClick = () => {
+                props.onExport();
+            };
+            return (
+                <div>
+                    <button className="btn btn-success" onClick={ handleClick }>Export to CSV</button>
+                </div>
+            );
+        };
 
 
 
@@ -167,7 +183,14 @@ class TableRKA extends Component {
         } else{
             return(
                 <>
-                    <Button onClick={this.clickButton}>Click Button</Button>
+
+                    <ToggleButtonGroup type="checkbox" onChange={this.handleColumnChange}>
+                        <ToggleButton style={{}} value={1}>Triwulan 1</ToggleButton>
+                        <ToggleButton value={2}>Triwulan 2</ToggleButton>
+                        <ToggleButton value={3}>Triwulan 3</ToggleButton>
+                        <ToggleButton value={4}>Triwulan 4</ToggleButton>
+                    </ToggleButtonGroup>
+
                     <BootstrapTable
                         striped
                         bootstrap4
