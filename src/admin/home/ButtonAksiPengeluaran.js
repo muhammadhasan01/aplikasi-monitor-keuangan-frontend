@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from "react-bootstrap";
+import { Button, Tooltip, OverlayTrigger } from "react-bootstrap";
 
 export default class ButtonAksiPengeluaran extends Component {
     constructor(props) {
@@ -14,11 +14,21 @@ export default class ButtonAksiPengeluaran extends Component {
     handleClick = () => { this.props.handleAction(this.state.value) }
 
     render() {
-        const { action, variant } = this.props;
+        const { icon, action, variant } = this.props;
         return (
-            <Button className='m-2' onClick={this.handleClick} variant={variant} >
-                {action}
-            </Button>
+            <OverlayTrigger
+                key="bottom"
+                placement="bottom"
+                overlay={
+                    <Tooltip id="tooltip-bottom">
+                        {action}
+                    </Tooltip>
+                }
+            >
+                <Button className='m-2' onClick={this.handleClick} variant={variant} >
+                    {icon}
+                </Button>
+            </OverlayTrigger>
         )
     }
 }

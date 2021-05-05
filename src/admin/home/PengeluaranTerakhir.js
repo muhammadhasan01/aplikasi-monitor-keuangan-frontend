@@ -96,17 +96,22 @@ class PengeluaranTerakhir extends Component {
 
     render() {
         const { showMessage, pengeluaran, showUndo, showRemove } = this.state;
-        if (!pengeluaran || pengeluaran.length === 0) {
+        if (!pengeluaran) {
+            return <h3>Loading...</h3>
+        }
+        if (pengeluaran.length === 0) {
             return <h2>Belum ada pengeluaran terakhir</h2>
         }
         const data = pengeluaran.map((p) => {
             const { _id, RKA: { unit, sub_unit, rincian_belanja }, jumlah, createdAt: tanggal } = p;
-            const undoButton = <ButtonAksiPengeluaran action={<Reply value={_id} />}
+            const undoButton = <ButtonAksiPengeluaran icon={<Reply />}
                                                       value={_id}
+                                                      action="Undo"
                                                       variant="warning"
                                                       handleAction={this.handleOpenUndo} />
-            const removeButton = <ButtonAksiPengeluaran action={<Trash value={_id} />}
+            const removeButton = <ButtonAksiPengeluaran icon={<Trash />}
                                                         value={_id}
+                                                        action="Remove"
                                                         variant="danger"
                                                         handleAction={this.handleOpenRemove}
                                     />
