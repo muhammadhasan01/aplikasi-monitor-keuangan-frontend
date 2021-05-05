@@ -15,9 +15,9 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.table-white {
-	background-color: rgb(120, 218, 255);
-	border-radius: 5px;
+.table-feature {
+	background-color: rgb(223, 235, 252);
+	border-radius:6px;
 }
 
 .header {

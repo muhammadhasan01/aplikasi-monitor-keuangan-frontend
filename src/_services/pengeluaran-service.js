@@ -4,7 +4,9 @@ import {urlServer} from "_services/api";
 
 export const pengeluaranDataService = {
     getAllPengeluaran,
-    inputPengeluaranRKA
+    inputPengeluaranRKA,
+    removePengeluaran,
+    undoPengeluaran
 }
 
 function getHttp() {
@@ -27,5 +29,5 @@ function removePengeluaran(id) {
 }
 
 function undoPengeluaran(id) {
-    return getHttp().delete(`'/${id}/undo`);
+    return getHttp().delete(`/undo/${id}`);
 }

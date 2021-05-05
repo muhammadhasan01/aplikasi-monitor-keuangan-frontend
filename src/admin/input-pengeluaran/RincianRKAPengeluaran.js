@@ -11,6 +11,7 @@ class RincianRKAPengeluaran extends Component {
             timeSlot: 0,
             RKAs: null,
             show: false,
+            showMessage: false,
             idxRKA: null,
         }
     }
@@ -25,30 +26,21 @@ class RincianRKAPengeluaran extends Component {
         return { RKAs: nextProps.RKAs };
     }
 
-    handleChangeTimeSlot = (e) => {
-        this.setState({ timeSlot: e.target.value });
-    }
-
-    handleAction = (e) => {
-        e.preventDefault();
-        this.setState({ idxRKA: e.target.value, show: true })
-    }
-
-    handleCloseModal = () => {
-        this.setState({ show: false });
-    }
+    handleChangeTimeSlot = (e) => this.setState({ timeSlot: e.target.value })
+    handleAction = ({ target: { value }}) => this.setState({ idxRKA: value, show: true })
+    handleCloseModal = () => this.setState({ show: false, showMessage: false })
 
     handleUpdateRKAs = (RKA) => {
         const { RKAs, idxRKA } = this.state;
         RKAs[idxRKA] = RKA;
-        this.setState({ RKAs: RKAs });
+        this.setState({ RKAs: RKAs, showMessage: true });
     }
 
     render() {
         if (!this.props || !this.props.RKAs || !this.props.inputs) {
             return null;
         }
-        const { RKAs, show, idxRKA } = this.state;
+        const { RKAs, show, showMessage, idxRKA } = this.state;
         const { unit, subunit, ADO } = this.props.inputs;
         const title = `Rincian RKA ${ADO} ${subunit} ${unit}`;
         if (RKAs.length === 0) {
@@ -60,7 +52,7 @@ class RincianRKAPengeluaran extends Component {
                              `Sisa Anggaran Bulan ${timeSlot}`, "Aksi"];
         return (
             <>
-                <h2 className='mt-2'>{title}</h2>
+                <h2 className="mt-2">{title}</h2>
                 <label htmlFor="select-month">Pilih Bulan</label>
                 <select className="form-select form-select-sm" id="select-month"
                         defaultValue={timeSlot} onChange={this.handleChangeTimeSlot}>
@@ -97,6 +89,7 @@ class RincianRKAPengeluaran extends Component {
                 <ModalInputPengeluaran  RKA={RKAs[idxRKA]}
                                         bulan={timeSlot}
                                         show={show}
+                                        showMessage={showMessage}
                                         handleClose={this.handleCloseModal}
                                         handleUpdateRKAs={this.handleUpdateRKAs}
                 />
