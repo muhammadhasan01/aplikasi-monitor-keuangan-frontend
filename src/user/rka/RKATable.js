@@ -4,7 +4,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import AlertNotFoundRKA from "../../admin/input-pengeluaran/AlertNotFoundRKA";
-import {Button, ButtonGroup, Form, Row, Table, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 
 var columns = [
     {
@@ -199,7 +199,7 @@ class TableRKA extends Component {
                         columns={ columns }
                         filter={ filterFactory() }
                         pagination={ paginationFactory() }
-                        rowClasses="table-striped"
+                        classes="table-feature"
                         />
                 </>
 

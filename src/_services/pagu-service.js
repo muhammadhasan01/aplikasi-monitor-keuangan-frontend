@@ -5,12 +5,14 @@ import authHeader from "_helpers/auth-header";
 export const PaguDataService = {
   getAllPagus,
   updateAlokasiPagu,
-  getSisaPagu
+  getSisaPagu,
+  getAlokasiPagu,
+  getPenggunaanPagu
 }
 
 function getHttp() {
   return axios.create({
-    baseURL: (urlServer + "/rka"),
+    baseURL: (urlServer + "/pagu"),
     headers: authHeader()
   });
 }
@@ -25,4 +27,12 @@ function updateAlokasiPagu(unit, subunit, ado, year, data){
 
 function getSisaPagu(unit, subunit, ado, year){
   return getHttp().get(`/sisa/${unit}/${subunit}/${ado}/${year}`);
+}
+
+function getAlokasiPagu(unit, subunit, ado, year){
+  return getHttp().get(`/alokasi/${unit}/${subunit}/${ado}/${year}`);
+}
+
+function getPenggunaanPagu(unit, subunit, ado, year){
+  return getHttp().get(`/penggunaan/${unit}/${subunit}/${ado}/${year}`);
 }

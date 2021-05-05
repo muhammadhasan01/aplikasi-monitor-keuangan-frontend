@@ -1,19 +1,20 @@
 import React, {Component, createRef} from 'react';
 import {ADODataService, authenticationService} from "_services";
 import {RKADataService} from "_services/rka-service";
-import TambahRKAForm from "./TambahRKAForm";
-import { Modal, Button } from 'react-bootstrap';
-import TableRKA from "./TableRKA";
-import ModalRKAForm from "./TambahRKAForm";
-import { Table } from 'react-bootstrap';
-import {formatRupiah} from "../../_helpers";
+import ModalRKAForm from "./ModalRKAForm";
 import RKATable from "./RKATable";
+import {PaguDataService} from "../../_services/pagu-service";
+import {formatRupiah} from "../../_helpers";
+import {Row} from "react-bootstrap";
 
 export class RKAMain extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			sisaADO: 0,
+			penggunaanADO: 0,
+			alokasiADO: 0,
 			ADO: [],
 			RKA: [],
 			unit: null,
@@ -54,7 +55,7 @@ export class RKAMain extends Component {
 	}
 
 
-	getRKA = (e) => {
+	handleADOChange = (e) => {
 		this.setState({currentADO: this.currentADO.current.value});
 		e.preventDefault();
 		const unit = this.state.unit;
@@ -66,7 +67,6 @@ export class RKAMain extends Component {
 		if(ado == "ALL"){
 			RKADataService.loadAllRKA(unit, subunit)
 				.then(response => {
-					console.log("RKA", response.data);
 					this.setState( {RKA: response.data});
 				})
 				.catch(err => {
@@ -75,19 +75,40 @@ export class RKAMain extends Component {
 		} else {
 			RKADataService.getRKAUnitADO(unit, subunit, ado)
 				.then(response => {
-					console.log("RKA", response.data);
 					this.setState( {RKA: response.data});
-				}).catch(err => {
-				console.log(err);
-			})
+				})
+				.catch(err => {
+					console.log(err);
+				});
+
+			PaguDataService.getSisaPagu(unit, subunit, ado, new Date().getFullYear())
+				.then(response =>{
+					console.log(response.data);
+					this.setState({sisaADO: response.data.value})
+				})
+				.catch(err => {
+					console.log(err);
+					this.setState({sisaADO: "-"})
+				})
+			PaguDataService.getAlokasiPagu(unit, subunit, ado, new Date().getFullYear())
+				.then(response =>{
+					console.log(response.data);
+					this.setState({alokasiADO: response.data.value})
+				})
+				.catch(err => {
+					console.log(err);
+					this.setState({alokasiADO: "-"})
+				})
+			PaguDataService.getPenggunaanPagu(unit, subunit, ado, new Date().getFullYear())
+				.then(response =>{
+					console.log(response.data);
+					this.setState({penggunaanADO: response.data.value})
+				})
+				.catch(err => {
+					console.log(err);
+					this.setState({penggunaanADO: "-"})
+				})
 		}
-
-
-	}
-
-	handleADOChange = (e) => {
-		this.setState({currentADO: e.target.value});
-		console.log(this.currentADO.current.value);
 	}
 
 	render() {
@@ -104,7 +125,7 @@ export class RKAMain extends Component {
 						<form className="form-group">
 							<label htmlFor="select-ADO">Select ADO</label>
 							<select className="form-select form-select-sm" id="select-ADO" name="ado"
-									onChange={this.getRKA} ref={this.currentADO}>
+									onChange={this.handleADOChange} ref={this.currentADO}>
 								<option value="ALL">All</option>
 								{this.state.ADO.map(ADO => <option value={ADO}>{ADO}</option>)}
 							</select> <br/>
@@ -114,7 +135,13 @@ export class RKAMain extends Component {
 
 					</div>
 					<div className="col-10">
-						{/*<TableRKA ado={ado} unit={unit} subunit={subunit} rka={rka} />*/}
+
+						Alokasi Total Anggaran {ado === "ALL" ? "" : ado} : {formatRupiah(this.state.alokasiADO)} <br/>
+						Penggunaan Anggaran {ado === "ALL" ? "" : ado} sampai hari ini: {formatRupiah(this.state.penggunaanADO)} <br/>
+						Sisa Anggaran {ado === "ALL" ? "" : ado} : {formatRupiah(this.state.sisaADO)} <br/>
+
+
+
 						<RKATable ado={ado} unit={unit} subunit={subunit} rka={rka} />
 					</div>
 

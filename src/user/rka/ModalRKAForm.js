@@ -10,6 +10,7 @@ class ModalRKAForm extends Component {
         this.state = {
             sisa: 0,
             show: false,
+            paguAvailable: false,
             ADOs: [],
             currentADO: "All",
             JenisOption: ["Barang", "Jasa", "Modal"]
@@ -51,9 +52,11 @@ class ModalRKAForm extends Component {
         const year = new Date().getFullYear();
         PaguDataService.getSisaPagu(unit, subunit, ado, year)
             .then(response => {
+                this.setState({paguAvailable: true})
                 console.log(response.data);
             })
             .catch(err => {
+                this.setState({paguAvailable: false})
                 console.log(err);
             })
 
@@ -107,6 +110,27 @@ class ModalRKAForm extends Component {
         const bulan1 = ["Januari", "Februari","Maret","April","Mei","Juni"];
         const bulan2 = ["Juli", "Agustus","September","Oktober","November","Desember"];
 
+        if(!this.state.paguAvailable){
+            return(
+                <>
+                    <Button variant="primary" onClick={this.handleShow}>
+                        Tambah RKA Baru
+                    </Button>
+
+                    <Modal show = {this.state.show} onHide={this.handleClose} size="lg">
+                        <Modal.Header closeButton>
+                            <Modal.Title>
+                                Anggaran untuk ADO {this.state.currentADO} tidak tersedia
+                            </Modal.Title>
+
+                            <Modal.Body>
+                                Silahkan hubungi Admin apabila anda pikir ini adalah kesalahan
+                            </Modal.Body>
+                        </Modal.Header>
+                    </Modal>
+                </>
+            )
+        }
         return (
             <>
                 <Button variant="primary" onClick={this.handleShow}>
