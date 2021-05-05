@@ -111,7 +111,7 @@ class PengeluaranTerakhir extends Component {
                                                       handleAction={this.handleOpenUndo} />
             const removeButton = <ButtonAksiPengeluaran icon={<Trash />}
                                                         value={_id}
-                                                        action="Remove"
+                                                        action="Delete"
                                                         variant="danger"
                                                         handleAction={this.handleOpenRemove}
                                     />
