@@ -29,5 +29,5 @@ function removePengeluaran(id) {
 }
 
 function undoPengeluaran(id) {
-    return getHttp().delete(`'/undo/${id}`);
+    return getHttp().delete(`/undo/${id}`);
 }

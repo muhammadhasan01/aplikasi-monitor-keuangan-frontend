@@ -56,7 +56,6 @@ class PengeluaranTerakhir extends Component {
     retrievePengeluaran = () => {
         pengeluaranDataService.getAllPengeluaran()
             .then(response => {
-                console.log(response);
                 this.setState({ pengeluaran: response.data });
             })
             .catch(err => {
@@ -67,8 +66,7 @@ class PengeluaranTerakhir extends Component {
     undoPengeluaran = () => {
         const { IDPengeluaran } = this.state;
         pengeluaranDataService.undoPengeluaran(IDPengeluaran)
-            .then(response => {
-                console.log(response);
+            .then(() => {
                 this.retrievePengeluaran();
                 this.setState({ showMessage: true });
             })
@@ -80,8 +78,7 @@ class PengeluaranTerakhir extends Component {
     removePengeluaran = () => {
         const { IDPengeluaran } = this.state;
         pengeluaranDataService.removePengeluaran(IDPengeluaran)
-            .then(response => {
-                console.log(response);
+            .then(() => {
                 this.retrievePengeluaran();
                 this.setState({ showMessage: true });
             }).catch(err => {
@@ -100,7 +97,7 @@ class PengeluaranTerakhir extends Component {
             return <h3>Loading...</h3>
         }
         if (pengeluaran.length === 0) {
-            return <h2>Belum ada pengeluaran terakhir</h2>
+            return <h2 className='mx-5 pt-4'>Belum ada pengeluaran terakhir</h2>
         }
         const data = pengeluaran.map((p) => {
             const { _id, RKA: { unit, sub_unit, rincian_belanja }, jumlah, createdAt: tanggal } = p;
@@ -122,6 +119,7 @@ class PengeluaranTerakhir extends Component {
             <div className="p-5 mb-lg-5">
                 <h2>{title}</h2>
                 <BootstrapTable
+                                classes='table-feature'
                                 striped
                                 bootstrap4
                                 keyField="id"
@@ -131,8 +129,6 @@ class PengeluaranTerakhir extends Component {
                                 pagination={ paginationFactory() } />
                 <ModalAksiPengeluaran
                     action="Undo"
-                    title="Konfirmasi Undo Pengeluaran"
-                    body="Apakah anda yakin ingin melakukan undo pengeluaran?"
                     show={showUndo}
                     showMessage={showMessage}
                     handleConfirmation={this.undoPengeluaran}
@@ -140,8 +136,6 @@ class PengeluaranTerakhir extends Component {
                 />
                 <ModalAksiPengeluaran
                     action="Delete"
-                    title="Konfirmasi Delete Pengeluaran"
-                    body="Apakah anda yakin ingin melakukan delete pengeluaran?"
                     show={showRemove}
                     showMessage={showMessage}
                     handleConfirmation={this.removePengeluaran}
