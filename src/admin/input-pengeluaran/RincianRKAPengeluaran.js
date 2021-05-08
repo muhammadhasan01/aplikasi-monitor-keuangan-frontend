@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import AlertNotFoundRKA from "./AlertNotFoundRKA";
-import { Table, Button } from 'react-bootstrap';
+import {Table, Button, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import { namaBulanIndonesia, formatRupiah } from "_helpers";
 import ModalInputPengeluaran from "./ModalInputPengeluaran";
+import { tableData } from './rka-pengeluaran-table';
+import filterFactory from "react-bootstrap-table2-filter";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import BootstrapTable from "react-bootstrap-table-next";
+import { MdInput } from 'react-icons/md';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+
+const { SearchBar } = Search;
 
 class RincianRKAPengeluaran extends Component {
     constructor(props) {
@@ -48,10 +56,27 @@ class RincianRKAPengeluaran extends Component {
         }
         const timeSlot = this.state.timeSlot;
         const lowCaseTimeSlot = timeSlot.toLowerCase();
-        const headerValues = ["Rincian Belanja", "Alokasi Total", `Alokasi Bulan ${timeSlot}`, `Penggunaan Bulan ${timeSlot}`,
-                             `Sisa Anggaran Bulan ${timeSlot}`, "Aksi"];
+        const columns = tableData.getColumns(timeSlot);
+        const data = RKAs.map((rka, idx) => {
+            return {
+                "Rincian Belanja": rka.rincian_belanja,
+                "Alokasi Total": rka.total_rancangan,
+                "Alokasi Bulan": rka.rancangan[lowCaseTimeSlot],
+                "Penggunaan Bulan": rka.penggunaan[lowCaseTimeSlot],
+                "Sisa Anggaran Bulan": rka.rancangan[lowCaseTimeSlot] - rka.penggunaan[lowCaseTimeSlot],
+                "Aksi":
+                    <OverlayTrigger key="bottom"  placement="bottom"
+                        overlay={
+                            <Tooltip id="tooltip-bottom">
+                                Input Pengeluaran
+                            </Tooltip>
+                        }>
+                        <Button onClick={this.handleAction} value={idx}><MdInput /></Button>
+                    </OverlayTrigger>
+            };
+        })
         return (
-            <>
+            <div>
                 <h2 className="mt-2">{title}</h2>
                 <label htmlFor="select-month">Pilih Bulan</label>
                 <select className="form-select form-select-sm" id="select-month"
@@ -59,33 +84,28 @@ class RincianRKAPengeluaran extends Component {
                     { namaBulanIndonesia.map((bulan, ID) =>
                         <option key={ID} value={bulan}>{bulan}</option>) }
                 </select>
-                <Table responsive striped bordered hover style={{backgroundColor: 'lightblue'}}>
-                    <thead>
-                        <tr>
-                        {headerValues.map((head, idx) => {
-                                return <th key={idx} className='center' scope='col'>{head}</th>
-                        })}
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {RKAs.map((rka, idx) => {
-                        const rowValues = [rka.rincian_belanja, rka.total_rancangan,
-                            rka.rancangan[lowCaseTimeSlot], rka.penggunaan[lowCaseTimeSlot],
-                            rka.rancangan[lowCaseTimeSlot] - rka.penggunaan[lowCaseTimeSlot]
-                        ];
-                        return (
-                            <tr key={idx}>
-                            {rowValues.map((data, id) => {
-                                return <td key={id}>{formatRupiah(data)}</td>
-                            })}
-                            <td key={rowValues.length}>
-                                <Button onClick={this.handleAction} value={idx}>Input Pengeluaran</Button>
-                            </td>
-                            </tr>
+                <ToolkitProvider
+                    search
+                >
+                    {
+                        props => (
+                            <div>
+                                <SearchBar { ...props.searchProps } />
+                                <hr />
+                                <BootstrapTable
+                                    keyField="id"
+                                    data={ data }
+                                    columns={ columns }
+                                    classes='table-feature'
+                                    striped
+                                    bootstrap4
+                                    filter={filterFactory()}
+                                    pagination={paginationFactory()}
+                                />
+                            </div>
                         )
-                    })}
-                    </tbody>
-                </Table>
+                    }
+                </ToolkitProvider>
                 <ModalInputPengeluaran  RKA={RKAs[idxRKA]}
                                         bulan={timeSlot}
                                         show={show}
@@ -93,7 +113,7 @@ class RincianRKAPengeluaran extends Component {
                                         handleClose={this.handleCloseModal}
                                         handleUpdateRKAs={this.handleUpdateRKAs}
                 />
-            </>
+            </div>
         )
     }
 }

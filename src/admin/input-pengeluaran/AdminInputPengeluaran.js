@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { UnitsDataService, ADODataService } from "_services";
 import InputUnitADO from './InputUnitADO';
 import RincianRKAPengeluaran from "./RincianRKAPengeluaran";
+import {Col, Container, Row} from 'react-bootstrap';
 
 export class AdminInputPengeluaran extends Component {
 	constructor(props) {
@@ -57,16 +58,16 @@ export class AdminInputPengeluaran extends Component {
 
 	render() {
 		return (
-			<div className='container-fluid ml-5'>
-				<div className='row'>
-					<div className='col-3'>
+			<Container fluid className='ml-4'>
+				<Row>
+					<Col xs={3}>
 						<InputUnitADO data={this.state} sendDataRKA={this.getDataRKA}/>
-					</div>
-					<div className='col-8 ml-3 mt-2'>
+					</Col>
+					<Col xs={8}>
 						<RincianRKAPengeluaran RKAs={this.state.RKAs} inputs={this.state.inputs} />
-					</div>
-				</div>
-			</div>
+					</Col>
+				</Row>
+			</Container>
 		);
 	}
 }
