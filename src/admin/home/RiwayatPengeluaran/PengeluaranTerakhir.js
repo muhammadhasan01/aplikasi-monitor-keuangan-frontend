@@ -64,10 +64,13 @@ class PengeluaranTerakhir extends Component {
     }
 
     undoPengeluaran = () => {
-        const { IDPengeluaran } = this.state;
+        const { IDPengeluaran, pengeluaran } = this.state;
         pengeluaranDataService.undoPengeluaran(IDPengeluaran)
             .then(() => {
-                this.retrievePengeluaran();
+                let curId = -1;
+                pengeluaran.forEach((p, id) => { if (p._id === IDPengeluaran) { curId = id; } });
+                pengeluaran.splice(curId, 1);
+                this.setState({ pengeluaran: pengeluaran })
                 this.setState({ showMessage: true });
             })
             .catch(err => {
@@ -76,10 +79,13 @@ class PengeluaranTerakhir extends Component {
     }
 
     removePengeluaran = () => {
-        const { IDPengeluaran } = this.state;
+        const { IDPengeluaran, pengeluaran } = this.state;
         pengeluaranDataService.removePengeluaran(IDPengeluaran)
             .then(() => {
-                this.retrievePengeluaran();
+                let curId = -1;
+                pengeluaran.forEach((p, id) => { if (p._id === IDPengeluaran) { curId = id; } });
+                pengeluaran.splice(curId, 1);
+                this.setState({ pengeluaran: pengeluaran })
                 this.setState({ showMessage: true });
             }).catch(err => {
                 console.log(err);
@@ -94,7 +100,7 @@ class PengeluaranTerakhir extends Component {
     render() {
         const { showMessage, pengeluaran, showUndo, showRemove } = this.state;
         if (!pengeluaran) {
-            return <h3>Loading...</h3>
+            return <h3 className='mx-5 pt-4'>Loading...</h3>
         }
         if (pengeluaran.length === 0) {
             return <h2 className='mx-5 pt-4'>Belum ada pengeluaran terakhir</h2>
