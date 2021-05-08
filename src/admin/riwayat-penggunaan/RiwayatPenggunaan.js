@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {RKADataService, UnitsDataService} from "_services"
+import { Table } from 'react-bootstrap';
 import RiwayatPenggunaanRow from "./RiwayatPenggunaanRow";
 import FilterUnitComponent from "./FilterUnitComponent";
 
@@ -149,7 +150,7 @@ export class RiwayatPenggunaan extends Component {
             onChangeSubunit={(e) => this.onChangeSubunit(e)}
             onClickSortByDate={(e) => this.onClickSortByDate(e)}
           />
-          <table id="riwayat-penggunaan-table">
+          <Table responsive striped bordered hover style={{backgroundColor: 'white'}}>
             <tr>
               <th><p>Unit</p></th>
               <th><p>Subunit</p></th>
@@ -169,7 +170,7 @@ export class RiwayatPenggunaan extends Component {
               <th><p>Total</p></th>
             </tr>
             {this.renderRKAs()}
-          </table>
+          </Table>
         </div>
       </div>
     );

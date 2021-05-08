@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ADODataService, UnitsDataService } from "_services";
-import PaguDataService from "_services/pagu-service";
+import { ADODataService, UnitsDataService, PaguDataService } from "_services";
+import { Table, Button } from 'react-bootstrap';
 import ConfirmActionPopup from "./ConfirmActionPopup";
 import NewADOForm from "./NewADOForm";
 import EditPaguForm from "./EditPaguForm";
@@ -9,17 +9,17 @@ import PaguAnggaranRow from "./PaguAnggaranRow";
 export class PaguAnggaran extends Component {
   constructor(props) {
     super(props);
-    this.acceptAction = this.acceptAction.bind(this);
-    this.cancelAction = this.cancelAction.bind(this);
 
     this.state = {
       ADOs: [],
       Pagus: [],
       Units: [],
-      currentUnit: [],
+      currentUnit: {
+        unit: "",
+        sub_unit: ""
+      },
       editMode: false,
-      currentAction: "",
-      showConfirmAction: false,
+      showConfirmActionModal: false,
       showNewADOForm: false,
       newADO: {
         name: "",
@@ -66,7 +66,7 @@ export class PaguAnggaran extends Component {
   }
 
   retrieveUnits() {
-    UnitsDataService.getDistinctUnits()
+    UnitsDataService.getUnits()
       .then(response => {
         this.setState({
           Units: response.data
@@ -78,21 +78,13 @@ export class PaguAnggaran extends Component {
       });
   }
 
-  showConfirmAction(){
-    this.setState({
-      showConfirmAction: true,
-    })
-  }
-
-  acceptAction(){
-    if (this.state.editMode || this.state.showEditPaguForm) {
-      this.submitEditPagu();
-    } else if (this.state.showNewADOForm) {
-      this.submitNewADO();
-    }
+  resetStates(){
     this.setState({
       editMode: false,
-      currentUnit: [],
+      currentUnit: {
+        unit: "",
+        sub_unit: ""
+      },
       currentAction: "",
       showConfirmAction: false,
       showNewADOForm: false,
@@ -100,10 +92,15 @@ export class PaguAnggaran extends Component {
     })
   }
 
-  cancelAction(){
+  showConfirmActionModal(){
     this.setState({
-      currentAction: "",
-      showConfirmAction: false
+      showConfirmActionModal: true,
+    })
+  }
+
+  hideConfirmActionModal(){
+    this.setState({
+      showConfirmActionModal: false,
     })
   }
 
@@ -111,7 +108,8 @@ export class PaguAnggaran extends Component {
     this.setState({
       currentAction: "Add New ADO",
       showNewADOForm: true
-    })
+    });
+    console.log(this.state);
   }
 
   hideNewADOForm(){
@@ -134,6 +132,7 @@ export class PaguAnggaran extends Component {
         console.log(e);
       });
     this.hideNewADOForm();
+    this.resetStates();
   }
 
   onChangeADOName(e){
@@ -163,18 +162,18 @@ export class PaguAnggaran extends Component {
   }
 
   showEditPaguForm(e){
-    const unit = e.unit;
-    const subunit = e.subunit;
-    const ados = e.ados;
+    const unit = e.data.unit;
+    const sub_unit = e.data.subunit;
+    console.log(e);
     this.setState({
       currentAction: "Edit Pagu",
       currentUnit: {
         unit: unit,
-        subunit: subunit,
-        ADOs: ados
+        sub_unit: sub_unit,
       },
       showEditPaguForm: true
-    })
+    });
+    console.log(this.state.currentUnit);
   }
 
   hideEditPaguForm(){
@@ -218,6 +217,7 @@ export class PaguAnggaran extends Component {
         });
       }
     })
+    this.resetStates();
   }
 
   renderADOs(){
@@ -232,12 +232,15 @@ export class PaguAnggaran extends Component {
   }
 
   onChangePagu(e){
+    console.log(e.target.id)
     let pagu_list = this.state.Pagus;
     pagu_list.forEach(pagu =>{
       let name = pagu.unit + " " + pagu.subunit + " " + pagu.ADO;
-      if(name === e.target.name){
+      if(name === e.target.id){
         pagu.alokasi = e.target.value;
         pagu.changed = true;
+        console.log(name);
+        console.log(pagu.alokasi)
       }
     })
     this.setState({
@@ -272,12 +275,11 @@ export class PaguAnggaran extends Component {
         }
       });
 
+      unit.ados = ados;
+      unit.total = total_anggaran;
       pagu_elements.push(
         <PaguAnggaranRow
-          unit={unit.unit}
-          subunit={unit.subunit}
-          ados={ados}
-          total={total_anggaran}
+          data={unit}
           editMode={editMode}
           onChange={(e) => this.onChangePagu(e)}
           onClickEdit={(e) => this.showEditPaguForm(e)}
@@ -288,8 +290,8 @@ export class PaguAnggaran extends Component {
   }
 
   render() {
-    const { editMode, showNewADOForm, showEditPaguForm, showConfirmAction, 
-      currentUnit, newADO, currentAction } = this.state;
+    const { ADOs, Pagus, editMode, showNewADOForm, showEditPaguForm, showConfirmActionModal, 
+      currentUnit, newADO } = this.state;
 
     return (
       <div id="pagu-anggaran">
@@ -299,12 +301,12 @@ export class PaguAnggaran extends Component {
             ''
           ) : (
             <div>
-              <button onClick={() => this.showNewADOForm()}>+ ADO</button>
-              <button onClick={() => this.showEditPagu()}>Edit Pagu</button>
+              <Button onClick={() => this.showNewADOForm()}>+ ADO</Button>
+              <Button onClick={() => this.showEditPagu()}>Edit Pagu</Button>
             </div>
           )
           }
-          <table id="pagu-table">
+          <Table responsive striped bordered hover style={{backgroundColor: 'white'}}>
             <tr>
               <th><p>Unit</p></th>
               <th><p>Subunit</p></th>
@@ -313,62 +315,50 @@ export class PaguAnggaran extends Component {
               <th><p>Edit</p></th>
             </tr>
             {this.renderPagus()}
-          </table>
+          </Table>
         </div>
         {editMode ? (
-          <div id="edit-buttons">
-            <button onClick={() => this.showConfirmAction()}>Submit</button>
-            <button onClick={() => this.hideEditPagu()}>Cancel</button>
-          </div>
+          <>
+            <Button onClick={() => this.showConfirmActionModal()}>Submit</Button>
+            <Button onClick={() => this.hideEditPagu()}>Cancel</Button>
+          </>
           ) : (
             ''
           )
         }
         {showNewADOForm ? (
-          <div>
-            <div class="pageDisable"></div>
-            <NewADOForm
-              name={newADO.name}
-              onChangeName={(e) => this.onChangeADOName(e)}
-              detail={newADO.detail}
-              onChangeDetail={(e) => this.onChangeADODetail(e)}
-              hide={() => this.hideNewADOForm()}
-              submit={() => this.showConfirmAction()}
-            />
-          </div>
+          <NewADOForm
+            name={newADO.name}
+            onChangeName={(e) => this.onChangeADOName(e)}
+            detail={newADO.detail}
+            onChangeDetail={(e) => this.onChangeADODetail(e)}
+            hide={() => this.hideNewADOForm()}
+            submit={() => this.submitNewADO()}
+          />
           ) : (
             ''
           )
         }
         {showEditPaguForm ? (
-          <div>
-            <div class="pageDisable"></div>
             <EditPaguForm
-              unit={currentUnit.unit}
-              subunit={currentUnit.subunit}
-              ados={currentUnit.ADOs}
+              selectedUnit={currentUnit}
+              ados={ADOs}
+              pagus={Pagus}
               onChange={(e) => this.onChangePagu(e)}
               hide={() => this.hideEditPaguForm()}
-              submit={() => this.showConfirmAction()}
+              submit={() => this.submitEditPagu()}
             />
-          </div>
           ) : (
             ''
           )
         }
-        {showConfirmAction ? (
-          <div>
-            <div class="formDisable"></div>
+        {showConfirmActionModal ?
             <ConfirmActionPopup
-              title={currentAction}
-              acceptAction={() => this.acceptAction()}
-              cancelAction={() => this.cancelAction()}
-            />
-          </div>
-          ) : (
-            ''
-          )
-        }
+              title="Edit All Pagus"
+              acceptAction={() => this.submitEditPagu()}
+              cancelAction={() => this.hideConfirmActionModal()}
+            /> : null
+          }
       </div>
     );
   }

@@ -1,3 +1,5 @@
+import { Button } from 'react-bootstrap';
+
 function PaguAnggaranRow(props){
     
     function renderColumns(){
@@ -10,7 +12,7 @@ function PaguAnggaranRow(props){
     
     function ADOColumns(){
       let elements = [];
-      let ado_list = props.ados;
+      let ado_list = props.data.ados;
       ado_list.forEach(ado =>{
         elements.push(
           <td><p>{ado.allocation}</p></td>
@@ -21,12 +23,12 @@ function PaguAnggaranRow(props){
 
     function InputADOColumns(){
       let elements = [];
-      let ado_list = props.ados;
+      let ado_list = props.data.ados;
       ado_list.forEach(ado =>{
         elements.push(
           <td>
             <input
-              name={props.unit + " " + props.subunit + " " + ado.name}
+              name={props.data.unit + " " + props.data.subunit + " " + ado.name}
               type="number"
               required
               value={ado.allocation}
@@ -47,11 +49,11 @@ function PaguAnggaranRow(props){
 
     return (
       <tr>
-        <td><p>{props.unit}</p></td>
-        <td><p>{props.subunit}</p></td>
+        <td><p>{props.data.unit}</p></td>
+        <td><p>{props.data.subunit}</p></td>
         {renderColumns()}
-        <td><p>{props.total}</p></td>
-        <td><button onClick={() => handleClickEdit()}>Edit</button></td>
+        <td><p>{props.data.total}</p></td>
+        <td><Button onClick={() => handleClickEdit()}>Edit</Button></td>
       </tr>
     )
   }

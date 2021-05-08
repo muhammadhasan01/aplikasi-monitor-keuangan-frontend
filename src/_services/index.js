@@ -5,4 +5,5 @@ export * from './units-service.js';
 export * from './user-service.js';
 export * from './ado-service.js';
 export * from './rka-service.js';
+export * from './pagu-service.js';
 export * from './pengeluaran-service.js';
