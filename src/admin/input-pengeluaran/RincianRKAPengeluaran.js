@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AlertNotFoundRKA from "./AlertNotFoundRKA";
-import {Table, Button, Tooltip, OverlayTrigger} from 'react-bootstrap';
-import { namaBulanIndonesia, formatRupiah } from "_helpers";
+import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { namaBulanIndonesia } from "_helpers";
 import ModalInputPengeluaran from "./ModalInputPengeluaran";
 import { tableData } from './rka-pengeluaran-table';
 import filterFactory from "react-bootstrap-table2-filter";

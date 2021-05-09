@@ -1,5 +1,4 @@
-import { textFilter } from "react-bootstrap-table2-filter";
-import {formatRupiah} from "../../_helpers";
+import {formatRupiah} from "_helpers";
 
 export const tableData = {
     getColumns

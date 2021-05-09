@@ -47,7 +47,7 @@ class ModalInputPengeluaran extends Component {
         };
         pengeluaranDataService.inputPengeluaranRKA(body)
             .then((response) => {
-                const { data: { RKA, _id } } = response;
+                const { data: { RKA } } = response;
                 this.props.handleUpdateRKAs(RKA);
                 this.setState({ showMessage: true });
             }).catch((err) => {
