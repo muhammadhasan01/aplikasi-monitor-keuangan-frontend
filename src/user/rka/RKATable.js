@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
-import { formatRupiah, formatTanggal } from "_helpers";
+import { formatRupiah } from "_helpers";
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import AlertNotFoundRKA from "../../admin/input-pengeluaran/AlertNotFoundRKA";
 import {ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
+
+const ExportCSVButton = (props) => {
+    const handleClick = () => {
+        props.onExport();
+    };
+    return (
+        <div>
+            <button className="btn btn-success" onClick={ handleClick }>Unduh Excel</button>
+        </div>
+    );
+};
 
 var columns = [
     {
@@ -21,7 +33,6 @@ var columns = [
         text: 'Subkegiatan',
         sort: true,
         filter: textFilter(),
-        minWidth: 500
     }, {
         dataField: 'rincian_subkegiatan',
         text: 'Rincian Subkegiatan',
@@ -120,12 +131,6 @@ class TableRKA extends Component {
         }
     }
 
-    componentDidMount() {
-        console.log(this.props.ado);
-        console.log(this.props.rka);
-    }
-
-
     clickButton = () => {
         console.log("Button Clicked")
         console.log(columns[9].hidden)
@@ -135,8 +140,6 @@ class TableRKA extends Component {
 
     handleColumnChange = (e) => {
         const monthOffset = 6;
-        console.log(e);
-        console.log(e.includes(5));
         for(var i = monthOffset; i < columns.length; i++){
             columns[i].hidden = true;
         }
@@ -165,42 +168,40 @@ class TableRKA extends Component {
             return {id, ADO, kegiatan, subkegiatan, rincian_subkegiatan, rincian_belanja, jenis_belanja, januari, februari, maret, april, mei, juni, juli, agustus, september, oktober, november, desember}
         });
 
-        const MyExportCSV = (props) => {
-            const handleClick = () => {
-                props.onExport();
-            };
-            return (
-                <div>
-                    <button className="btn btn-success" onClick={ handleClick }>Export to CSV</button>
-                </div>
-            );
-        };
-
-
-
-        if(rka.length == 0){
+        if(rka.length === 0){
             return <AlertNotFoundRKA heading={`Data Belum Ada`} body={`Data mengenai ${title} belum ada`}/>
         } else{
             return(
                 <>
-
-                    <ToggleButtonGroup type="checkbox" onChange={this.handleColumnChange}>
+                    <ToggleButtonGroup type="checkbox" onChange={this.handleColumnChange} className="mt-3 mb-3">
                         <ToggleButton style={{}} value={1}>Triwulan 1</ToggleButton>
                         <ToggleButton value={2}>Triwulan 2</ToggleButton>
                         <ToggleButton value={3}>Triwulan 3</ToggleButton>
                         <ToggleButton value={4}>Triwulan 4</ToggleButton>
                     </ToggleButtonGroup>
 
-                    <BootstrapTable
-                        striped
-                        bootstrap4
+                    <ToolkitProvider
                         keyField="id"
                         data={ data }
                         columns={ columns }
-                        filter={ filterFactory() }
-                        pagination={ paginationFactory() }
-                        classes="table-feature"
-                        />
+                        exportCSV
+                    >
+                        {
+                            props => (
+                                <div>
+                                    <ExportCSVButton { ...props.csvProps }>Export CSV!!</ExportCSVButton>
+                                    <hr />
+                                    <BootstrapTable
+                                        { ...props.baseProps }
+                                        bootstrap4
+                                        filter={ filterFactory() }
+                                        pagination={ paginationFactory() }
+                                        classes="table-feature"
+                                    />
+                                </div>
+                            )
+                        }
+                    </ToolkitProvider>
                 </>
 
             )

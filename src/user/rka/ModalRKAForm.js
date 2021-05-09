@@ -34,7 +34,6 @@ class ModalRKAForm extends Component {
 
     retrieveSisaPagu = () => {
 
-
     }
 
     setShow = (boolean) => {

@@ -5,7 +5,6 @@ import ModalRKAForm from "./ModalRKAForm";
 import RKATable from "./RKATable";
 import {PaguDataService} from "../../_services/pagu-service";
 import {formatRupiah} from "../../_helpers";
-import {Row} from "react-bootstrap";
 
 export class RKAMain extends Component {
 	constructor(props) {
@@ -64,7 +63,7 @@ export class RKAMain extends Component {
 
 		console.log(ado);
 
-		if(ado == "ALL"){
+		if(ado === "ALL"){
 			RKADataService.loadAllRKA(unit, subunit)
 				.then(response => {
 					this.setState( {RKA: response.data});
@@ -116,6 +115,9 @@ export class RKAMain extends Component {
 		const subunit = this.state.subunit;
 		const ado = this.state.currentADO;
 		const rka = this.state.RKA;
+		const alokasi = this.state.alokasiADO;
+		const penggunaan = this.state.penggunaanADO;
+		const sisa = this.state.sisaADO;
 
 		return (
 			<div class="container-fluid ml-5">
@@ -134,13 +136,22 @@ export class RKAMain extends Component {
 						<ModalRKAForm ado={ado} unit={unit} subunit={subunit}/>
 
 					</div>
-					<div className="col-10">
 
-						Alokasi Total Anggaran {ado === "ALL" ? "" : ado} : {formatRupiah(this.state.alokasiADO)} <br/>
-						Penggunaan Anggaran {ado === "ALL" ? "" : ado} sampai hari ini: {formatRupiah(this.state.penggunaanADO)} <br/>
-						Sisa Anggaran {ado === "ALL" ? "" : ado} : {formatRupiah(this.state.sisaADO)} <br/>
+					<div className="col-10 mt-2">
+						<span className="mb-4 font-weight-bold">
+							Alokasi Anggaran {ado === "ALL" ? "Total" : ado}:
+							<span className= "font-weight-normal"> {formatRupiah(alokasi)} </span> <br/>
+						</span>
 
+						<span className="mb-4 font-weight-bold">
+							Penggunaan Anggaran {ado === "ALL" ? "Total" : ado} sampai hari ini:
+							<span className= "font-weight-normal"> {formatRupiah(penggunaan)} </span> <br/>
+						</span>
 
+						<span className="mb-4 font-weight-bold">
+							Sisa Anggaran {ado === "ALL" ? "Total" : ado} :
+							<span className= "font-weight-normal"> {formatRupiah(sisa)} </span> <br/>
+						</span>
 
 						<RKATable ado={ado} unit={unit} subunit={subunit} rka={rka} />
 					</div>
