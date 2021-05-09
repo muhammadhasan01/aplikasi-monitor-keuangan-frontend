@@ -49,15 +49,21 @@ class ModalRKAForm extends Component {
         const subunit = this.props.subunit;
         const ado = this.props.ado;
         const year = new Date().getFullYear();
-        PaguDataService.getSisaPagu(unit, subunit, ado, year)
-            .then(response => {
-                this.setState({paguAvailable: true})
-                console.log(response.data);
-            })
-            .catch(err => {
-                this.setState({paguAvailable: false})
-                console.log(err);
-            })
+
+        if(ado == "ALL"){
+            this.setState({paguAvailable: true})
+        } else {
+            PaguDataService.getSisaPagu(unit, subunit, ado, year)
+                .then(response => {
+                    this.setState({paguAvailable: true})
+                    console.log(response.data);
+                })
+                .catch(err => {
+                    this.setState({paguAvailable: false})
+                    console.log(err);
+                })
+        }
+
 
         this.setShow(true);
         this.forceUpdate();
