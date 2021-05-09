@@ -259,20 +259,18 @@ export class PaguAnggaran extends Component {
       let ados = [];
       ado_list.forEach(ado =>{
         let obj = {};
-        obj["name"] = ado;
-        obj["allocation"] = 0;
+        obj.name = ado;
+        obj.alokasi = 0;
         ados.push(obj);
       });
 
-      pagu_list.forEach(pagu =>{
-        if((pagu.unit === unit.unit) && (pagu.subunit === unit.subunit)){
-          ados.forEach(obj =>{
-            if(obj["name"] === pagu.ADO){
-              obj["allocation"] = pagu.alokasi;
-            }
-          });
-          total_anggaran += pagu.alokasi;
-        }
+      let filtered_list = pagu_list
+              .filter((e) => e.unit === unit.unit)
+              .filter((e) => e.subunit === unit.subunit);
+              
+      filtered_list.forEach(pagu =>{
+        ados.find((e) => e.name === pagu.ADO).alokasi = pagu.alokasi;
+        total_anggaran += Number.parseInt(pagu.alokasi);
       });
 
       unit.ados = ados;

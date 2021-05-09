@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap';
+import { Button, InputGroup, FormControl } from 'react-bootstrap';
 
 function PaguAnggaranRow(props){
     
@@ -15,7 +15,7 @@ function PaguAnggaranRow(props){
       let ado_list = props.data.ados;
       ado_list.forEach(ado =>{
         elements.push(
-          <td><p>{ado.allocation}</p></td>
+          <td><p>{ado.alokasi}</p></td>
         );
       });
       return elements;
@@ -27,14 +27,22 @@ function PaguAnggaranRow(props){
       ado_list.forEach(ado =>{
         elements.push(
           <td>
-            <input
-              name={props.data.unit + " " + props.data.subunit + " " + ado.name}
-              type="number"
-              required
-              value={ado.allocation}
-              onChange={props.onChange}
-              min={0}
+            <InputGroup 
+              size="sm" 
+              className="mb-3" 
+            >
+              <FormControl 
+                aria-label="Small" 
+                aria-describedby="inputGroup-sizing-sm" 
+                id={props.data.unit + " " + props.data.subunit + " " + ado.name}
+                type="number"
+                required
+                value={ado.alokasi}
+                onChange={props.onChange}
+                min={0}
+                style={{minWidth: '100px'}}
             />
+            </InputGroup>
           </td>
         );
       });

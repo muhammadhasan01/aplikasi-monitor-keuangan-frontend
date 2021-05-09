@@ -2,7 +2,7 @@ import { Button, Modal } from "react-bootstrap";
 
 function ConfirmActionPopup(props){
     return (
-      <Modal show onHide={() => props.cancelAction()}>
+      <Modal show onHide={() => props.cancelAction()} backdrop='static'>
           <Modal.Header backdrop="static" centered>
             <Modal.Title>{props.title}</Modal.Title>
           </Modal.Header>

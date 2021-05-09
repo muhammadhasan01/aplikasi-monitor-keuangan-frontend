@@ -4,7 +4,7 @@ import { Button, Modal, Form, ModalBody } from "react-bootstrap";
 
 export function ConfirmActionPopup(props){
     return (
-      <Modal show onHide={() => props.cancelAction()}>
+      <Modal show onHide={() => props.cancelAction()} backdrop='static'>
           <Modal.Header backdrop="static" centered>
             <Modal.Title>{props.title}</Modal.Title>
           </Modal.Header>
@@ -221,7 +221,7 @@ export class EditUserForm extends Component {
                         </Form.Group>
                     </Form>
                     <Button onClick={() => this.props.hideEditUserForm()}>Cancel</Button>
-                    <Button onClick={() => this.props.updateUser()}>Submit</Button>
+                    <Button onClick={() => this.showConfirmActionModal()}>Submit</Button>
                 </Modal.Body>
                 {this.state.showConfirmActionModal ?
                     <ConfirmActionPopup
