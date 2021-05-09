@@ -77,7 +77,7 @@ class RincianRKAPengeluaran extends Component {
         })
         return (
             <div>
-                <h2 className="mt-2">{title}</h2>
+                <h2 className="mt-3">{title}</h2>
                 <label htmlFor="select-month">Pilih Bulan</label>
                 <select className="form-select form-select-sm" id="select-month"
                         defaultValue={timeSlot} onChange={this.handleChangeTimeSlot}>
