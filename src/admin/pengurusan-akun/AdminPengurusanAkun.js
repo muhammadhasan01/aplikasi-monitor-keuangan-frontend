@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { ConfirmActionPopup, NewUserForm, EditUserForm, UserRow } from "./helpers";
 import { UserDataService } from "_services/user-service";
 import { UnitsDataService } from "_services/units-service";
+import { Table, Button } from 'react-bootstrap';
 import './AdminPengurusanAkun.css';
 
 export class AdminPengurusanAkun extends Component {
     constructor(props) {
         super(props);
-        this.acceptAction = this.acceptAction.bind(this);
-        this.cancelAction = this.cancelAction.bind(this);
         this.onChangeUnit = this.onChangeUnit.bind(this);
         this.onChangeSubUnit = this.onChangeSubUnit.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
@@ -36,9 +35,7 @@ export class AdminPengurusanAkun extends Component {
                 password: "",
                 c_password: "",
             },
-            currentAction: "",
-            confirmAction: false,
-            showConfirmAction: false,
+            showConfirmActionModal: false,
             showNewUserForm: false,
             showEditUserForm: false,
         };
@@ -92,32 +89,15 @@ export class AdminPengurusanAkun extends Component {
         this.retrieveUsers();
     }
 
-    showConfirmAction() {
+    showConfirmActionModal() {
         this.setState({
-            confirmAction: false,
-            showConfirmAction: true,
+            showConfirmActionModal: true,
         })
     }
 
-    acceptAction() {
-        if (this.state.showNewUserForm) {
-            this.saveUser();
-        } else if (this.state.showEditUserForm) {
-            this.updateUser();
-        }
+    hideConfirmActionModal() {
         this.setState({
-            currentAction: "",
-            confirmAction: true,
-            showConfirmAction: false,
-            showNewUserForm: false,
-            showEditUserForm: false
-        })
-    }
-
-    cancelAction() {
-        this.setState({
-            confirmAction: false,
-            showConfirmAction: false
+            showConfirmActionModal: false,
         })
     }
 
@@ -145,7 +125,7 @@ export class AdminPengurusanAkun extends Component {
             currentAction: "",
             confirmAction: false,
             showNewUserForm: false,
-            showConfirmAction: false
+            showConfirmActionModal: false
         })
     }
 
@@ -173,7 +153,7 @@ export class AdminPengurusanAkun extends Component {
             currentAction: "",
             confirmAction: false,
             showEditUserForm: false,
-            showConfirmAction: false
+            showConfirmActionModal: false
         })
     }
 
@@ -323,7 +303,6 @@ export class AdminPengurusanAkun extends Component {
     }
 
     saveUser() {
-        const confirmAction = this.state.confirmAction;
         const data = {
             unit: this.state.currentUser.unit,
             subunit: this.state.currentUser.subunit,
@@ -334,22 +313,17 @@ export class AdminPengurusanAkun extends Component {
             password: this.state.currentUser.password
         };
 
-        if (confirmAction) {
-            UserDataService.createUser(data)
-                .then(response => {
-                    console.log(response.data);
-                    this.hideNewUserForm();
-                    this.retrieveUsers();
-                })
-                .catch(e => {
-                    console.log(e);
-                    this.hideNewUserForm();
-                    this.retrieveUsers();
-                });
-        } else {
-            this.hideNewUserForm();
-            this.retrieveUsers();
-        }
+        UserDataService.createUser(data)
+            .then(response => {
+                console.log(response.data);
+                this.hideNewUserForm();
+                this.retrieveUsers();
+            })
+            .catch(e => {
+                console.log(e);
+                this.hideNewUserForm();
+                this.retrieveUsers();
+            });
     }
 
     getUser(id) {
@@ -366,7 +340,6 @@ export class AdminPengurusanAkun extends Component {
     }
 
     updateUser() {
-        const confirmAction = this.state.confirmAction;
         const data = {
             unit: this.state.currentUser.unit,
             subunit: this.state.currentUser.subunit,
@@ -376,26 +349,20 @@ export class AdminPengurusanAkun extends Component {
             userType: this.state.currentUser.userType,
             password: this.state.currentUser.password
         };
-
-        if (confirmAction) {
-            UserDataService.updateUser(
-                this.state.currentUser._id,
-                data
-            )
-                .then(response => {
-                    console.log(response.data);
-                    this.hideEditUserForm();
-                    this.retrieveUsers();
-                })
-                .catch(e => {
-                    console.log(e);
-                    this.hideEditUserForm();
-                    this.retrieveUsers();
-                });
-        } else {
-            this.hideEditUserForm();
-            this.retrieveUsers();
-        }
+        UserDataService.updateUser(
+            this.state.currentUser._id,
+            data
+        )
+            .then(response => {
+                console.log(response.data);
+                this.hideEditUserForm();
+                this.retrieveUsers();
+            })
+            .catch(e => {
+                console.log(e);
+                this.hideEditUserForm();
+                this.retrieveUsers();
+            });
 
     }
 
@@ -405,12 +372,21 @@ export class AdminPengurusanAkun extends Component {
     }
 
     deleteUser(id) {
+        this.getUser(id);
+        this.showConfirmActionModal();
+    }
+
+    deleteCurrentUser() {
+        const id = this.state.currentUser._id;
         UserDataService.deleteUser(id)
             .then(() => {
+                this.hideConfirmActionModal();
                 this.refreshList();
             })
             .catch(e => {
                 console.log(e);
+                this.hideConfirmActionModal();
+                this.refreshList();
             });
     }
 
@@ -450,14 +426,14 @@ export class AdminPengurusanAkun extends Component {
     }
 
     render() {
-        const { currentUser, currentAction, showConfirmAction, showNewUserForm, showEditUserForm } = this.state;
+        const { currentUser, showConfirmActionModal, showNewUserForm, showEditUserForm } = this.state;
 
         return (
             <div id="user-management">
                 <div id="user-list">
                     <h4>Users List</h4>
-                    <button onClick={() => this.showNewUserForm()}>Add New User</button>
-                    <table id="user-table">
+                    <Button onClick={() => this.showNewUserForm()}>Add New User</Button>
+                    <Table responsive striped bordered hover style={{backgroundColor: 'white'}}>
                         <tr>
                             <th><p>Username</p></th>
                             <th><p>Name</p></th>
@@ -466,24 +442,19 @@ export class AdminPengurusanAkun extends Component {
                             <th colSpan="2"><p>Actions</p></th>
                         </tr>
                         {this.renderUsers()}
-                    </table>
+                    </Table>
                 </div>
-                {showConfirmAction ? (
-                    <div>
-                        <div className="formDisable" />
+                {showConfirmActionModal ? (
+                    <>
                         <ConfirmActionPopup
-                            title={currentAction}
-                            acceptAction={this.acceptAction}
-                            cancelAction={this.cancelAction}
+                            title="Delete User"
+                            acceptAction={() => this.deleteCurrentUser()}
+                            cancelAction={() => this.hideConfirmActionModal()}
                         />
-                    </div>
-                ) : (
-                    ''
-                )
+                    </>
+                ) : null
                 }
-                {showNewUserForm ? (
-                    <div>
-                        <div className="pageDisable"/>
+                {showNewUserForm ? 
                         <NewUserForm
                             username={currentUser.username}
                             onChangeUsername={this.onChangeUsername}
@@ -504,16 +475,10 @@ export class AdminPengurusanAkun extends Component {
                             onChangeSubUnit={this.onChangeSubUnit}
                             renderSubUnitOptions={() => this.renderSubUnitOptions()}
                             hideNewUserForm={() => this.hideNewUserForm()}
-                            saveUser={() => this.showConfirmAction()}
-                        />
-                    </div>
-                ) : (
-                    ''
-                )
+                            saveUser={() => this.saveUser()}
+                        /> : null
                 }
-                {showEditUserForm ? (
-                    <div>
-                        <div className="pageDisable" />
+                {showEditUserForm ? 
                         <EditUserForm
                             username={currentUser.username}
                             onChangeUsername={this.onChangeUsername}
@@ -528,12 +493,8 @@ export class AdminPengurusanAkun extends Component {
                             onChangeSubUnit={this.onChangeSubUnit}
                             renderSubUnitOptions={() => this.renderSubUnitOptions()}
                             hideEditUserForm={() => this.hideEditUserForm()}
-                            updateUser={() => this.showConfirmAction()}
-                        />
-                    </div>
-                ) : (
-                    ''
-                )
+                            updateUser={() => this.updateUser()}
+                        /> : null
                 }
             </div>
         );

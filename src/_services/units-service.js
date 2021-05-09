@@ -3,6 +3,7 @@ import authHeader from "_helpers/auth-header";
 import { urlServer } from "_services/api";
 
 export const UnitsDataService = {
+    getUnits,
     getDistinctUnits,
     getSubUnits,
     getUnitByID
@@ -13,6 +14,10 @@ function getHttp() {
         baseURL: (urlServer + "/units"),
         headers: authHeader()
     });
+}
+
+function getUnits() {
+    return getHttp().get("");
 }
 
 function getDistinctUnits() {

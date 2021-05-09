@@ -1,20 +1,23 @@
 import axios from "axios";
+import authHeader from "_helpers/auth-header";
+import {urlServer} from "_services/api";
 
-const http = axios.create({
-  baseURL: "http://localhost:5000/pagu",
-  headers: {
-    "Content-type": "application/json"
-  }
-});
-
-class PaguDataService {
-  getAllPagus() {
-    return http.get("");
-  }
-
-  updateAlokasiPagu(unit, subunit, ado, year, data) {
-    return http.post(`/${unit}/${subunit}/${ado}/${year}`, data);
-  }
+export const PaguDataService = {
+    getAllPagus,
+    updateAlokasiPagu,
 }
 
-export default new PaguDataService();
+function getHttp() {
+    return axios.create({
+        baseURL: (urlServer + "/pagu"),
+        headers: authHeader()
+    });
+}
+
+function getAllPagus() {
+  return getHttp().get("");
+}
+
+function updateAlokasiPagu(unit, subunit, ado, year, data) {
+  return getHttp().post(`/${unit}/${subunit}/${ado}/${year}`, data);
+}

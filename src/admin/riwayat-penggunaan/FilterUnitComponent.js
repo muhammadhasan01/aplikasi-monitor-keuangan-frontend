@@ -1,3 +1,5 @@
+import { Table, Button } from 'react-bootstrap';
+
 function FilterUnitComponent(props){
 
   function renderUnitOptions(){
@@ -50,7 +52,7 @@ function FilterUnitComponent(props){
       >
         {renderSubunitOptions()}
       </select>
-      <button onClick={props.onClickSortByDate}>Sort By Date</button>
+      <Button onClick={props.onClickSortByDate}>Sort By Date</Button>
     </div>
   )
 }

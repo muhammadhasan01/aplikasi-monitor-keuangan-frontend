@@ -1,10 +1,16 @@
+import { Button, Modal } from "react-bootstrap";
+
 function ConfirmActionPopup(props){
     return (
-      <div id="popup-form">
-        <h3>{props.title}</h3>
-        <button onClick={() => props.acceptAction()}>Yes</button>
-        <button onClick={() => props.cancelAction()}>No</button>
-      </div>
+      <Modal show onHide={() => props.cancelAction()} backdrop='static'>
+          <Modal.Header backdrop="static" centered>
+            <Modal.Title>{props.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+              <Button onClick={() => props.acceptAction()}>Submit</Button>
+              <Button onClick={() => props.cancelAction()}>Cancel</Button>
+          </Modal.Body>
+        </Modal>
     )
   }
 
