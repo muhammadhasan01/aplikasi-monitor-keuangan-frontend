@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { authenticationService } from "_services";
 
-class FormLogin extends Component {
+export class FormLogin extends Component {
 	constructor(props) {
 		super(props);
 		this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -40,7 +41,7 @@ class FormLogin extends Component {
 						<button type="submit" className="login-btn">
 							LOGIN
 						</button>
-						<div>Forget password?<div>
+						<Link to='forgot-password'>Forgot password?</Link>
 						<br/>
 						{this.state.invalid ? <div style={{color: 'red'}}>
 							Invalid username/password.
@@ -51,5 +52,3 @@ class FormLogin extends Component {
 		);
 	}
 }
-
-export default FormLogin;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { authenticationService } from "_services";
 
-class ResetPassword	 extends Component {
+export class ResetPassword extends Component {
 	constructor(props) {
 		super(props);
 		this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -13,9 +13,9 @@ class ResetPassword	 extends Component {
 
 	async onSubmitForm(e) {
 		e.preventDefault();
-		const {newPassword, newPasswordConfirmation } = e.target;
+		const { newPassword, newPasswordConfirmation } = e.target;
 		const data = {
-            username: props.match.params.username,
+            username: this.props.match.params.username,
 			newPassword: newPassword,
 			newPasswordConfirmation : newPasswordConfirmation
         };
@@ -49,5 +49,3 @@ class ResetPassword	 extends Component {
 		);
 	}
 }
-
-export default ResetPassword;

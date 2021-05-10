@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Container, Card, Form, Button } from 'react-bootstrap';
 import { authenticationService } from "_services";
 
-class ForgotPassword extends Component {
+export class ForgotPassword extends Component {
 	constructor(props) {
 		super(props);
 		this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -11,31 +13,30 @@ class ForgotPassword extends Component {
 		e.preventDefault();
 		const {username} = e.target;
 		authenticationService.sendResetLink(username.value).then(() => {
-            props.history.push("/");
+            this.props.history.push("/");
         });
 	}
 
 	render() {
 		return (
-			<div>
-				<div className="form-login-container">
-					<form onSubmit={this.onSubmitForm}>
-						<div>
-						Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.
-						</div>
-						<input type="text" name="username" placeholder="USERNAME" required /> <br />
-						<button type="submit" className="login-btn">
-							Send Email
-						</button>
-						<br />
-						{this.state.invalid ? <div style={{color: 'red'}}>
-							Invalid username.
-						</div> : null}
-					</form>
-				</div>
-			</div>
+			<Container className='d-flex justify-content-center align-items-center'>
+				<Card className='mt-5 text-center' style={{ width:'60%' }}>
+					<Card.Header as='h5'>Forgot Password</Card.Header>
+					<Card.Body>
+						<Form>
+							<Form.Group controlId='username-form'>
+								Lost your password? Please enter your username. <br />
+								You will receive a link to create a new password via registered email.
+								<Form.Control type='text' placeholder='Enter your username'/>
+							</Form.Group>
+							<Button type="submit">
+								Submit
+							</Button>
+						</Form>
+					</Card.Body>
+					<Card.Footer><Link to='login'>Back to login page</Link></Card.Footer>
+				</Card>
+			</Container>
 		);
 	}
 }
-
-export default ForgotPassword;
