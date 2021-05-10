@@ -5,7 +5,7 @@ import LineChartPengeluaran from "./LineChartPengeluaran/LineChartPengeluaran";
 class GrafikPengeluaran extends Component {
     render() {
         return (
-            <Container fluid className='mt-3'>
+            <Container fluid className='mt-4' style={{ width:'80%' }}>
                 <LineChartPengeluaran />
             </Container>
         );
