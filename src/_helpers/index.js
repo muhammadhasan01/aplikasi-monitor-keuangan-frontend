@@ -6,3 +6,4 @@ export * from './months.js';
 export * from './format-rupiah.js';
 export * from './rka/rka-helper.js';
 export * from './format-tanggal.js';
+export * from './string-to-color.js';

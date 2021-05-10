@@ -31,6 +31,7 @@ export default class ModalAksiPengeluaran extends Component {
                           <Button variant="success"
                                   className='col text-center m-2'
                                   onClick={handleConfirmation}
+                                  disabled={showMessage}
                           >
                               Ya
                           </Button>

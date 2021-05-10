@@ -1,41 +1,13 @@
 import React, { Component } from 'react';
-import { formatRupiah, formatTanggal } from "_helpers";
+import { Container } from 'react-bootstrap';
 import { pengeluaranDataService } from "_services";
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator'
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory from 'react-bootstrap-table2-filter';
 import ModalAksiPengeluaran from "./ModalAksiPengeluaran";
 import ButtonAksiPengeluaran from "./ButtonAksiPengeluaran";
 import { Reply, Trash } from 'react-bootstrap-icons';
-
-const title = "Pengeluaran Terakhir";
-const columns = [
-    {
-    dataField: 'tanggal',
-    text: 'Tanggal',
-    sort: true,
-    formatter: formatTanggal
-}, {
-    dataField: 'jumlah',
-    text: 'Jumlah',
-    sort: true,
-    formatter: formatRupiah
-}, {
-    dataField: 'unit',
-    text: 'Unit',
-    filter: textFilter()
-}, {
-    dataField: 'sub_unit',
-    text: 'Subunit',
-    filter: textFilter()
-}, {
-    dataField: 'rincian_belanja',
-    text: "Rencana Belanja",
-    filter: textFilter()
-}, {
-    dataField: 'action',
-    text: "Aksi"
-}];
+import { dataPengeluaranTable } from "./data-pengeluaran-table";
 
 class PengeluaranTerakhir extends Component {
     constructor(props) {
@@ -56,7 +28,6 @@ class PengeluaranTerakhir extends Component {
     retrievePengeluaran = () => {
         pengeluaranDataService.getAllPengeluaran()
             .then(response => {
-                console.log(response);
                 this.setState({ pengeluaran: response.data });
             })
             .catch(err => {
@@ -65,11 +36,13 @@ class PengeluaranTerakhir extends Component {
     }
 
     undoPengeluaran = () => {
-        const { IDPengeluaran } = this.state;
+        const { IDPengeluaran, pengeluaran } = this.state;
         pengeluaranDataService.undoPengeluaran(IDPengeluaran)
-            .then(response => {
-                console.log(response);
-                this.retrievePengeluaran();
+            .then(() => {
+                let curId = -1;
+                pengeluaran.forEach((p, id) => { if (p._id === IDPengeluaran) { curId = id; } });
+                pengeluaran.splice(curId, 1);
+                this.setState({ pengeluaran: pengeluaran })
                 this.setState({ showMessage: true });
             })
             .catch(err => {
@@ -78,11 +51,13 @@ class PengeluaranTerakhir extends Component {
     }
 
     removePengeluaran = () => {
-        const { IDPengeluaran } = this.state;
+        const { IDPengeluaran, pengeluaran } = this.state;
         pengeluaranDataService.removePengeluaran(IDPengeluaran)
-            .then(response => {
-                console.log(response);
-                this.retrievePengeluaran();
+            .then(() => {
+                let curId = -1;
+                pengeluaran.forEach((p, id) => { if (p._id === IDPengeluaran) { curId = id; } });
+                pengeluaran.splice(curId, 1);
+                this.setState({ pengeluaran: pengeluaran })
                 this.setState({ showMessage: true });
             }).catch(err => {
                 console.log(err);
@@ -96,17 +71,26 @@ class PengeluaranTerakhir extends Component {
 
     render() {
         const { showMessage, pengeluaran, showUndo, showRemove } = this.state;
-        if (!pengeluaran || pengeluaran.length === 0) {
-            return <h2>Belum ada pengeluaran terakhir</h2>
+        if (!pengeluaran) {
+            return <Container className='row d-flex justify-content-center'>
+                <h3 className='mx-5 pt-4'>Loading data pengeluaran...</h3>
+                <div className='loader'/>
+            </Container>
         }
+        if (pengeluaran.length === 0) {
+            return <h2 className='mx-5 pt-4'>Belum ada pengeluaran terakhir</h2>
+        }
+        const columns = dataPengeluaranTable.getColumns();
         const data = pengeluaran.map((p) => {
             const { _id, RKA: { unit, sub_unit, rincian_belanja }, jumlah, createdAt: tanggal } = p;
-            const undoButton = <ButtonAksiPengeluaran action={<Reply value={_id} />}
+            const undoButton = <ButtonAksiPengeluaran icon={<Reply />}
                                                       value={_id}
+                                                      action="Undo"
                                                       variant="warning"
                                                       handleAction={this.handleOpenUndo} />
-            const removeButton = <ButtonAksiPengeluaran action={<Trash value={_id} />}
+            const removeButton = <ButtonAksiPengeluaran icon={<Trash />}
                                                         value={_id}
+                                                        action="Delete"
                                                         variant="danger"
                                                         handleAction={this.handleOpenRemove}
                                     />
@@ -114,9 +98,10 @@ class PengeluaranTerakhir extends Component {
             return { _id, jumlah, unit, sub_unit, rincian_belanja, tanggal, action }
         });
         return (
-            <div className="p-5 mb-lg-5">
-                <h2>{title}</h2>
+            <Container fluid className='mt-4 mb-5' style={{ width:"90%" }}>
+                <h2>Pengeluaran Terakhir</h2>
                 <BootstrapTable
+                                classes='table-feature'
                                 striped
                                 bootstrap4
                                 keyField="id"
@@ -126,8 +111,6 @@ class PengeluaranTerakhir extends Component {
                                 pagination={ paginationFactory() } />
                 <ModalAksiPengeluaran
                     action="Undo"
-                    title="Konfirmasi Undo Pengeluaran"
-                    body="Apakah anda yakin ingin melakukan undo pengeluaran?"
                     show={showUndo}
                     showMessage={showMessage}
                     handleConfirmation={this.undoPengeluaran}
@@ -135,14 +118,12 @@ class PengeluaranTerakhir extends Component {
                 />
                 <ModalAksiPengeluaran
                     action="Delete"
-                    title="Konfirmasi Delete Pengeluaran"
-                    body="Apakah anda yakin ingin melakukan delete pengeluaran?"
                     show={showRemove}
                     showMessage={showMessage}
                     handleConfirmation={this.removePengeluaran}
                     handleClose={this.handleCloseRemove}
                 />
-            </div>
+            </Container>
         );
     }
 }

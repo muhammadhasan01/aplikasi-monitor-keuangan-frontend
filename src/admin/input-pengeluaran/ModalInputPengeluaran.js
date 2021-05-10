@@ -19,7 +19,8 @@ class ModalInputPengeluaran extends Component {
         return {
             RKA: nextProps.RKA,
             bulan: nextProps.bulan,
-            show: nextProps.show
+            show: nextProps.show,
+            showMessage: nextProps.showMessage
         };
     }
 
@@ -46,8 +47,8 @@ class ModalInputPengeluaran extends Component {
         };
         pengeluaranDataService.inputPengeluaranRKA(body)
             .then((response) => {
-                const { data } = response;
-                this.props.handleUpdateRKAs(data);
+                const { data: { RKA } } = response;
+                this.props.handleUpdateRKAs(RKA);
                 this.setState({ showMessage: true });
             }).catch((err) => {
                 console.log(err)
@@ -55,8 +56,10 @@ class ModalInputPengeluaran extends Component {
     }
 
     render() {
-        if (this.state.RKA == null) return null;
         const { RKA, bulan, show, showMessage } = this.state;
+        if (!RKA) {
+            return null;
+        }
         const { rincian_belanja: rincianBelanja } = RKA;
         const penggunaan = getPenggunaanBulan(RKA, bulan);
         const sisaAnggaran = getSisaAnggaranFromBulan(RKA, bulan);
@@ -95,7 +98,7 @@ class ModalInputPengeluaran extends Component {
                         </Form.Group>
                         <div className='container'>
                             <div className='row'>
-                                <Button variant="primary" type="submit"
+                                <Button type="submit"
                                         className='col text-center'
                                         onClick={this.handleClickInputPengeluaran}
                                 >
@@ -104,7 +107,7 @@ class ModalInputPengeluaran extends Component {
                             </div>
                         </div>
                     </Form>
-                    {showMessage ? <Alert className='mt-3' variant='success'>Successfully Updated!</Alert> : null}
+                    <Alert className='mt-3' show={showMessage} variant='success'>Successfully Updated!</Alert>
                 </Modal.Body>
             </Modal>
         );

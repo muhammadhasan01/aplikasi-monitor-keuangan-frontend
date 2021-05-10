@@ -15,9 +15,9 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.table-white {
-	background-color: rgb(120, 218, 255);
-	border-radius: 5px;
+.table-feature {
+	background-color: rgb(223, 235, 252);
+	border-radius:6px;
 }
 
 .header {
@@ -334,4 +334,18 @@ table,
 
 .w30 {
 	width: 30%;
+}
+
+.loader {
+	border: 16px solid #c6f6ee; /* Light grey */
+	border-top: 16px solid #24b198; /* Blue */
+	border-radius: 50%;
+	width: 5em;
+	height: 5em;
+	animation: spin 1.3s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
