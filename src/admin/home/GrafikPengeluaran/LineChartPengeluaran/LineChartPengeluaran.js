@@ -34,7 +34,12 @@ class LineChartPengeluaran extends Component {
 
     render() {
         const { RKAs, selectedYear } = this.state;
-        if (!RKAs) return <h3>Loading grafik...</h3>;
+        if (!RKAs) {
+            return <Container className='row d-flex justify-content-center'>
+                <h3 className='mx-5 pt-4'>Loading grafik...</h3>
+                <div className='loader'/>
+            </Container>
+        }
         const curYear = new Date().getFullYear();
         const years = [];
         for (let i = 0; i < 10; i++) years.push(curYear - i);

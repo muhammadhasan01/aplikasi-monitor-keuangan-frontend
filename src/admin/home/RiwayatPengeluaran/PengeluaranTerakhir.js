@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container } from 'react-bootstrap';
 import { pengeluaranDataService } from "_services";
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator'
@@ -71,7 +72,10 @@ class PengeluaranTerakhir extends Component {
     render() {
         const { showMessage, pengeluaran, showUndo, showRemove } = this.state;
         if (!pengeluaran) {
-            return <h3 className='mx-5 pt-4'>Loading...</h3>
+            return <Container className='row d-flex justify-content-center'>
+                <h3 className='mx-5 pt-4'>Loading data pengeluaran...</h3>
+                <div className='loader'/>
+            </Container>
         }
         if (pengeluaran.length === 0) {
             return <h2 className='mx-5 pt-4'>Belum ada pengeluaran terakhir</h2>
@@ -94,7 +98,7 @@ class PengeluaranTerakhir extends Component {
             return { _id, jumlah, unit, sub_unit, rincian_belanja, tanggal, action }
         });
         return (
-            <div className="p-5 mb-lg-5">
+            <Container fluid className='mt-4 mb-5' style={{ width:"90%" }}>
                 <h2>Pengeluaran Terakhir</h2>
                 <BootstrapTable
                                 classes='table-feature'
@@ -119,7 +123,7 @@ class PengeluaranTerakhir extends Component {
                     handleConfirmation={this.removePengeluaran}
                     handleClose={this.handleCloseRemove}
                 />
-            </div>
+            </Container>
         );
     }
 }
