@@ -40,7 +40,8 @@ class FormLogin extends Component {
 						<button type="submit" className="login-btn">
 							LOGIN
 						</button>
-						<br />
+						<div>Forget password?<div>
+						<br/>
 						{this.state.invalid ? <div style={{color: 'red'}}>
 							Invalid username/password.
 						</div> : null}

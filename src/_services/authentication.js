@@ -1,13 +1,15 @@
 import { BehaviorSubject } from 'rxjs';
-
 import { urlServer } from '_services';
 import { getUserFromToken, handleResponse } from '_helpers';
+import axios from "axios";
+import authHeader from "_helpers/auth-header";
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
 export const authenticationService = {
     login,
     logout,
+    sendResetLink,
     currentUser: currentUserSubject.asObservable(),
     get UserInformation() {
         return getUserFromToken(currentUserSubject.value);
@@ -39,4 +41,15 @@ function logout() {
     // Remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     currentUserSubject.next(null);
+}
+
+function getHttp() {
+    return axios.create({
+        baseURL: (urlServer + "/pagu"),
+        headers: authHeader()
+    });
+}
+
+function sendResetLink(data) {
+    return getHttp().post("/sendResetLink",data);
 }
