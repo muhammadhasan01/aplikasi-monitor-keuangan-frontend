@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AlertNotFoundRKA from "./AlertNotFoundRKA";
-import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Button, Tooltip, OverlayTrigger, Form, Col } from 'react-bootstrap';
 import { namaBulanIndonesia } from "_helpers";
 import ModalInputPengeluaran from "./ModalInputPengeluaran";
 import { tableData } from './rka-pengeluaran-table';
@@ -17,6 +17,7 @@ class RincianRKAPengeluaran extends Component {
         super(props);
         this.state = {
             timeSlot: 0,
+            year: null,
             RKAs: null,
             show: false,
             showMessage: false,
@@ -27,14 +28,15 @@ class RincianRKAPengeluaran extends Component {
     componentDidMount() {
         const currentMonth = new Date().getMonth();
         const curTimeSlot = namaBulanIndonesia[currentMonth];
-        this.setState({ timeSlot : curTimeSlot });
+        this.setState({ timeSlot : curTimeSlot, year : new Date().getFullYear() });
     }
 
     static getDerivedStateFromProps(nextProps) {
         return { RKAs: nextProps.RKAs };
     }
 
-    handleChangeTimeSlot = (e) => this.setState({ timeSlot: e.target.value })
+    handleChangeYear = ({ target: { value }}) => this.setState({ year: Number(value) })
+    handleChangeTimeSlot = ({ target: { value }}) => this.setState({ timeSlot: value })
     handleAction = ({ target: { value }}) => this.setState({ idxRKA: value, show: true })
     handleCloseModal = () => this.setState({ show: false, showMessage: false })
 
@@ -48,15 +50,20 @@ class RincianRKAPengeluaran extends Component {
         if (!this.props || !this.props.RKAs || !this.props.inputs) {
             return null;
         }
-        const { RKAs, show, showMessage, idxRKA } = this.state;
-        const { unit, subunit, ADO } = this.props.inputs;
-        const title = `Rincian RKA ${ADO} ${subunit} ${unit}`;
+        const { show, showMessage, idxRKA, year } = this.state;
+        let { RKAs } = this.state;
         if (RKAs.length === 0) {
             return <AlertNotFoundRKA heading={`Data Belum Ada`} body={`Data mengenai ${title} belum ada`}/>
         }
+        RKAs = RKAs.filter((RKA) => (RKA.year === year));
+        const { unit, subunit, ADO } = this.props.inputs;
+        const title = `Rincian RKA ${ADO} ${subunit} ${unit}`;
         const timeSlot = this.state.timeSlot;
         const lowCaseTimeSlot = timeSlot.toLowerCase();
         const columns = tableData.getColumns(timeSlot);
+        const curYear = new Date().getFullYear();
+        const years = [];
+        for (let i = 0; i < 10; i++) years.push(curYear - i);
         const data = RKAs.map((rka, idx) => {
             return {
                 "Rincian Belanja": rka.rincian_belanja,
@@ -78,15 +85,26 @@ class RincianRKAPengeluaran extends Component {
         return (
             <div>
                 <h2 className="mt-3">{title}</h2>
-                <label htmlFor="select-month">Pilih Bulan</label>
-                <select className="form-select form-select-sm" id="select-month"
-                        defaultValue={timeSlot} onChange={this.handleChangeTimeSlot}>
-                    { namaBulanIndonesia.map((bulan, ID) =>
-                        <option key={ID} value={bulan}>{bulan}</option>) }
-                </select>
-                <ToolkitProvider
-                    search
-                >
+                <Form>
+                    <Form.Row>
+                        <Form.Group as={Col} controlId="select-year-form">
+                            <Form.Label>Pilih Tahun</Form.Label>
+                            <Form.Control as="select" onChange={this.handleChangeYear}>
+                                {years.map((year, id) => {
+                                    return <option key={id} value={year}>{year}</option>
+                                })}
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="select-month-form">
+                            <Form.Label>Pilih Bulan</Form.Label>
+                            <Form.Control as="select" onChange={this.handleChangeTimeSlot} defaultValue={timeSlot}>
+                                { namaBulanIndonesia.map((bulan, ID) =>
+                                    <option key={ID} value={bulan}>{bulan}</option>) }
+                            </Form.Control>
+                        </Form.Group>
+                    </Form.Row>
+                </Form>
+                <ToolkitProvider search>
                     {
                         props => (
                             <div>
@@ -101,6 +119,7 @@ class RincianRKAPengeluaran extends Component {
                                     bootstrap4
                                     filter={filterFactory()}
                                     pagination={paginationFactory()}
+                                    noDataIndication={() => `Belum ada data pada tahun ${year}`}
                                 />
                             </div>
                         )
