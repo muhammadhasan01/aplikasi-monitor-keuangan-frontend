@@ -50,14 +50,14 @@ class RincianRKAPengeluaran extends Component {
         if (!this.props || !this.props.RKAs || !this.props.inputs) {
             return null;
         }
+        const { unit, subunit, ADO } = this.props.inputs;
+        const title = `Rincian RKA ${ADO} ${subunit} ${unit}`;
         const { show, showMessage, idxRKA, year } = this.state;
         let { RKAs } = this.state;
         if (RKAs.length === 0) {
             return <AlertNotFoundRKA heading={`Data Belum Ada`} body={`Data mengenai ${title} belum ada`}/>
         }
         RKAs = RKAs.filter((RKA) => (RKA.year === year));
-        const { unit, subunit, ADO } = this.props.inputs;
-        const title = `Rincian RKA ${ADO} ${subunit} ${unit}`;
         const timeSlot = this.state.timeSlot;
         const lowCaseTimeSlot = timeSlot.toLowerCase();
         const columns = tableData.getColumns(timeSlot);
