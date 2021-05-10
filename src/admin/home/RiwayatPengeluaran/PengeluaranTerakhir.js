@@ -1,41 +1,12 @@
 import React, { Component } from 'react';
-import { formatRupiah, formatTanggal } from "_helpers";
 import { pengeluaranDataService } from "_services";
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator'
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory from 'react-bootstrap-table2-filter';
 import ModalAksiPengeluaran from "./ModalAksiPengeluaran";
 import ButtonAksiPengeluaran from "./ButtonAksiPengeluaran";
 import { Reply, Trash } from 'react-bootstrap-icons';
-
-const title = "Pengeluaran Terakhir";
-const columns = [
-    {
-    dataField: 'tanggal',
-    text: 'Tanggal',
-    sort: true,
-    formatter: formatTanggal
-}, {
-    dataField: 'jumlah',
-    text: 'Jumlah',
-    sort: true,
-    formatter: formatRupiah
-}, {
-    dataField: 'unit',
-    text: 'Unit',
-    filter: textFilter()
-}, {
-    dataField: 'sub_unit',
-    text: 'Subunit',
-    filter: textFilter()
-}, {
-    dataField: 'rincian_belanja',
-    text: "Rencana Belanja",
-    filter: textFilter()
-}, {
-    dataField: 'action',
-    text: "Aksi"
-}];
+import { dataPengeluaranTable } from "./data-pengeluaran-table";
 
 class PengeluaranTerakhir extends Component {
     constructor(props) {
@@ -105,6 +76,7 @@ class PengeluaranTerakhir extends Component {
         if (pengeluaran.length === 0) {
             return <h2 className='mx-5 pt-4'>Belum ada pengeluaran terakhir</h2>
         }
+        const columns = dataPengeluaranTable.getColumns();
         const data = pengeluaran.map((p) => {
             const { _id, RKA: { unit, sub_unit, rincian_belanja }, jumlah, createdAt: tanggal } = p;
             const undoButton = <ButtonAksiPengeluaran icon={<Reply />}
@@ -123,7 +95,7 @@ class PengeluaranTerakhir extends Component {
         });
         return (
             <div className="p-5 mb-lg-5">
-                <h2>{title}</h2>
+                <h2>Pengeluaran Terakhir</h2>
                 <BootstrapTable
                                 classes='table-feature'
                                 striped
