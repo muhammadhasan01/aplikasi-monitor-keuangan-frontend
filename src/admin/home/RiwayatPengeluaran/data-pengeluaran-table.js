@@ -2,7 +2,6 @@ import { formatRupiah, formatTanggal } from "_helpers";
 import { textFilter } from "react-bootstrap-table2-filter";
 
 export const dataPengeluaranTable = {
-    haha: "haha",
     getColumns
 }
 
