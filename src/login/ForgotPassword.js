@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Container, Card, Form, Button } from 'react-bootstrap';
-import {AuthDataService} from "../_services/auth-service";
+import { AuthDataService } from "../_services/auth-service";
 
 export class ForgotPassword extends Component {
 	constructor(props) {
@@ -16,11 +16,11 @@ export class ForgotPassword extends Component {
 		AuthDataService.sendResetLink(body)
 			.then(resp => {
 				console.log(resp.data);
-				this.setState({ feedbackMessage: { status: "success", message: "Email sent successfully!"} })
+				this.setState({ feedbackMessage: { status: "success", message: "Email berhasil terkirim!" } })
 			})
 			.catch(err => {
 				console.log(err);
-				this.setState({ feedbackMessage: { status: "danger", message: "Something went wrong" } });
+				this.setState({ feedbackMessage: { status: "danger", message: "Terjadi kesalahan" } });
 			})
 	}
 
@@ -28,13 +28,13 @@ export class ForgotPassword extends Component {
 		const { feedbackMessage } = this.state;
 		return (
 			<Container className='d-flex justify-content-center align-items-center'>
-				<Card className='mt-5 text-center' style={{ width:'60%' }}>
-					<Card.Header as='h5'>Forgot Password</Card.Header>
+				<Card className='mt-5 text-center' style={{ width:'45%' }} bg='info' text='white'>
+					<Card.Header as='h5'>Lupa Kata Sandi</Card.Header>
 					<Card.Body>
 						<Form>
 							<Form.Group controlId='username-form'>
-								Lost your password? Please enter your username. <br />
-								You will receive a link to create a new password via registered email.
+								Masukkan <b>username</b> Anda!<br />
+								Anda akan mendapatkan <i>email</i> untuk melakukan pengubahan kata sandi.
 								<Form.Control required type='text' placeholder='Enter your username' ref={this.refUsername}/>
 							</Form.Group>
 							<Button onClick={this.handleSubmit}>
@@ -45,7 +45,7 @@ export class ForgotPassword extends Component {
 							{feedbackMessage.message}
 						</Alert>}
 					</Card.Body>
-					<Card.Footer><Link to='login'>Back to login page</Link></Card.Footer>
+					<Card.Footer><Link to='login' className='text-white'>Kembali ke halaman login</Link></Card.Footer>
 				</Card>
 			</Container>
 		);
