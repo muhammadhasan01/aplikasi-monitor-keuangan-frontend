@@ -25,7 +25,8 @@ import {
 
 import {
 	FormLogin,
-	ForgotPassword
+	ForgotPassword,
+	ResetPassword
 } from "./login";
 
 require('dotenv').config();
@@ -58,6 +59,7 @@ class App extends Component {
 				<Navigation userInfo={ currentUser } />
 				<Route exact path="/login" component={FormLogin} />
 				<Route exact path="/forgot-password" component={ForgotPassword} />
+				<Route exact path="/reset/:token" component={ResetPassword} />
 				<PrivateRoute exact path="/riwayat-pengeluaran"
 							  AdminComponent={RiwayatPenggunaan}
 							  UserType="Admin"

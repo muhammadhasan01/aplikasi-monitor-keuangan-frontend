@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { authenticationService } from "_services";
 import { Formik } from 'formik';
 import { configLoginFormik } from "./login-schema";
-import { Alert, Button, Card, Container, Form, InputGroup } from "react-bootstrap";
+import { Alert, Button, Card, Container, Form } from "react-bootstrap";
 import { AiOutlineUser } from "react-icons/all";
 import { RiLockPasswordFill } from "react-icons/all";
 
@@ -53,7 +53,8 @@ export class FormLogin extends Component {
 							}) => (
 								<Form noValidate onSubmit={handleSubmit}>
 									<Form.Group controlId='username-form'>
-										<Form.Label><AiOutlineUser/> Username</Form.Label>
+										<Form.Label className='d-flex justify-content-center align-items-center'>
+											<AiOutlineUser className='mr-1'/> Username</Form.Label>
 										<Form.Control required
 													  type="text"
 													  name="username"
@@ -67,7 +68,8 @@ export class FormLogin extends Component {
 										</Form.Control.Feedback>
 									</Form.Group>
 									<Form.Group controlId='password-form'>
-										<Form.Label><RiLockPasswordFill /> Kata Sandi</Form.Label>
+										<Form.Label className='d-flex justify-content-center align-items-center'>
+											<RiLockPasswordFill className='mr-1'/> Kata Sandi</Form.Label>
 										<Form.Control required
 													  type="password"
 													  name="password"
@@ -76,9 +78,6 @@ export class FormLogin extends Component {
 													  onChange={handleChange}
 													  isValid={!!errors.password}
 										/>
-										<Form.Control.Feedback type="invalid" tooltip>
-											{errors.password}
-										</Form.Control.Feedback>
 									</Form.Group>
 									<Button type='submit' variant="info">
 										Login
@@ -88,7 +87,7 @@ export class FormLogin extends Component {
 							)}
 						</Formik>
 					</Card.Body>
-					<Card.Footer><Link to='forgot-password' className='text-black-50'>Lupa kata sandi?</Link></Card.Footer>
+					<Card.Footer><Link to='/forgot-password' className='text-black-50'>Lupa kata sandi?</Link></Card.Footer>
 				</Card>
 			</Container>
 		);

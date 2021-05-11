@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Container, Card, Form, Button } from 'react-bootstrap';
-import { AuthDataService } from "../_services/auth-service";
+import { authenticationService, AuthDataService } from "_services";
 
 export class ForgotPassword extends Component {
 	constructor(props) {
 		super(props);
 		this.refUsername = React.createRef();
 		this.state = { feedbackMessage: null }
+
+		// redirect to home if already logged in
+		if (authenticationService.currentUserValue) {
+			this.props.history.push('/');
+		}
 	}
 
-	handleSubmit = () => {
+	handleSubmit = (e) => {
+		e.preventDefault();
 		const { current: { value }} = this.refUsername;
 		const body = { username: value };
 		AuthDataService.sendResetLink(body)
@@ -45,7 +51,7 @@ export class ForgotPassword extends Component {
 							{feedbackMessage.message}
 						</Alert>}
 					</Card.Body>
-					<Card.Footer><Link to='login' className='text-white'>Kembali ke halaman login</Link></Card.Footer>
+					<Card.Footer><Link to='/login' className='text-white'>Kembali ke halaman login</Link></Card.Footer>
 				</Card>
 			</Container>
 		);
