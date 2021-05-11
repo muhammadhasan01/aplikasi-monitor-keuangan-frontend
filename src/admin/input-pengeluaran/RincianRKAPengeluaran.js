@@ -106,16 +106,19 @@ class RincianRKAPengeluaran extends Component {
                         </Form.Group>
                     </Form.Row>
                 </Form>
-                <ToolkitProvider search>
+                <ToolkitProvider
+                    keyField="id"
+                    data={ data }
+                    columns={ columns }
+                    search>
                     {
                         props => (
-                            <div>
+                            <div className='mb-5'>
+                                <h6>Lakukan pencarian RKA</h6>
                                 <SearchBar { ...props.searchProps } />
                                 <hr />
                                 <BootstrapTable
-                                    keyField="id"
-                                    data={ data }
-                                    columns={ columns }
+                                    { ...props.baseProps }
                                     classes='table-feature'
                                     striped
                                     bootstrap4
