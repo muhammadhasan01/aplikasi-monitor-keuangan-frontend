@@ -9,7 +9,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import BootstrapTable from "react-bootstrap-table-next";
 import { MdInput } from 'react-icons/md';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-
+import ModalTambahAlokasi from "./ModalTambahAlokasi";
 const { SearchBar } = Search;
 
 class RincianRKAPengeluaran extends Component {
@@ -21,7 +21,7 @@ class RincianRKAPengeluaran extends Component {
             RKAs: null,
             show: false,
             showMessage: false,
-            idxRKA: null,
+            idxRKA: 0,
         }
     }
 
@@ -37,7 +37,7 @@ class RincianRKAPengeluaran extends Component {
 
     handleChangeYear = ({ target: { value }}) => this.setState({ year: Number(value) })
     handleChangeTimeSlot = ({ target: { value }}) => this.setState({ timeSlot: value })
-    handleAction = ({ target: { value }}) => this.setState({ idxRKA: value, show: true })
+    handleAction = (value) => this.setState({ idxRKA: value, show: true })
     handleCloseModal = () => this.setState({ show: false, showMessage: false })
 
     handleUpdateRKAs = (RKA) => {
@@ -78,7 +78,7 @@ class RincianRKAPengeluaran extends Component {
                                 Input Pengeluaran
                             </Tooltip>
                         }>
-                        <Button onClick={this.handleAction} value={idx}><MdInput /></Button>
+                        <Button key={idx} onClick={() => this.handleAction(idx)}><MdInput /></Button>
                     </OverlayTrigger>
             };
         })
@@ -131,6 +131,12 @@ class RincianRKAPengeluaran extends Component {
                                         showMessage={showMessage}
                                         handleClose={this.handleCloseModal}
                                         handleUpdateRKAs={this.handleUpdateRKAs}
+                />
+                <ModalTambahAlokasi
+                    show={true}
+                    bulan={timeSlot}
+                    RKA={RKAs[idxRKA]}
+                    showMessage={true}
                 />
             </div>
         )
