@@ -3,7 +3,8 @@ import authHeader from "_helpers/auth-header";
 import {urlServer} from "_services/api";
 
 export const AuthDataService = {
-    sendResetLink
+    sendResetLink,
+    resetPassword
 }
 
 function getHttp() {
@@ -15,4 +16,8 @@ function getHttp() {
 
 function sendResetLink(body) {
     return getHttp().post("/send-reset-link", body);
+}
+
+function resetPassword(body) {
+    return getHttp().post("/reset-password", body);
 }

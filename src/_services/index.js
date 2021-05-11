@@ -7,3 +7,4 @@ export * from './ado-service.js';
 export * from './rka-service.js';
 export * from './pagu-service.js';
 export * from './pengeluaran-service.js';
+export * from './auth-service.js';
