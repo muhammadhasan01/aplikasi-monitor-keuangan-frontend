@@ -8,6 +8,7 @@ import filterFactory from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import BootstrapTable from "react-bootstrap-table-next";
 import { MdInput } from 'react-icons/md';
+import { BsPlusSquare } from "react-icons/all";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import ModalTambahAlokasi from "./ModalTambahAlokasi";
 const { SearchBar } = Search;
@@ -19,9 +20,10 @@ class RincianRKAPengeluaran extends Component {
             timeSlot: 0,
             year: null,
             RKAs: null,
-            show: false,
-            showMessage: false,
+            showInput: false,
+            showAlokasi: false,
             idxRKA: 0,
+            bulanAlokasi: null
         }
     }
 
@@ -37,13 +39,16 @@ class RincianRKAPengeluaran extends Component {
 
     handleChangeYear = ({ target: { value }}) => this.setState({ year: Number(value) })
     handleChangeTimeSlot = ({ target: { value }}) => this.setState({ timeSlot: value })
-    handleAction = (value) => this.setState({ idxRKA: value, show: true })
-    handleCloseModal = () => this.setState({ show: false, showMessage: false })
+    handleOpenInput = (value) => this.setState({ idxRKA: value, showInput: true })
+    handleOpenAlokasi = (value) => this.setState({ idxRKA: value, showAlokasi: true })
+    handleCloseModalInput = () => this.setState({ showInput: false })
+    handleCloseModalAlokasi = () => this.setState({ showAlokasi: false })
+    handleBulanAlokasi = (value) => this.setState({ bulanAlokasi: value })
 
     handleUpdateRKAs = (RKA) => {
         const { RKAs, idxRKA } = this.state;
         RKAs[idxRKA] = RKA;
-        this.setState({ RKAs: RKAs, showMessage: true });
+        this.setState({ RKAs: RKAs });
     }
 
     render() {
@@ -52,11 +57,10 @@ class RincianRKAPengeluaran extends Component {
         }
         const { unit, subunit, ADO } = this.props.inputs;
         const title = `Rincian RKA ${ADO} ${subunit} ${unit}`;
-        const { show, showMessage, idxRKA, year } = this.state;
+        const { showInput, showAlokasi, idxRKA, year, bulanAlokasi } = this.state;
         let { RKAs } = this.state;
-        if (RKAs.length === 0) {
+        if (RKAs.length === 0)
             return <AlertNotFoundRKA heading={`Data Belum Ada`} body={`Data mengenai ${title} belum ada`}/>
-        }
         RKAs = RKAs.filter((RKA) => (RKA.year === year));
         const timeSlot = this.state.timeSlot;
         const lowCaseTimeSlot = timeSlot.toLowerCase();
@@ -71,15 +75,16 @@ class RincianRKAPengeluaran extends Component {
                 "Alokasi Bulan": rka.rancangan[lowCaseTimeSlot],
                 "Penggunaan Bulan": rka.penggunaan[lowCaseTimeSlot],
                 "Sisa Anggaran Bulan": rka.rancangan[lowCaseTimeSlot] - rka.penggunaan[lowCaseTimeSlot],
-                "Aksi":
-                    <OverlayTrigger key="bottom"  placement="bottom"
-                        overlay={
-                            <Tooltip id="tooltip-bottom">
-                                Input Pengeluaran
-                            </Tooltip>
-                        }>
-                        <Button key={idx} onClick={() => this.handleAction(idx)}><MdInput /></Button>
-                    </OverlayTrigger>
+                "Aksi": (
+                    <React.Fragment>
+                        <OverlayTrigger key="bottom-1"  placement="bottom" overlay={<Tooltip id="tooltip-bottom">Input Pengeluaran</Tooltip>}>
+                            <Button key={idx} className='m-1' onClick={() => this.handleOpenInput(idx)}><MdInput /></Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger key="bottom-2"  placement="bottom" overlay={<Tooltip id="tooltip-bottom">Tambah Alokasi</Tooltip>}>
+                            <Button key={idx} className='m-1' variant="success" onClick={() => this.handleOpenAlokasi(idx)}><BsPlusSquare /></Button>
+                        </OverlayTrigger>
+                    </React.Fragment>
+                    )
             };
         })
         return (
@@ -90,16 +95,13 @@ class RincianRKAPengeluaran extends Component {
                         <Form.Group as={Col} controlId="select-year-form">
                             <Form.Label>Pilih Tahun</Form.Label>
                             <Form.Control as="select" onChange={this.handleChangeYear}>
-                                {years.map((year, id) => {
-                                    return <option key={id} value={year}>{year}</option>
-                                })}
+                                {years.map((year, id) =>  <option key={id} value={year}>{year}</option> )}
                             </Form.Control>
                         </Form.Group>
                         <Form.Group as={Col} controlId="select-month-form">
                             <Form.Label>Pilih Bulan</Form.Label>
                             <Form.Control as="select" onChange={this.handleChangeTimeSlot} defaultValue={timeSlot}>
-                                { namaBulanIndonesia.map((bulan, ID) =>
-                                    <option key={ID} value={bulan}>{bulan}</option>) }
+                                { namaBulanIndonesia.map((bulan, ID) => <option key={ID} value={bulan}>{bulan}</option>) }
                             </Form.Control>
                         </Form.Group>
                     </Form.Row>
@@ -127,16 +129,18 @@ class RincianRKAPengeluaran extends Component {
                 </ToolkitProvider>
                 <ModalInputPengeluaran  RKA={RKAs[idxRKA]}
                                         bulan={timeSlot}
-                                        show={show}
-                                        showMessage={showMessage}
-                                        handleClose={this.handleCloseModal}
+                                        show={showInput}
+                                        handleClose={this.handleCloseModalInput}
                                         handleUpdateRKAs={this.handleUpdateRKAs}
                 />
                 <ModalTambahAlokasi
-                    show={true}
-                    bulan={timeSlot}
                     RKA={RKAs[idxRKA]}
-                    showMessage={true}
+                    bulan={timeSlot}
+                    show={showAlokasi}
+                    handleUpdateRKAs={this.handleUpdateRKAs}
+                    handleClose={this.handleCloseModalAlokasi}
+                    selectedBulan={bulanAlokasi}
+                    updateSelectedBulan={this.handleBulanAlokasi}
                 />
             </div>
         )

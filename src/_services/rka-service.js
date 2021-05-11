@@ -6,7 +6,8 @@ export const RKADataService = {
     getAllRKA,
     getRKAUnitADO,
     loadAllRKA,
-    createRKA
+    createRKA,
+    ambilAlokasi
 }
 
 function getHttp() {
@@ -30,4 +31,8 @@ function loadAllRKA(unit, subunit){
 
 function createRKA(unit, subunit, body){
     return getHttp().post(`/${unit}/${subunit}`, body);
+}
+
+function ambilAlokasi(id, body) {
+    return getHttp().post(`/tambah/alokasi/${id}`, body);
 }

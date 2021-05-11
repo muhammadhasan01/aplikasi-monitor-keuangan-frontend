@@ -11,22 +11,20 @@ class ModalInputPengeluaran extends Component {
             bulan: null,
             inputPengeluaran: 0,
             show: false,
-            showMessage: false
+            feedback: null
         };
     }
 
-    static getDerivedStateFromProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, state) {
         return {
             RKA: nextProps.RKA,
             bulan: nextProps.bulan,
             show: nextProps.show,
-            showMessage: nextProps.showMessage
         };
     }
 
-    handleInputPengeluaran = ({ target: { value } }) => {
-        this.setState({ inputPengeluaran: Number(value) });
-    }
+    handleInputPengeluaran = ({ target: { value } }) => this.setState({ inputPengeluaran: Number(value) })
+    handleCloseAlert = () => this.setState({ feedback: null })
 
     handleClickInputPengeluaran = (e) => {
         e.preventDefault();
@@ -49,14 +47,15 @@ class ModalInputPengeluaran extends Component {
             .then((response) => {
                 const { data: { RKA } } = response;
                 this.props.handleUpdateRKAs(RKA);
-                this.setState({ showMessage: true });
+                this.setState({ feedback: { status: "success", message: "Pengeluaran berhasil dimasukkan!" }});
             }).catch((err) => {
                 console.log(err)
+                this.setState({ feedback: { status: "danger", message: "Terjadi kesalahan" } });
         })
     }
 
     render() {
-        const { RKA, bulan, show, showMessage } = this.state;
+        const { RKA, bulan, show, feedback } = this.state;
         if (!RKA) {
             return null;
         }
@@ -107,7 +106,12 @@ class ModalInputPengeluaran extends Component {
                             </div>
                         </div>
                     </Form>
-                    <Alert className='mt-3' show={showMessage} variant='success'>Successfully Updated!</Alert>
+                    {!!feedback &&
+                    <Alert className='mt-3'
+                           onClose={this.handleCloseAlert}
+                           dismissible
+                           variant={feedback.status}>{feedback.message}</Alert>
+                    }
                 </Modal.Body>
             </Modal>
         );
