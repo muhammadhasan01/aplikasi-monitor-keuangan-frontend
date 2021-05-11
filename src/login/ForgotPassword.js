@@ -16,6 +16,7 @@ export class ForgotPassword extends Component {
 	}
 
 	handleSubmit = (e) => {
+		console.log(e);
 		e.preventDefault();
 		const { current: { value }} = this.refUsername;
 		const body = { username: value };
