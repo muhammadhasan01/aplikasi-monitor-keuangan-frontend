@@ -37,7 +37,7 @@ export class FormLogin extends Component {
 		const { invalid } = this.state;
 		return (
 			<Container className='d-flex justify-content-center align-items-center'>
-				<Card className='mt-5 text-center' style={{ width:'45%' }} bg='primary' text='white'>
+				<Card className='mt-5 text-center' style={{ width:'45%' }} bg='light'>
 					<Card.Header as='h5'>Login</Card.Header>
 					<Card.Body>
 						<Formik
@@ -88,7 +88,7 @@ export class FormLogin extends Component {
 							)}
 						</Formik>
 					</Card.Body>
-					<Card.Footer><Link to='forgot-password' className='text-white'>Lupa kata sandi?</Link></Card.Footer>
+					<Card.Footer><Link to='forgot-password' className='text-black-50'>Lupa kata sandi?</Link></Card.Footer>
 				</Card>
 			</Container>
 		);
