@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { Image } from 'react-bootstrap';
 
 export class Header extends Component {
     showUserInfo(userInfo) {
@@ -7,7 +8,6 @@ export class Header extends Component {
             <div style={{ textAlign: "right" }}>
                 {name} <br />
                 {type === "Admin" ? "Administrator" : unit + " - " + subunit}
-
             </div>
         )
     }
@@ -15,7 +15,7 @@ export class Header extends Component {
     render() {
         return (
         	<div className="header">
-                <img src="./Logo_STEI.png" name="logo" alt="Logo STEI"/>
+                <Image src="https://avatars.githubusercontent.com/u/8663791?s=280&v=4" />
                 <h1>Sistem Monitoring Anggaran</h1>
                 Sekolah Teknik Elektro dan Informatika <br/>
                 Institut Teknologi Bandung <br />
