@@ -13,7 +13,7 @@ import {
   RiwayatPenggunaan,
 } from "admin";
 
-import { User, RKAMain } from "user";
+import { User, RKAMain, RiwayatKeuangan } from "user";
 
 import { Header, Navigation } from "_components";
 
@@ -78,15 +78,21 @@ class App extends Component {
         />
         <PrivateRoute
           exact
-          path="/pengisian-rka"
-          UserComponent={RKAMain}
+          path="/pagu-anggaran"
+          AdminComponent={PaguAnggaran}
+          UserType="Admin"
+        />
+        <PrivateRoute
+          exact
+          path="/riwayat-keuangan"
+          UserComponent={RiwayatKeuangan}
           UserType="User"
         />
         <PrivateRoute
           exact
-          path="/pagu-anggaran"
-          AdminComponent={PaguAnggaran}
-          UserType="Admin"
+          path="/pengisian-rka"
+          UserComponent={RKAMain}
+          UserType="User"
         />
       </Router>
     );
