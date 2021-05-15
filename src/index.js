@@ -1,14 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './style.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./style.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
-ReactDOM.render(
-		<App />,
-	document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

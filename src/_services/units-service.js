@@ -3,31 +3,31 @@ import authHeader from "_helpers/auth-header";
 import { urlServer } from "_services/api";
 
 export const UnitsDataService = {
-    getUnits,
-    getDistinctUnits,
-    getSubUnits,
-    getUnitByID
-}
+  getUnits,
+  getDistinctUnits,
+  getSubUnits,
+  getUnitByID,
+};
 
 function getHttp() {
-    return axios.create({
-        baseURL: (urlServer + "/units"),
-        headers: authHeader()
-    });
+  return axios.create({
+    baseURL: urlServer + "/units",
+    headers: authHeader(),
+  });
 }
 
 function getUnits() {
-    return getHttp().get("");
+  return getHttp().get("");
 }
 
 function getDistinctUnits() {
-    return getHttp().get("/d");
+  return getHttp().get("/d");
 }
 
 function getSubUnits() {
-    return getHttp().get("/subunits");
+  return getHttp().get("/subunits");
 }
 
 function getUnitByID(id) {
-    return getHttp().get(`/${id}`);
+  return getHttp().get(`/${id}`);
 }

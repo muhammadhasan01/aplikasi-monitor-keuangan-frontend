@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ADODataService, UnitsDataService, PaguDataService } from "_services";
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button } from "react-bootstrap";
 import ConfirmActionPopup from "./ConfirmActionPopup";
 import NewADOForm from "./NewADOForm";
 import EditPaguForm from "./EditPaguForm";
@@ -16,7 +16,7 @@ export class PaguAnggaran extends Component {
       Units: [],
       currentUnit: {
         unit: "",
-        sub_unit: ""
+        sub_unit: "",
       },
       editMode: false,
       showConfirmActionModal: false,
@@ -25,7 +25,7 @@ export class PaguAnggaran extends Component {
         name: "",
         detail: "",
       },
-      showEditPaguForm: false
+      showEditPaguForm: false,
     };
   }
 
@@ -41,127 +41,127 @@ export class PaguAnggaran extends Component {
 
   retrieveADOs() {
     ADODataService.getDistinctADO()
-      .then(response => {
+      .then((response) => {
         this.setState({
-          ADOs: response.data
+          ADOs: response.data,
         });
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
 
   retrievePagus() {
     PaguDataService.getAllPagus()
-      .then(response => {
+      .then((response) => {
         this.setState({
-          Pagus: response.data
+          Pagus: response.data,
         });
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
 
   retrieveUnits() {
     UnitsDataService.getUnits()
-      .then(response => {
+      .then((response) => {
         this.setState({
-          Units: response.data
+          Units: response.data,
         });
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
 
-  resetStates(){
+  resetStates() {
     this.setState({
       editMode: false,
       currentUnit: {
         unit: "",
-        sub_unit: ""
+        sub_unit: "",
       },
       currentAction: "",
       showConfirmAction: false,
       showNewADOForm: false,
-      showEditPaguForm: false
-    })
+      showEditPaguForm: false,
+    });
   }
 
-  showConfirmActionModal(){
+  showConfirmActionModal() {
     this.setState({
       showConfirmActionModal: true,
-    })
+    });
   }
 
-  hideConfirmActionModal(){
+  hideConfirmActionModal() {
     this.setState({
       showConfirmActionModal: false,
-    })
+    });
   }
 
-  showNewADOForm(){
+  showNewADOForm() {
     this.setState({
       currentAction: "Add New ADO",
-      showNewADOForm: true
+      showNewADOForm: true,
     });
     console.log(this.state);
   }
 
-  hideNewADOForm(){
+  hideNewADOForm() {
     this.setState({
-      showNewADOForm: false
-    })
+      showNewADOForm: false,
+    });
   }
 
-  submitNewADO(){
+  submitNewADO() {
     const data = {
       name: this.state.newADO.name,
-      detail: this.state.newADO.detail
-    }
+      detail: this.state.newADO.detail,
+    };
     console.log(data);
     ADODataService.createADO(data)
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
     this.hideNewADOForm();
     this.resetStates();
   }
 
-  onChangeADOName(e){
+  onChangeADOName(e) {
     const name = e.target.value;
 
-    this.setState(function(prevState) {
+    this.setState(function (prevState) {
       return {
         newADO: {
           ...prevState.newADO,
-          name: name
-        }
+          name: name,
+        },
       };
     });
   }
 
-  onChangeADODetail(e){
+  onChangeADODetail(e) {
     const detail = e.target.value;
 
-    this.setState(function(prevState) {
+    this.setState(function (prevState) {
       return {
         newADO: {
           ...prevState.newADO,
-          detail: detail
-        }
+          detail: detail,
+        },
       };
     });
   }
 
-  showEditPaguForm(e){
+  showEditPaguForm(e) {
     const unit = e.data.unit;
     const sub_unit = e.data.subunit;
     console.log(e);
@@ -171,93 +171,95 @@ export class PaguAnggaran extends Component {
         unit: unit,
         sub_unit: sub_unit,
       },
-      showEditPaguForm: true
+      showEditPaguForm: true,
     });
     console.log(this.state.currentUnit);
   }
 
-  hideEditPaguForm(){
+  hideEditPaguForm() {
     this.setState({
-      showEditPaguForm: false
-    })
+      showEditPaguForm: false,
+    });
   }
 
-  showEditPagu(){
+  showEditPagu() {
     this.setState({
       currentAction: "Edit Pagus",
-      editMode: true
-    })
+      editMode: true,
+    });
   }
 
-  hideEditPagu(){
+  hideEditPagu() {
     this.setState({
-      editMode: false
-    })
+      editMode: false,
+    });
   }
 
-  submitEditPagu(){
+  submitEditPagu() {
     let pagu_list = this.state.Pagus;
-    pagu_list.forEach(pagu =>{
-      if(pagu.changed){
+    pagu_list.forEach((pagu) => {
+      if (pagu.changed) {
         const unit = pagu.unit;
         const subunit = pagu.subunit;
         const ado = pagu.ADO;
         const year = pagu.year;
         const data = {
-          alokasi: pagu.alokasi
-        }
+          alokasi: pagu.alokasi,
+        };
         PaguDataService.updateAlokasiPagu(unit, subunit, ado, year, data)
-        .then(response => {
-          console.log(response.data);
-          this.hideEditPagu();
-        })
-        .catch(e => {
-          console.log(e);
-          this.hideEditPagu();
-        });
+          .then((response) => {
+            console.log(response.data);
+            this.hideEditPagu();
+          })
+          .catch((e) => {
+            console.log(e);
+            this.hideEditPagu();
+          });
       }
-    })
+    });
     this.resetStates();
   }
 
-  renderADOs(){
+  renderADOs() {
     let ado_elements = [];
     let ado_list = this.state.ADOs;
-    ado_list.forEach(ado =>{
+    ado_list.forEach((ado) => {
       ado_elements.push(
-        <th><p>{ado}</p></th>
+        <th>
+          <p>{ado}</p>
+        </th>
       );
     });
     return ado_elements;
   }
 
-  onChangePagu(e){
-    console.log(e.target.id)
+  onChangePagu(e) {
+    console.log(e.target.id);
     let pagu_list = this.state.Pagus;
-    pagu_list.forEach(pagu =>{
+    pagu_list.forEach((pagu) => {
       let name = pagu.unit + " " + pagu.subunit + " " + pagu.ADO;
-      if(name === e.target.id){
+      if (name === e.target.id) {
         pagu.alokasi = e.target.value;
         pagu.changed = true;
         console.log(name);
-        console.log(pagu.alokasi)
+        console.log(pagu.alokasi);
       }
-    })
+    });
     this.setState({
-      Pagus: pagu_list
-    })
+      Pagus: pagu_list,
+    });
   }
 
-  renderPagus(){
+  renderPagus() {
     let pagu_elements = [];
     let ado_list = this.state.ADOs;
     let pagu_list = this.state.Pagus;
     let unit_list = this.state.Units;
     let editMode = this.state.editMode;
-    unit_list.forEach(unit =>{
+    unit_list.forEach((unit) => {
       let total_anggaran = 0;
       let ados = [];
-      ado_list.forEach(ado =>{
+      ado_list.forEach((ado) => {
         let obj = {};
         obj.name = ado;
         obj.alokasi = 0;
@@ -265,10 +267,10 @@ export class PaguAnggaran extends Component {
       });
 
       let filtered_list = pagu_list
-              .filter((e) => e.unit === unit.unit)
-              .filter((e) => e.subunit === unit.subunit);
-              
-      filtered_list.forEach(pagu =>{
+        .filter((e) => e.unit === unit.unit)
+        .filter((e) => e.subunit === unit.subunit);
+
+      filtered_list.forEach((pagu) => {
         ados.find((e) => e.name === pagu.ADO).alokasi = pagu.alokasi;
         total_anggaran += Number.parseInt(pagu.alokasi);
       });
@@ -288,42 +290,64 @@ export class PaguAnggaran extends Component {
   }
 
   render() {
-    const { ADOs, Pagus, editMode, showNewADOForm, showEditPaguForm, showConfirmActionModal, 
-      currentUnit, newADO } = this.state;
+    const {
+      ADOs,
+      Pagus,
+      editMode,
+      showNewADOForm,
+      showEditPaguForm,
+      showConfirmActionModal,
+      currentUnit,
+      newADO,
+    } = this.state;
 
     return (
       <div id="pagu-anggaran">
         <div id="pagu-list">
           <h4>Pagu Anggaran</h4>
           {editMode ? (
-            ''
+            ""
           ) : (
             <div>
               <Button onClick={() => this.showNewADOForm()}>+ ADO</Button>
               <Button onClick={() => this.showEditPagu()}>Edit Pagu</Button>
             </div>
-          )
-          }
-          <Table responsive striped bordered hover style={{backgroundColor: 'white'}}>
+          )}
+          <Table
+            responsive
+            striped
+            bordered
+            hover
+            style={{ backgroundColor: "white" }}
+          >
             <tr>
-              <th><p>Unit</p></th>
-              <th><p>Subunit</p></th>
+              <th>
+                <p>Unit</p>
+              </th>
+              <th>
+                <p>Subunit</p>
+              </th>
               {this.renderADOs()}
-              <th><p>Total</p></th>
-              <th><p>Edit</p></th>
+              <th>
+                <p>Total</p>
+              </th>
+              <th>
+                <p>Edit</p>
+              </th>
             </tr>
             {this.renderPagus()}
           </Table>
         </div>
         {editMode ? (
           <>
-            <Button onClick={() => this.showConfirmActionModal()}>Submit</Button>
+            <Button onClick={() => this.showConfirmActionModal()}>
+              Submit
+            </Button>
             <Button onClick={() => this.hideEditPagu()}>Cancel</Button>
           </>
-          ) : (
-            ''
-          )
-        }
+        ) : (
+          ""
+        )}
         {showNewADOForm ? (
           <NewADOForm
             name={newADO.name}
@@ -333,30 +357,28 @@ export class PaguAnggaran extends Component {
             hide={() => this.hideNewADOForm()}
             submit={() => this.submitNewADO()}
           />
-          ) : (
-            ''
-          )
-        }
+        ) : (
+          ""
+        )}
         {showEditPaguForm ? (
-            <EditPaguForm
-              selectedUnit={currentUnit}
-              ados={ADOs}
-              pagus={Pagus}
-              onChange={(e) => this.onChangePagu(e)}
-              hide={() => this.hideEditPaguForm()}
-              submit={() => this.submitEditPagu()}
-            />
-          ) : (
-            ''
-          )
-        }
-        {showConfirmActionModal ?
-            <ConfirmActionPopup
-              title="Edit All Pagus"
-              acceptAction={() => this.submitEditPagu()}
-              cancelAction={() => this.hideConfirmActionModal()}
-            /> : null
-          }
+          <EditPaguForm
+            selectedUnit={currentUnit}
+            ados={ADOs}
+            pagus={Pagus}
+            onChange={(e) => this.onChangePagu(e)}
+            hide={() => this.hideEditPaguForm()}
+            submit={() => this.submitEditPagu()}
+          />
+        ) : (
+          ""
+        )}
+        {showConfirmActionModal ? (
+          <ConfirmActionPopup
+            title="Edit All Pagus"
+            acceptAction={() => this.submitEditPagu()}
+            cancelAction={() => this.hideConfirmActionModal()}
+          />
+        ) : null}
       </div>
     );
   }

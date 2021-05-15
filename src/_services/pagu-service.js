@@ -1,17 +1,17 @@
 import axios from "axios";
 import authHeader from "_helpers/auth-header";
-import {urlServer} from "_services/api";
+import { urlServer } from "_services/api";
 
 export const PaguDataService = {
-    getAllPagus,
-    updateAlokasiPagu,
-}
+  getAllPagus,
+  updateAlokasiPagu,
+};
 
 function getHttp() {
-    return axios.create({
-        baseURL: (urlServer + "/pagu"),
-        headers: authHeader()
-    });
+  return axios.create({
+    baseURL: urlServer + "/pagu",
+    headers: authHeader(),
+  });
 }
 
 function getAllPagus() {
