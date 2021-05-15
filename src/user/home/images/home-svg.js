@@ -19,7 +19,6 @@ export default class HomeSVG extends Component {
         height={459.37952 * scale}
         viewBox="0 0 889.07556 459.37952"
       >
-        <title>welcome_cats</title>
         <ellipse
           cx="444.53778"
           cy="398.16856"
