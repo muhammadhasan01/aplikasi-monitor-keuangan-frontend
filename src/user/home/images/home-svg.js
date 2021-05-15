@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 
 export default class HomeSVG extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     let { scale } = this.props;
     if (!scale) {
