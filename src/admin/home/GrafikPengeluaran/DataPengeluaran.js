@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
 import LineChartPengeluaran from "./LineChartPengeluaran/LineChartPengeluaran";
+import { TabelPengeluaran } from "./TabelPengeluaran/TabelPengeluaran";
 
-class GrafikPengeluaran extends Component {
+class DataPengeluaran extends Component {
   render() {
     return (
-      <Container fluid className="mt-4" style={{ width: "80%" }}>
+      <Container fluid>
         <LineChartPengeluaran />
+        <TabelPengeluaran />
       </Container>
     );
   }
 }
 
-export default GrafikPengeluaran;
+export default DataPengeluaran;
