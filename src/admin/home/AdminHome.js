@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
-import PengeluaranTerakhir from "./RiwayatPengeluaran/PengeluaranTerakhir";
-import GrafikPengeluaran from "./GrafikPengeluaran/GrafikPengeluaran";
+import DataPengeluaran from "./GrafikPengeluaran/DataPengeluaran";
 
 export class AdminHome extends Component {
   render() {
     return (
       <Container fluid>
-        <GrafikPengeluaran />
-        <PengeluaranTerakhir />
+        <DataPengeluaran />
       </Container>
     );
   }

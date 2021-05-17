@@ -49,7 +49,7 @@ class LineChartPengeluaran extends Component {
     const data = dataLineChartPengeluaran.getData(RKAs, selectedYear);
     const options = dataLineChartPengeluaran.getOptions();
     return (
-      <Container fluid>
+      <Container fluid className="mt-4" style={{ width: "80%" }}>
         <h2>Line Chart Pengeluaran</h2>
         <Form>
           <Form.Group controlId="select-year-form">

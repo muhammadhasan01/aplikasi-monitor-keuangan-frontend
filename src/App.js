@@ -10,7 +10,7 @@ import {
   AdminPengurusanAkun,
   AdminInputPengeluaran,
   PaguAnggaran,
-  RiwayatPenggunaan,
+  RiwayatPengeluaran,
 } from "admin";
 
 import { User, RKAMain, RiwayatKeuangan } from "user";
@@ -55,7 +55,7 @@ class App extends Component {
         <PrivateRoute
           exact
           path="/riwayat-pengeluaran"
-          AdminComponent={RiwayatPenggunaan}
+          AdminComponent={RiwayatPengeluaran}
           UserType="Admin"
         />
         <PrivateRoute
