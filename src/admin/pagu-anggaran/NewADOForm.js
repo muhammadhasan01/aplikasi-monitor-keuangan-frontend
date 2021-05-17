@@ -31,9 +31,7 @@ class NewADOFOrm extends Component {
         <Modal.Body>
           <Form>
             <Form.Group controlId="formADOName">
-              <Form.Label column sm="2">
-                Name
-              </Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
                 required
@@ -42,9 +40,7 @@ class NewADOFOrm extends Component {
               />
             </Form.Group>
             <Form.Group controlId="formADODetail">
-              <Form.Label column sm="2">
-                Detail
-              </Form.Label>
+              <Form.Label>Detail</Form.Label>
               <Form.Control
                 type="text"
                 required
@@ -53,8 +49,22 @@ class NewADOFOrm extends Component {
               />
             </Form.Group>
           </Form>
-          <Button onClick={() => this.showConfirmActionModal()}>Submit</Button>
-          <Button onClick={() => this.props.hide()}>Close</Button>
+          <Button
+            className="mr-1"
+            style={{ width: "46%" }}
+            onClick={() => this.props.hide()}
+            variant="danger"
+          >
+            Close
+          </Button>
+          <Button
+            className="ml-1"
+            style={{ width: "50%" }}
+            onClick={() => this.showConfirmActionModal()}
+            variant="success"
+          >
+            Submit
+          </Button>
         </Modal.Body>
         {this.state.showConfirmActionModal ? (
           <ConfirmActionPopup

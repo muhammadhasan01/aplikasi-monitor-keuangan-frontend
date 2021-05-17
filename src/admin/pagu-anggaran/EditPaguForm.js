@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, Table } from "react-bootstrap";
 import ConfirmActionPopup from "./ConfirmActionPopup";
 
 class EditPaguForm extends Component {
@@ -62,28 +62,45 @@ class EditPaguForm extends Component {
   }
 
   render() {
+    const { unit, sub_unit } = this.props.selectedUnit;
     return (
       <Modal show onHide={() => this.props.hide()}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Pagu</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <Table bordered>
+            <tr>
+              <td>
+                <b>Unit</b>
+              </td>
+              <td>{unit}</td>
+            </tr>
+            <tr>
+              <td>
+                <b>Subunit</b>
+              </td>
+              <td>{sub_unit}</td>
+            </tr>
+          </Table>
           <Form>
-            <Form.Group controlId="formPlaintextUnit">
-              <Form.Label column sm="2">
-                {this.props.selectedUnit.unit}
-              </Form.Label>
-            </Form.Group>
-            <Form.Group controlId="formPlaintextSubUnit">
-              <Form.Label column sm="2">
-                {this.props.selectedUnit.sub_unit}
-              </Form.Label>
-            </Form.Group>
             {this.FormInputs()}
-            <Button onClick={() => this.showConfirmActionModal()}>
+            <Button
+              className="mr-1"
+              style={{ width: "46%" }}
+              onClick={() => this.props.hide()}
+              variant="danger"
+            >
+              Close
+            </Button>
+            <Button
+              className="ml-1"
+              style={{ width: "50%" }}
+              onClick={() => this.showConfirmActionModal()}
+              variant="success"
+            >
               Submit
             </Button>
-            <Button onClick={() => this.props.hide()}>Close</Button>
           </Form>
         </Modal.Body>
         {this.state.showConfirmActionModal ? (
