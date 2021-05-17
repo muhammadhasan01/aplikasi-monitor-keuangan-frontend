@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import {
-  ConfirmActionPopup,
-  NewUserForm,
-  EditUserForm,
-  UserRow,
-} from "./helpers";
+import { ConfirmActionPopup, NewUserForm, EditUserForm } from "./helpers";
 import { UserDataService } from "_services/user-service";
 import { UnitsDataService } from "_services/units-service";
-import { Table, Button } from "react-bootstrap";
-import "./AdminPengurusanAkun.css";
+import { Button, Container } from "react-bootstrap";
+import filterFactory from "react-bootstrap-table2-filter";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import BootstrapTable from "react-bootstrap-table-next";
+import { dataUserTable } from "./data-user-table";
 
 export class AdminPengurusanAkun extends Component {
   constructor(props) {
@@ -391,33 +389,45 @@ export class AdminPengurusanAkun extends Component {
   }
 
   renderUsers() {
-    let user_elements = [];
-    let user_list = this.state.Users;
-    if (user_list.length !== 0) {
-      for (let i = 0; i < user_list.length; i++) {
-        let temp = user_list[i];
-        user_elements.push(
-          <UserRow
-            username={temp["username"]}
-            name={temp["name"]}
-            userType={temp["userType"]}
-            unit={temp["unit"]}
-            _id={temp["_id"]}
-            onClickEdit={() => this.editUser(temp["_id"])}
-            onClickDelete={() => this.deleteUser(temp["_id"])}
-          />
-        );
-      }
-    } else {
-      user_elements.push(
-        <tr>
-          <td>
-            <h1>Belum Ada Akun</h1>
-          </td>
-        </tr>
+    const { Users } = this.state;
+    const data = Users.map((user, idx) => {
+      const { username, name, userType, unit, _id } = user;
+      const aksi = (
+        <React.Fragment>
+          <Button
+            key={idx}
+            className="mx-2"
+            variant="warning"
+            onClick={() => this.editUser(_id)}
+          >
+            Edit
+          </Button>
+          <Button
+            key={idx}
+            className="mx-2"
+            variant="danger"
+            disabled={userType === "Admin"}
+            onClick={() => this.deleteUser(_id)}
+          >
+            Delete
+          </Button>
+        </React.Fragment>
       );
-    }
-    return user_elements;
+      return { username, name, userType, unit, aksi };
+    });
+    const columns = dataUserTable.getColumns();
+    return (
+      <BootstrapTable
+        classes="table-feature"
+        striped
+        bootstrap4
+        keyField="id"
+        data={data}
+        columns={columns}
+        filter={filterFactory()}
+        pagination={paginationFactory()}
+      />
+    );
   }
 
   render() {
@@ -429,36 +439,17 @@ export class AdminPengurusanAkun extends Component {
     } = this.state;
 
     return (
-      <div id="user-management">
-        <div id="user-list">
-          <h4>Users List</h4>
-          <Button onClick={() => this.showNewUserForm()}>Add New User</Button>
-          <Table
-            responsive
-            striped
-            bordered
-            hover
-            style={{ backgroundColor: "white" }}
+      <Container fluid style={{ width: "95%" }}>
+        <div id="user-list" className="mt-4">
+          <h2 className="d-inline">Manajemen Akun</h2>
+          <Button
+            className="d-inline float-right my-3 p-2"
+            variant="success"
+            onClick={() => this.showNewUserForm()}
           >
-            <tr>
-              <th>
-                <p>Username</p>
-              </th>
-              <th>
-                <p>Name</p>
-              </th>
-              <th>
-                <p>Role</p>
-              </th>
-              <th>
-                <p>Unit</p>
-              </th>
-              <th colSpan="2">
-                <p>Actions</p>
-              </th>
-            </tr>
-            {this.renderUsers()}
-          </Table>
+            Tambah Akun
+          </Button>
+          {this.renderUsers()}
         </div>
         {showConfirmActionModal ? (
           <>
@@ -511,7 +502,7 @@ export class AdminPengurusanAkun extends Component {
             updateUser={() => this.updateUser()}
           />
         ) : null}
-      </div>
+      </Container>
     );
   }
 }
