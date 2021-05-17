@@ -11,18 +11,19 @@ body {
 }
 
 h1, h2, h3 {
-    font-family: 'Montserrat';
+    font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
 }
 
 .table-feature {
     border-collapse: collapse;
-    margin: 25px 0;
+    margin: 25px 0 25px 0;
     font-size: 0.95em;
     color: #ffffff;
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     background-color: #3765a9;
+    table-layout: auto;
 }
 
 .table-feature thead tr {
