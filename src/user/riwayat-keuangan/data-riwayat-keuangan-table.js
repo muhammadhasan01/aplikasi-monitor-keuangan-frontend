@@ -1,8 +1,5 @@
 import { formatRupiah, formatTanggal } from "_helpers";
 import { textFilter } from "react-bootstrap-table2-filter";
-import ButtonAksiPengeluaran from "../../admin/home/RiwayatPengeluaran/ButtonAksiPengeluaran";
-import { Reply, Trash } from "react-bootstrap-icons";
-import React from "react";
 
 export const dataRiwayatKeuanganTable = {
   getColumns,
