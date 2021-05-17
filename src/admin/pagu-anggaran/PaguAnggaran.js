@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { ADODataService, UnitsDataService, PaguDataService } from "_services";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, Container } from "react-bootstrap";
 import ConfirmActionPopup from "./ConfirmActionPopup";
 import NewADOForm from "./NewADOForm";
 import EditPaguForm from "./EditPaguForm";
 import PaguAnggaranRow from "./PaguAnggaranRow";
+import { dataPaguAnggaran } from "./data-pagu-anggaran";
+import filterFactory from "react-bootstrap-table2-filter";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import BootstrapTable from "react-bootstrap-table-next";
 
 export class PaguAnggaran extends Component {
   constructor(props) {
@@ -161,15 +165,12 @@ export class PaguAnggaran extends Component {
     });
   }
 
-  showEditPaguForm(e) {
-    const unit = e.data.unit;
-    const sub_unit = e.data.subunit;
-    console.log(e);
+  showEditPaguForm({ unit, subunit }) {
     this.setState({
       currentAction: "Edit Pagu",
       currentUnit: {
         unit: unit,
-        sub_unit: sub_unit,
+        sub_unit: subunit,
       },
       showEditPaguForm: true,
     });
@@ -220,19 +221,6 @@ export class PaguAnggaran extends Component {
     this.resetStates();
   }
 
-  renderADOs() {
-    let ado_elements = [];
-    let ado_list = this.state.ADOs;
-    ado_list.forEach((ado) => {
-      ado_elements.push(
-        <th>
-          <p>{ado}</p>
-        </th>
-      );
-    });
-    return ado_elements;
-  }
-
   onChangePagu(e) {
     console.log(e.target.id);
     let pagu_list = this.state.Pagus;
@@ -251,42 +239,46 @@ export class PaguAnggaran extends Component {
   }
 
   renderPagus() {
-    let pagu_elements = [];
-    let ado_list = this.state.ADOs;
-    let pagu_list = this.state.Pagus;
-    let unit_list = this.state.Units;
-    let editMode = this.state.editMode;
-    unit_list.forEach((unit) => {
-      let total_anggaran = 0;
-      let ados = [];
-      ado_list.forEach((ado) => {
-        let obj = {};
-        obj.name = ado;
-        obj.alokasi = 0;
-        ados.push(obj);
+    const { ADOs, Units, Pagus } = this.state;
+    let data = [];
+    Units.forEach(({ unit, subunit }) => {
+      const curData = { unit, subunit, total: 0 };
+      ADOs.forEach((ADO) => {
+        curData[ADO] = 0;
       });
-
-      let filtered_list = pagu_list
-        .filter((e) => e.unit === unit.unit)
-        .filter((e) => e.subunit === unit.subunit);
-
-      filtered_list.forEach((pagu) => {
-        ados.find((e) => e.name === pagu.ADO).alokasi = pagu.alokasi;
-        total_anggaran += Number.parseInt(pagu.alokasi);
+      Pagus.forEach((Pagu) => {
+        if (Pagu.unit === unit && Pagu.subunit === subunit) {
+          curData[Pagu.ADO] += Number(Pagu.alokasi);
+        }
       });
-
-      unit.ados = ados;
-      unit.total = total_anggaran;
-      pagu_elements.push(
-        <PaguAnggaranRow
-          data={unit}
-          editMode={editMode}
-          onChange={(e) => this.onChangePagu(e)}
-          onClickEdit={(e) => this.showEditPaguForm(e)}
-        />
+      ADOs.forEach((ADO) => {
+        curData["total"] += curData[ADO];
+      });
+      curData["aksi"] = (
+        <Button
+          variant="warning"
+          onClick={() => this.showEditPaguForm({ unit, subunit })}
+        >
+          Edit
+        </Button>
       );
+      data.push(curData);
     });
-    return pagu_elements;
+    const columns = dataPaguAnggaran.getColumns(ADOs);
+    return (
+      <BootstrapTable
+        classes="table-feature"
+        striped
+        bootstrap4
+        keyField="id"
+        wrapperClasses="table-responsive"
+        data={data}
+        columns={columns}
+        filter={filterFactory()}
+        pagination={paginationFactory()}
+        noDataIndication="Belum ada data pagu anggaran"
+      />
+    );
   }
 
   render() {
@@ -302,52 +294,23 @@ export class PaguAnggaran extends Component {
     } = this.state;
 
     return (
-      <div id="pagu-anggaran">
+      <Container
+        fluid
+        className="mt-4 mb-5"
+        style={{ width: "90%" }}
+        id="pagu-anggaran"
+      >
         <div id="pagu-list">
-          <h4>Pagu Anggaran</h4>
-          {editMode ? (
-            ""
-          ) : (
-            <div>
-              <Button onClick={() => this.showNewADOForm()}>+ ADO</Button>
-              <Button onClick={() => this.showEditPagu()}>Edit Pagu</Button>
-            </div>
-          )}
-          <Table
-            responsive
-            striped
-            bordered
-            hover
-            style={{ backgroundColor: "white" }}
+          <h3 className="float-left mb-2">Pagu Anggaran</h3>
+          <Button
+            className="mx-1 mb-2 float-right"
+            variant="success"
+            onClick={() => this.showNewADOForm()}
           >
-            <tr>
-              <th>
-                <p>Unit</p>
-              </th>
-              <th>
-                <p>Subunit</p>
-              </th>
-              {this.renderADOs()}
-              <th>
-                <p>Total</p>
-              </th>
-              <th>
-                <p>Edit</p>
-              </th>
-            </tr>
-            {this.renderPagus()}
-          </Table>
+            Tambah ADO
+          </Button>
         </div>
-        {editMode ? (
-          <>
-            <Button onClick={() => this.showConfirmActionModal()}>
-              Submit
-            </Button>
-            <Button onClick={() => this.hideEditPagu()}>Cancel</Button>
-          </>
-        ) : (
-          ""
-        )}
+        {this.renderPagus()}
         {showNewADOForm ? (
           <NewADOForm
             name={newADO.name}
@@ -379,7 +342,7 @@ export class PaguAnggaran extends Component {
             cancelAction={() => this.hideConfirmActionModal()}
           />
         ) : null}
-      </div>
+      </Container>
     );
   }
 }
