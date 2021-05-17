@@ -1,6 +1,5 @@
-import { render } from "@testing-library/react";
 import React, { Component } from "react";
-import { Button, Modal, Form, ModalBody } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 
 export function ConfirmActionPopup(props) {
   return (

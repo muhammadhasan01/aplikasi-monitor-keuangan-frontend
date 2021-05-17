@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import { Container } from "react-bootstrap";
 
 export class Loading extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { info } = this.props;
     return (

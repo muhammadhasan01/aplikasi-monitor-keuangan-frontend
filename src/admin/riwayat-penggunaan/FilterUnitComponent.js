@@ -1,4 +1,4 @@
-import { Table, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 function FilterUnitComponent(props) {
   function renderUnitOptions() {
