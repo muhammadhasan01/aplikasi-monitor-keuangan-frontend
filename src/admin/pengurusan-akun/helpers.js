@@ -84,7 +84,7 @@ export class NewUserForm extends Component {
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="text"
+                type="password"
                 required
                 onChange={this.props.onChangePassword}
               />
@@ -92,7 +92,7 @@ export class NewUserForm extends Component {
             <Form.Group controlId="formConfirmPassword">
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
-                type="text"
+                type="password"
                 required
                 onChange={this.props.onChangeCPassword}
               />
