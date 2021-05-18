@@ -390,12 +390,11 @@ export class AdminPengurusanAkun extends Component {
 
   renderUsers() {
     const { Users } = this.state;
-    const data = Users.map((user, idx) => {
+    const data = Users.map((user) => {
       const { username, name, userType, unit, _id } = user;
       const aksi = (
         <React.Fragment>
           <Button
-            key={idx}
             className="mx-2"
             variant="warning"
             onClick={() => this.editUser(_id)}
@@ -403,7 +402,6 @@ export class AdminPengurusanAkun extends Component {
             Edit
           </Button>
           <Button
-            key={idx}
             className="mx-2"
             variant="danger"
             disabled={userType === "Admin"}
