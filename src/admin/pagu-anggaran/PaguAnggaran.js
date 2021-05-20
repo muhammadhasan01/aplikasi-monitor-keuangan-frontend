@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { ADODataService, UnitsDataService, PaguDataService } from "_services";
-import { Table, Button, Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import ConfirmActionPopup from "./ConfirmActionPopup";
 import NewADOForm from "./NewADOForm";
 import EditPaguForm from "./EditPaguForm";
-import PaguAnggaranRow from "./PaguAnggaranRow";
 import { dataPaguAnggaran } from "./data-pagu-anggaran";
 import filterFactory from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";

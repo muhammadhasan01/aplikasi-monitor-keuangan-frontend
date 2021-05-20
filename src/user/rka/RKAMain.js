@@ -1,155 +1,163 @@
-import React, { Component, createRef } from "react";
-import { ADODataService, authenticationService } from "_services";
-import { RKADataService } from "_services/rka-service";
-import TambahRKAForm from "./TambahRKAForm";
-import { Table } from "react-bootstrap";
-import { formatRupiah } from "../../_helpers";
+import React, {Component, createRef} from 'react';
+import {ADODataService, authenticationService} from "_services";
+import {RKADataService} from "_services/rka-service";
+import ModalRKAForm from "./ModalRKAForm";
+import RKATable from "./RKATable";
+import {PaguDataService} from "../../_services/pagu-service";
+import {formatRupiah} from "../../_helpers";
 
 export class RKAMain extends Component {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
-    this.state = {
-      ADO: [],
-      RKA: [],
-      unit: null,
-      subunit: null,
-      showRKAForm: false,
-      currentADO: "All",
-    };
+		this.state = {
+			sisaADO: 0,
+			penggunaanADO: 0,
+			alokasiADO: 0,
+			ADO: [],
+			RKA: [],
+			unit: null,
+			subunit: null,
+			showRKAForm: false,
+			currentADO: "ALL"
+		}
 
-    this.currentADO = createRef();
-  }
+		this.currentADO = createRef();
+	}
 
-  componentDidMount() {
-    this.retrieveAllRKA();
-    this.retrieveADOs();
-  }
+	componentDidMount() {
+		this.retrieveAllRKA();
+		this.retrieveADOs();
+	}
 
-  retrieveADOs = () => {
-    ADODataService.getDistinctADO()
-      .then((response) => {
-        this.setState({ ADO: response.data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+	retrieveADOs = () => {
+		ADODataService.getDistinctADO()
+			.then(response => {
+				this.setState({ ADO: response.data });
+			})
+			.catch(err => {
+				console.log(err);
 
-  retrieveAllRKA = () => {
-    const { unit, subunit } = authenticationService.UserInformation;
-    this.setState({ unit: unit, subunit: subunit });
-    RKADataService.loadAllRKA(unit, subunit)
-      .then((response) => {
-        this.setState({ RKA: response.data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+			})
+	}
 
-  lihatRKA = (e) => {
-    console.log("Berhasil Submit");
-    //TO DO Render Different Table
+	retrieveAllRKA = () => {
+		const { unit, subunit } = authenticationService.UserInformation;
+		this.setState({unit: unit, subunit: subunit});
+		RKADataService.loadAllRKA(unit, subunit)
+			.then(response => {
+				this.setState( {RKA: response.data});
+			})
+			.catch(err => {
+				console.log(err);
+			})
+	}
 
-    e.preventDefault();
-  };
 
-  handleADOChange = (e) => {
-    this.setState({ currentADO: e.target.value });
-    // console.log(this.currentADO.current.value);
-  };
+	handleADOChange = (e) => {
+		this.setState({currentADO: this.currentADO.current.value});
+		e.preventDefault();
+		const unit = this.state.unit;
+		const subunit = this.state.subunit;
+		const ado = this.currentADO.current.value;
 
-  renderRKARow = (rka, index) => {
-    var data = Object.values(rka.rancangan).filter(
-      (elmt) => typeof elmt !== "string"
-    );
+		console.log(ado);
 
-    return (
-      <tr key={index}>
-        <td>{rka.ADO}</td>
-        <td>{rka.kegiatan}</td>
-        <td>{rka.subkegiatan}</td>
-        <td>{rka.rincian_subkegiatan}</td>
-        <td>{rka.rincian_belanja}</td>
-        <td>{rka.jenis_belanja}</td>
-        {data.map((bulan) => (
-          <td>{formatRupiah(bulan)}</td>
-        ))}
-      </tr>
-    );
-  };
+		if(ado === "ALL"){
+			RKADataService.loadAllRKA(unit, subunit)
+				.then(response => {
+					this.setState( {RKA: response.data});
+				})
+				.catch(err => {
+					console.log(err);
+				})
+		} else {
+			RKADataService.getRKAUnitADO(unit, subunit, ado)
+				.then(response => {
+					this.setState( {RKA: response.data});
+				})
+				.catch(err => {
+					console.log(err);
+				});
 
-  tambahRKA = () => {
-    console.log("Tambah RKA");
-  };
+			PaguDataService.getSisaPagu(unit, subunit, ado, new Date().getFullYear())
+				.then(response =>{
+					console.log(response.data);
+					this.setState({sisaADO: response.data.value})
+				})
+				.catch(err => {
+					console.log(err);
+					this.setState({sisaADO: "-"})
+				})
+			PaguDataService.getAlokasiPagu(unit, subunit, ado, new Date().getFullYear())
+				.then(response =>{
+					console.log(response.data);
+					this.setState({alokasiADO: response.data.value})
+				})
+				.catch(err => {
+					console.log(err);
+					this.setState({alokasiADO: "-"})
+				})
+			PaguDataService.getPenggunaanPagu(unit, subunit, ado, new Date().getFullYear())
+				.then(response =>{
+					console.log(response.data);
+					this.setState({penggunaanADO: response.data.value})
+				})
+				.catch(err => {
+					console.log(err);
+					this.setState({penggunaanADO: "-"})
+				})
+		}
+	}
 
-  render() {
-    return (
-      <div class="container-fluid">
-        <div class="row">
-          <div className="col-1">
-            <form className="form-group" onSubmit={this.lihatRKA}>
-              <label htmlFor="select-ADO">Select ADO</label>
-              <select
-                className="form-select form-select-sm"
-                id="select-ADO"
-                name="ado"
-                onChange={this.handleADOChange}
-                ref={this.currentADO}
-              >
-                <option value="ALL">All</option>
-                {this.state.ADO.map((ADO) => (
-                  <option value={ADO}>{ADO}</option>
-                ))}
-              </select>{" "}
-              <br />
-              <button className="btn btn-primary mt-2">Lihat RKA</button>
-            </form>
+	render() {
+		const unit = this.state.unit;
+		const subunit = this.state.subunit;
+		const ado = this.state.currentADO;
+		const rka = this.state.RKA;
+		const alokasi = this.state.alokasiADO;
+		const penggunaan = this.state.penggunaanADO;
+		const sisa = this.state.sisaADO;
 
-            <TambahRKAForm
-              ado={this.state.currentADO}
-              unit={this.state.unit}
-              subunit={this.state.subunit}
-            />
-          </div>
+		return (
+			<div class="container-fluid ml-5">
+				<div class="row">
+					<div className="col-1.75">
 
-          <div className="table col-11">
-            <h2>Tabel RKA</h2>
-            <Table
-              responsive
-              striped
-              bordered
-              hover
-              style={{ backgroundColor: "lightblue" }}
-            >
-              <thead className=" thead-dark">
-                <th>ADO</th>
-                <th>Kegiatan</th>
-                <th>Subkegiatan</th>
-                <th>Rincian Subkegiatan</th>
-                <th>Rincian Belanja</th>
-                <th>Jenis Belanja</th>
-                <th>Januari</th>
-                <th>Februari</th>
-                <th>Maret</th>
-                <th>April</th>
-                <th>Mei</th>
-                <th>Juni</th>
-                <th>Juli</th>
-                <th>Agustus</th>
-                <th>September</th>
-                <th>Oktober</th>
-                <th>November</th>
-                <th>Desember</th>
-              </thead>
-              <tbody className="table-striped">
-                {this.state.RKA.map(this.renderRKARow)}
-              </tbody>
-            </Table>
-          </div>
-        </div>
-      </div>
-    );
-  }
+						<form className="form-group">
+							<label htmlFor="select-ADO">Select ADO</label>
+							<select className="form-select form-select-sm" id="select-ADO" name="ado"
+									onChange={this.handleADOChange} ref={this.currentADO}>
+								<option value="ALL">All</option>
+								{this.state.ADO.map(ADO => <option value={ADO}>{ADO}</option>)}
+							</select> <br/>
+						</form>
+
+						<ModalRKAForm ado={ado} unit={unit} subunit={subunit}/>
+
+					</div>
+
+					<div className="col-10 mt-2">
+						<span className="mb-4 font-weight-bold">
+							Alokasi Anggaran {ado === "ALL" ? "Total" : ado}:
+							<span className= "font-weight-normal"> {formatRupiah(alokasi)} </span> <br/>
+						</span>
+
+						<span className="mb-4 font-weight-bold">
+							Penggunaan Anggaran {ado === "ALL" ? "Total" : ado} sampai hari ini:
+							<span className= "font-weight-normal"> {formatRupiah(penggunaan)} </span> <br/>
+						</span>
+
+						<span className="mb-4 font-weight-bold">
+							Sisa Anggaran {ado === "ALL" ? "Total" : ado} :
+							<span className= "font-weight-normal"> {formatRupiah(sisa)} </span> <br/>
+						</span>
+
+						<RKATable ado={ado} unit={unit} subunit={subunit} rka={rka} />
+					</div>
+
+				</div>
+			</div>
+		);
+	}
 }
