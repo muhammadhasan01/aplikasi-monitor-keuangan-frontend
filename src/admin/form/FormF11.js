@@ -3,8 +3,9 @@ import Pdf from "react-to-pdf";
 import { Table } from "react-bootstrap";
 
 const options = {
-  orientation: "portrait",
+  orientation: "landscape",
   unit: "in",
+  format: [7.45, 5.3],
 };
 
 export class FormF11 extends Component {
@@ -25,8 +26,18 @@ export class FormF11 extends Component {
         >
           {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
         </Pdf>
-        <div ref={this.ref}>
-          <Table striped bordered responsive style={{ width: "50%" }}>
+        <div
+          ref={this.ref}
+          className="justify-content-center align-items-center"
+        >
+          <h3 className="my-4 mx-2">Form F11</h3>
+          <Table
+            striped
+            bordered
+            responsive
+            className="text-center"
+            style={{ height: "650px", width: "500px" }}
+          >
             <tbody>
               <tr>
                 <td>

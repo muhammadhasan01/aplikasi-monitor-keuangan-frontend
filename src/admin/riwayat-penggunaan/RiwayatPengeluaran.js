@@ -8,6 +8,7 @@ import ModalAksiPengeluaran from "./ModalAksiPengeluaran";
 import ButtonAksiPengeluaran from "./ButtonAksiPengeluaran";
 import { Reply, Trash, Download } from "react-bootstrap-icons";
 import { dataPengeluaranTable } from "./data-pengeluaran-table";
+import { FormF11 } from "admin";
 
 export class RiwayatPengeluaran extends Component {
   constructor(props) {
@@ -79,17 +80,17 @@ export class RiwayatPengeluaran extends Component {
 
   downloadFormPPT = () => {
     console.log("Download Form PPT");
-  }
+  };
 
   downloadFormF11 = () => {
     console.log("Download Form F11");
-  }
+  };
 
   handleOpenUndo = (value) =>
     this.setState({
-        showUndo: true,
-        IDPengeluaran: value,
-        showMessage: false
+      showUndo: true,
+      IDPengeluaran: value,
+      showMessage: false,
     });
   handleCloseUndo = () => this.setState({ showUndo: false });
   handleOpenRemove = (value) =>
@@ -101,15 +102,16 @@ export class RiwayatPengeluaran extends Component {
   handleCloseRemove = () => this.setState({ showRemove: false });
 
   handleOpenDownload = (value) =>
-      this.setState({
-          showDownload: true,
-          IDPengeluaran: value,
-          showMessage: false,
-      });
+    this.setState({
+      showDownload: true,
+      IDPengeluaran: value,
+      showMessage: false,
+    });
   handleCloseDownload = () => this.setState({ showDownload: false });
 
   render() {
-    const { pengeluaran, showMessage, showUndo, showRemove, showDownload } = this.state;
+    const { pengeluaran, showMessage, showUndo, showRemove, showDownload } =
+      this.state;
 
     if (!pengeluaran) {
       return (
@@ -156,13 +158,13 @@ export class RiwayatPengeluaran extends Component {
       );
 
       const downloadButton = (
-          <ButtonAksiPengeluaran
-              icon={<Download />}
-              value={_id}
-              action="Download"
-              variant="success"
-              handleAction={this.handleOpenDownload}
-          />
+        <ButtonAksiPengeluaran
+          icon={<Download />}
+          value={_id}
+          action="Download"
+          variant="success"
+          handleAction={this.handleOpenDownload}
+        />
       );
 
       const action = (
@@ -174,7 +176,7 @@ export class RiwayatPengeluaran extends Component {
       );
       return { _id, jumlah, unit, sub_unit, rincian_belanja, tanggal, action };
     });
-
+    return <FormF11 />;
     return (
       <Container fluid className="mt-4 mb-5" style={{ width: "90%" }}>
         <h2>Riwayat Pengeluaran</h2>
@@ -206,12 +208,12 @@ export class RiwayatPengeluaran extends Component {
         />
 
         <ModalAksiPengeluaran
-            action="Download"
-            show={showDownload}
-            showMessage={showMessage}
-            downloadFormF11={this.downloadFormF11}
-            downloadFormPPT={this.downloadFormPPT}
-            handleClose={this.handleCloseDownload}
+          action="Download"
+          show={showDownload}
+          showMessage={showMessage}
+          downloadFormF11={this.downloadFormF11}
+          downloadFormPPT={this.downloadFormPPT}
+          handleClose={this.handleCloseDownload}
         />
       </Container>
     );
