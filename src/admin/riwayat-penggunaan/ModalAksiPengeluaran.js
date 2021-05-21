@@ -27,7 +27,7 @@ export default class ModalAksiPengeluaran extends Component {
         <Modal.Body>
           <p>{
             action == "Download" ?
-            "Ini ceritanya download" :
+            "Pilih form yang ingin didownload: " :
             `Apakah Anda yakin ingin melakukan ${action} pengeluaran?`
           }</p>
           <div className="container">
