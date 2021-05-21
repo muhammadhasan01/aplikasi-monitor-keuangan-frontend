@@ -18,24 +18,53 @@ export default class ModalAksiPengeluaran extends Component {
 
   render() {
     const { show, showMessage } = this.state;
-    const { action, handleConfirmation, handleClose } = this.props;
+    const { action, handleConfirmation, downloadFormF11, downloadFormPPT, handleClose } = this.props;
     return (
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>{`Konfirmasi ${action} Pengeluaran`}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>{`Apakah Anda yakin ingin melakukan ${action} pengeluaran?`}</p>
+          <p>{
+            action == "Download" ?
+            "Ini ceritanya download" :
+            `Apakah Anda yakin ingin melakukan ${action} pengeluaran?`
+          }</p>
           <div className="container">
             <div className="row">
-              <Button
-                variant="success"
-                className="col text-center m-2"
-                onClick={handleConfirmation}
-                disabled={showMessage}
-              >
-                Ya
-              </Button>
+              {
+                action == "Download" ?
+                  <>
+                    <Button
+                        variant="success"
+                        className="col text-center m-2"
+                        onClick={downloadFormF11}
+                        disabled={showMessage}
+                    >
+                      Form F11
+                    </Button>
+
+                    <Button
+                        variant="success"
+                        className="col text-center m-2"
+                        onClick={downloadFormPPT}
+                        disabled={showMessage}
+                    >
+                      Form PPT
+                    </Button>
+                  </>
+                    :
+                <Button
+                    variant="success"
+                    className="col text-center m-2"
+                    onClick={handleConfirmation}
+                    disabled={showMessage}
+                >
+                  Ya
+                </Button>
+              }
+
+
               <Button
                 variant="danger"
                 className="col text-center m-2"

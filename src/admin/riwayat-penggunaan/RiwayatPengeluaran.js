@@ -6,7 +6,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory from "react-bootstrap-table2-filter";
 import ModalAksiPengeluaran from "./ModalAksiPengeluaran";
 import ButtonAksiPengeluaran from "./ButtonAksiPengeluaran";
-import { Reply, Trash } from "react-bootstrap-icons";
+import { Reply, Trash, Download } from "react-bootstrap-icons";
 import { dataPengeluaranTable } from "./data-pengeluaran-table";
 
 export class RiwayatPengeluaran extends Component {
@@ -16,6 +16,7 @@ export class RiwayatPengeluaran extends Component {
       pengeluaran: null,
       showUndo: false,
       showRemove: false,
+      showDownload: false,
       showMessage: false,
       IDPengeluaran: null,
     };
@@ -76,9 +77,22 @@ export class RiwayatPengeluaran extends Component {
       });
   };
 
+  downloadFormPPT = () => {
+    console.log("Download Form PPT");
+  }
+
+  downloadFormF11 = () => {
+    console.log("Download Form F11");
+  }
+
   handleOpenUndo = (value) =>
-    this.setState({ showUndo: true, IDPengeluaran: value, showMessage: false });
+    this.setState({
+        showUndo: true,
+        IDPengeluaran: value,
+        showMessage: false
+    });
   handleCloseUndo = () => this.setState({ showUndo: false });
+
   handleOpenRemove = (value) =>
     this.setState({
       showRemove: true,
@@ -87,8 +101,17 @@ export class RiwayatPengeluaran extends Component {
     });
   handleCloseRemove = () => this.setState({ showRemove: false });
 
+  handleOpenDownload = (value) =>
+      this.setState({
+          showDownload: true,
+          IDPengeluaran: value,
+          showMessage: false,
+      });
+  handleCloseDownload = () => this.setState({ showDownload: false });
+
   render() {
-    const { showMessage, pengeluaran, showUndo, showRemove } = this.state;
+    const { pengeluaran, showMessage, showUndo, showRemove, showDownload } = this.state;
+
     if (!pengeluaran) {
       return (
         <Container className="row d-flex justify-content-center">
@@ -97,11 +120,13 @@ export class RiwayatPengeluaran extends Component {
         </Container>
       );
     }
+
     if (pengeluaran.length === 0) {
       return (
         <h2 className="mx-5 pt-4">Belum ada riwayat pengeluaran terakhir</h2>
       );
     }
+
     const columns = dataPengeluaranTable.getColumns();
     const data = pengeluaran.map((p) => {
       const {
@@ -110,6 +135,7 @@ export class RiwayatPengeluaran extends Component {
         jumlah,
         createdAt: tanggal,
       } = p;
+
       const undoButton = (
         <ButtonAksiPengeluaran
           icon={<Reply />}
@@ -119,6 +145,7 @@ export class RiwayatPengeluaran extends Component {
           handleAction={this.handleOpenUndo}
         />
       );
+
       const removeButton = (
         <ButtonAksiPengeluaran
           icon={<Trash />}
@@ -128,14 +155,27 @@ export class RiwayatPengeluaran extends Component {
           handleAction={this.handleOpenRemove}
         />
       );
+
+      const downloadButton = (
+          <ButtonAksiPengeluaran
+              icon={<Download />}
+              value={_id}
+              action="Download"
+              variant="success"
+              handleAction={this.handleOpenDownload}
+          />
+      );
+
       const action = (
         <div>
           {undoButton}
           {removeButton}
+          {downloadButton}
         </div>
       );
       return { _id, jumlah, unit, sub_unit, rincian_belanja, tanggal, action };
     });
+
     return (
       <Container fluid className="mt-4 mb-5" style={{ width: "90%" }}>
         <h2>Riwayat Pengeluaran</h2>
@@ -149,6 +189,7 @@ export class RiwayatPengeluaran extends Component {
           filter={filterFactory()}
           pagination={paginationFactory()}
         />
+
         <ModalAksiPengeluaran
           action="Undo"
           show={showUndo}
@@ -156,12 +197,22 @@ export class RiwayatPengeluaran extends Component {
           handleConfirmation={this.undoPengeluaran}
           handleClose={this.handleCloseUndo}
         />
+
         <ModalAksiPengeluaran
           action="Delete"
           show={showRemove}
           showMessage={showMessage}
           handleConfirmation={this.removePengeluaran}
           handleClose={this.handleCloseRemove}
+        />
+
+        <ModalAksiPengeluaran
+            action="Download"
+            show={showDownload}
+            showMessage={showMessage}
+            downloadFormF11={this.downloadFormF11}
+            downloadFormPPT={this.downloadFormPPT}
+            handleClose={this.handleCloseDownload}
         />
       </Container>
     );
