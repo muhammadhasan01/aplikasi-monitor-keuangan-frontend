@@ -43,12 +43,12 @@ export default class ModalTambahAlokasi extends Component {
     const body = { bulanDikurang, bulanDitambah: bulan.toLowerCase(), jumlah };
     console.log(body);
     RKADataService.ambilAlokasi(_id, body)
-      .then((resp) => {
+      .then(async (resp) => {
         console.log(resp.data);
         const { data: RKA } = resp;
         console.log(RKA["rancangan"]);
-        this.props.handleUpdateRKAs(RKA);
-        this.setState({
+        await this.props.handleUpdateRKAs(RKA);
+        await this.setState({
           feedback: {
             status: "success",
             message: "Alokasi pemindahan berhasil dilakukan!",

@@ -50,10 +50,11 @@ class RincianRKAPengeluaran extends Component {
   handleCloseModalAlokasi = () => this.setState({ showAlokasi: false });
   handleBulanAlokasi = (value) => this.setState({ bulanAlokasi: value });
 
-  handleUpdateRKAs = (RKA) => {
-    const { RKAs, idxRKA } = this.state;
+  handleUpdateRKAs = async (RKA) => {
+    const { RKAs, idxRKA, dummy } = this.state;
     RKAs[idxRKA] = RKA;
-    this.setState({ RKAs: RKAs });
+    console.log("Changed", RKA);
+    await this.setState({ RKAs: RKAs });
   };
 
   render() {
