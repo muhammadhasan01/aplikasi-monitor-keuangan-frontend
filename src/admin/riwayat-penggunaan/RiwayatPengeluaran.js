@@ -8,6 +8,7 @@ import ModalAksiPengeluaran from "./ModalAksiPengeluaran";
 import ButtonAksiPengeluaran from "./ButtonAksiPengeluaran";
 import { Reply, Trash } from "react-bootstrap-icons";
 import { dataPengeluaranTable } from "./data-pengeluaran-table";
+import { FormF11 } from "admin";
 
 export class RiwayatPengeluaran extends Component {
   constructor(props) {
@@ -136,6 +137,7 @@ export class RiwayatPengeluaran extends Component {
       );
       return { _id, jumlah, unit, sub_unit, rincian_belanja, tanggal, action };
     });
+    return <FormF11 />;
     return (
       <Container fluid className="mt-4 mb-5" style={{ width: "90%" }}>
         <h2>Riwayat Pengeluaran</h2>

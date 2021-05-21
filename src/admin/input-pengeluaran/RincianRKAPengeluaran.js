@@ -50,11 +50,14 @@ class RincianRKAPengeluaran extends Component {
   handleCloseModalAlokasi = () => this.setState({ showAlokasi: false });
   handleBulanAlokasi = (value) => this.setState({ bulanAlokasi: value });
 
-  handleUpdateRKAs = async (RKA) => {
-    const { RKAs, idxRKA, dummy } = this.state;
+  handleUpdateRKAs = (RKA) => {
+    const { RKAs, idxRKA } = this.state;
+    console.log(RKAs);
+    console.log(RKA);
     RKAs[idxRKA] = RKA;
-    console.log("Changed", RKA);
-    await this.setState({ RKAs: RKAs });
+    console.log("IDX", idxRKA);
+    this.setState({ RKAs: RKAs });
+    this.forceUpdate();
   };
 
   render() {
@@ -79,47 +82,53 @@ class RincianRKAPengeluaran extends Component {
     const curYear = new Date().getFullYear();
     const years = [];
     for (let i = 0; i < 10; i++) years.push(curYear - i);
-    const data = RKAs.map((rka, idx) => {
-      return {
-        "Rincian Belanja": rka.rincian_belanja,
-        "Alokasi Total": rka.total_rancangan,
-        "Alokasi Bulan": rka.rancangan[lowCaseTimeSlot],
-        "Penggunaan Bulan": rka.penggunaan[lowCaseTimeSlot],
-        "Sisa Anggaran Bulan":
-          rka.rancangan[lowCaseTimeSlot] - rka.penggunaan[lowCaseTimeSlot],
-        Aksi: (
-          <React.Fragment>
-            <OverlayTrigger
-              key="bottom-1"
-              placement="bottom"
-              overlay={<Tooltip id="tooltip-bottom">Input Pengeluaran</Tooltip>}
-            >
-              <Button
-                key={idx}
-                className="m-1"
-                onClick={() => this.handleOpenInput(idx)}
-              >
-                <MdInput />
-              </Button>
-            </OverlayTrigger>
-            <OverlayTrigger
-              key="bottom-2"
-              placement="bottom"
-              overlay={<Tooltip id="tooltip-bottom">Tambah Alokasi</Tooltip>}
-            >
-              <Button
-                key={idx}
-                className="m-1"
-                variant="success"
-                onClick={() => this.handleOpenAlokasi(idx)}
-              >
-                <BsPlusSquare />
-              </Button>
-            </OverlayTrigger>
-          </React.Fragment>
-        ),
-      };
-    });
+    const data =
+      RKAs.length === 0
+        ? null
+        : RKAs.map((rka, idx) => {
+            return {
+              "Rincian Belanja": rka.rincian_belanja,
+              "Alokasi Total": rka.total_rancangan,
+              "Alokasi Bulan": rka.rancangan[lowCaseTimeSlot],
+              "Penggunaan Bulan": rka.penggunaan[lowCaseTimeSlot],
+              "Sisa Anggaran Bulan":
+                rka.rancangan[lowCaseTimeSlot] -
+                rka.penggunaan[lowCaseTimeSlot],
+              Aksi: (
+                <React.Fragment>
+                  <OverlayTrigger
+                    key="bottom-1"
+                    placement="bottom"
+                    overlay={
+                      <Tooltip id="tooltip-bottom">Input Pengeluaran</Tooltip>
+                    }
+                  >
+                    <Button
+                      className="m-1"
+                      onClick={() => this.handleOpenInput(idx)}
+                    >
+                      <MdInput />
+                    </Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    key="bottom-2"
+                    placement="bottom"
+                    overlay={
+                      <Tooltip id="tooltip-bottom">Tambah Alokasi</Tooltip>
+                    }
+                  >
+                    <Button
+                      className="m-1"
+                      variant="success"
+                      onClick={() => this.handleOpenAlokasi(idx)}
+                    >
+                      <BsPlusSquare />
+                    </Button>
+                  </OverlayTrigger>
+                </React.Fragment>
+              ),
+            };
+          });
     return (
       <div>
         <h2 className="mt-3">{title}</h2>
@@ -151,40 +160,46 @@ class RincianRKAPengeluaran extends Component {
             </Form.Group>
           </Form.Row>
         </Form>
-        <ToolkitProvider keyField="id" data={data} columns={columns} search>
-          {(props) => (
-            <div className="mb-5">
-              <h6>Lakukan pencarian RKA</h6>
-              <SearchBar {...props.searchProps} />
-              <hr />
-              <BootstrapTable
-                {...props.baseProps}
-                classes="table-feature"
-                striped
-                bootstrap4
-                filter={filterFactory()}
-                pagination={paginationFactory()}
-                noDataIndication={() => `Belum ada data pada tahun ${year}`}
-              />
-            </div>
-          )}
-        </ToolkitProvider>
-        <ModalInputPengeluaran
-          RKA={RKAs[idxRKA]}
-          bulan={timeSlot}
-          show={showInput}
-          handleClose={this.handleCloseModalInput}
-          handleUpdateRKAs={this.handleUpdateRKAs}
-        />
-        <ModalTambahAlokasi
-          RKA={RKAs[idxRKA]}
-          bulan={timeSlot}
-          show={showAlokasi}
-          handleUpdateRKAs={this.handleUpdateRKAs}
-          handleClose={this.handleCloseModalAlokasi}
-          selectedBulan={bulanAlokasi}
-          updateSelectedBulan={this.handleBulanAlokasi}
-        />
+        {data && (
+          <ToolkitProvider keyField="id" data={data} columns={columns} search>
+            {(props) => (
+              <div className="mb-5">
+                <h6>Lakukan pencarian RKA</h6>
+                <SearchBar {...props.searchProps} />
+                <hr />
+                <BootstrapTable
+                  {...props.baseProps}
+                  classes="table-feature"
+                  striped
+                  bootstrap4
+                  filter={filterFactory()}
+                  pagination={paginationFactory()}
+                  noDataIndication={() => `Belum ada data`}
+                />
+              </div>
+            )}
+          </ToolkitProvider>
+        )}
+        {RKAs.length > 0 && (
+          <ModalInputPengeluaran
+            RKA={RKAs[idxRKA]}
+            bulan={timeSlot}
+            show={showInput}
+            handleClose={this.handleCloseModalInput}
+            handleUpdateRKAs={this.handleUpdateRKAs}
+          />
+        )}
+        {RKAs.length > 0 && (
+          <ModalTambahAlokasi
+            RKA={RKAs[idxRKA]}
+            bulan={timeSlot}
+            show={showAlokasi}
+            handleUpdateRKAs={this.handleUpdateRKAs}
+            handleClose={this.handleCloseModalAlokasi}
+            selectedBulan={bulanAlokasi}
+            updateSelectedBulan={this.handleBulanAlokasi}
+          />
+        )}
       </div>
     );
   }
