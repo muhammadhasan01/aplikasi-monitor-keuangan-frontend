@@ -92,7 +92,6 @@ export class RiwayatPengeluaran extends Component {
         showMessage: false
     });
   handleCloseUndo = () => this.setState({ showUndo: false });
-
   handleOpenRemove = (value) =>
     this.setState({
       showRemove: true,
