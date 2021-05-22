@@ -11,6 +11,7 @@ import { MdInput } from "react-icons/md";
 import { BsPlusSquare } from "react-icons/all";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import ModalTambahAlokasi from "./ModalTambahAlokasi";
+import { BottomTooltip } from "_components";
 
 const { SearchBar } = Search;
 
@@ -100,27 +101,15 @@ class RincianRKAPengeluaran extends Component {
                 rka.penggunaan[lowCaseTimeSlot],
               Aksi: (
                 <React.Fragment>
-                  <OverlayTrigger
-                    key="bottom-1"
-                    placement="bottom"
-                    overlay={
-                      <Tooltip id="tooltip-bottom">Input Pengeluaran</Tooltip>
-                    }
-                  >
+                  <BottomTooltip key="1" info="Input Pengeluaran">
                     <Button
                       className="m-1"
                       onClick={() => this.handleOpenInput(idx)}
                     >
                       <MdInput />
                     </Button>
-                  </OverlayTrigger>
-                  <OverlayTrigger
-                    key="bottom-2"
-                    placement="bottom"
-                    overlay={
-                      <Tooltip id="tooltip-bottom">Tambah Alokasi</Tooltip>
-                    }
-                  >
+                  </BottomTooltip>
+                  <BottomTooltip key="2" info="Tambah Alokasi">
                     <Button
                       className="m-1"
                       variant="success"
@@ -128,7 +117,7 @@ class RincianRKAPengeluaran extends Component {
                     >
                       <BsPlusSquare />
                     </Button>
-                  </OverlayTrigger>
+                  </BottomTooltip>
                 </React.Fragment>
               ),
             };
