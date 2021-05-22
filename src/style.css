@@ -213,6 +213,11 @@ nav {
     margin: 5px 20px;
 }
 
+.nav:hover {
+    color: #cde2f5;
+    text-decoration: none;
+}
+
 /* Halaman Home Admin Style */
 .center {
     text-align: center;

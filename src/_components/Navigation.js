@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { authenticationService } from "../_services";
+import { Navbar } from "react-bootstrap";
+import { AiFillHome } from "react-icons/ai";
 
 export class Navigation extends Component {
   adminNavigation() {
@@ -21,16 +23,13 @@ export class Navigation extends Component {
         <Link className="nav" to="/input-pengeluaran">
           Input Pengeluaran
         </Link>
-        <div className="nav" onClick={() => authenticationService.logout()}>
-          Logout
-        </div>
       </>
     );
   }
 
   userNavigation() {
     return (
-      <>
+      <Navbar bg="primary">
         <Link className="nav" to="/">
           Home
         </Link>
@@ -46,18 +45,18 @@ export class Navigation extends Component {
         <div className="nav" onClick={() => authenticationService.logout()}>
           Logout
         </div>
-      </>
+      </Navbar>
     );
   }
 
   render() {
     const userInfo = this.props.userInfo;
     if (!userInfo) {
-      return <div></div>;
+      return null;
     }
     const { type } = userInfo;
     return (
-      <nav className="navbar navbar-expand-lg">
+      <nav className="py-2">
         {type === "Admin" ? this.adminNavigation() : this.userNavigation()}
       </nav>
     );
