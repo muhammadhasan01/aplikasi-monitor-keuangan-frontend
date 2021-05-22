@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Col, Image, Row } from "react-bootstrap";
-import { FaUserCircle } from "react-icons/all";
+import { Badge, Button, Col, Image, Row } from "react-bootstrap";
+import { FiLogOut } from "react-icons/fi";
+import { authenticationService } from "_services";
 
 export class Header extends Component {
   showUserInfo(userInfo) {
@@ -8,7 +9,15 @@ export class Header extends Component {
     return (
       <div>
         {name} <br />
-        {type === "Admin" ? "Administrator" : unit + " - " + subunit}
+        {type === "Admin" ? "Administrator" : unit + " - " + subunit} <br />
+        <Button
+          size="sm"
+          variant="info"
+          className="mt-1"
+          onClick={() => authenticationService.logout()}
+        >
+          Logout <FiLogOut />
+        </Button>
       </div>
     );
   }
@@ -20,7 +29,8 @@ export class Header extends Component {
           <Col>
             <Image src="https://avatars.githubusercontent.com/u/8663791?s=280&v=4" />
             <h1>
-              <b>Sistem Monitoring Anggaran</b>
+              <b>Sistem Monitoring Anggaran</b>{" "}
+              <Badge variant="primary">v1</Badge>
             </h1>
             Sekolah Teknik Elektro dan Informatika <br />
             Institut Teknologi Bandung <br />
