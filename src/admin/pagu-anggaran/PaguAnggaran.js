@@ -8,6 +8,8 @@ import { dataPaguAnggaran } from "./data-pagu-anggaran";
 import filterFactory from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import BootstrapTable from "react-bootstrap-table-next";
+import { FiEdit } from "react-icons/fi";
+import { BottomTooltip } from "../../_components";
 
 export class PaguAnggaran extends Component {
   constructor(props) {
@@ -254,12 +256,14 @@ export class PaguAnggaran extends Component {
         curData["total"] += curData[ADO];
       });
       curData["aksi"] = (
-        <Button
-          variant="warning"
-          onClick={() => this.showEditPaguForm({ unit, subunit })}
-        >
-          Edit
-        </Button>
+        <BottomTooltip key={1} info={"Edit Pagu"}>
+          <Button
+            variant="warning"
+            onClick={() => this.showEditPaguForm({ unit, subunit })}
+          >
+            <FiEdit />
+          </Button>
+        </BottomTooltip>
       );
       data.push(curData);
     });
