@@ -52,10 +52,7 @@ class RincianRKAPengeluaran extends Component {
 
   handleUpdateRKAs = (RKA) => {
     const { RKAs, idxRKA } = this.state;
-    console.log(RKAs);
-    console.log(RKA);
     RKAs[idxRKA] = RKA;
-    console.log("IDX", idxRKA);
     this.setState({ RKAs: RKAs });
     this.forceUpdate();
   };
@@ -75,7 +72,13 @@ class RincianRKAPengeluaran extends Component {
           body={`Data mengenai ${title} belum ada`}
         />
       );
-    RKAs = RKAs.filter((RKA) => RKA.year === year);
+    RKAs = RKAs.map((RKA, idx) => {
+      return {
+        ...RKA,
+        idx,
+      };
+    });
+    const RKAsYear = RKAs.filter((RKA) => RKA.year === year);
     const timeSlot = this.state.timeSlot;
     const lowCaseTimeSlot = timeSlot.toLowerCase();
     const columns = tableData.getColumns(timeSlot);
@@ -85,7 +88,8 @@ class RincianRKAPengeluaran extends Component {
     const data =
       RKAs.length === 0
         ? null
-        : RKAs.map((rka, idx) => {
+        : RKAsYear.map((rka) => {
+            const { idx } = rka;
             return {
               "Rincian Belanja": rka.rincian_belanja,
               "Alokasi Total": rka.total_rancangan,
