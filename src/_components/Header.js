@@ -13,7 +13,7 @@ export class Header extends Component {
         <Button
           size="sm"
           variant="info"
-          className="mt-1"
+          className="mt-2"
           onClick={() => authenticationService.logout()}
         >
           Logout <FiLogOut />
