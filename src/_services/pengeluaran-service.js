@@ -4,6 +4,7 @@ import { urlServer } from "_services/api";
 
 export const pengeluaranDataService = {
   getAllPengeluaran,
+  getPengeluaran,
   inputPengeluaranRKA,
   removePengeluaran,
   undoPengeluaran,
@@ -18,6 +19,10 @@ function getHttp() {
 
 function getAllPengeluaran() {
   return getHttp().get("");
+}
+
+function getPengeluaran(id) {
+  return getHttp().get(`/${id}`);
 }
 
 function inputPengeluaranRKA(body) {
