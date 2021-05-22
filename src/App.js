@@ -14,7 +14,7 @@ import {
   FormF11,
 } from "admin";
 
-import { User, RKAMain, RiwayatKeuangan } from "user";
+import { User, RKAMain, RiwayatKeuangan, LaporPengeluaran } from "user";
 
 import { Header, Navigation } from "_components";
 
@@ -93,6 +93,12 @@ class App extends Component {
           exact
           path="/riwayat-keuangan"
           UserComponent={RiwayatKeuangan}
+          UserType="User"
+        />
+        <PrivateRoute
+          exact
+          path="/lapor-pengeluaran"
+          UserComponent={LaporPengeluaran}
           UserType="User"
         />
         <PrivateRoute
