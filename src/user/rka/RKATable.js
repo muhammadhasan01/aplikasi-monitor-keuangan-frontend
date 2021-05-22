@@ -164,14 +164,14 @@ class TableRKA extends Component {
 
   handleColumnChange = (e) => {
     const monthOffset = 6;
-    for (var i = monthOffset; i < columns.length; i++) {
+    for (let i = monthOffset; i < columns.length; i++) {
       columns[i].hidden = true;
     }
     var array = [...e];
     while (array.length > 0) {
       var offset = array.pop();
       var startIter = monthOffset + (offset - 1) * 3;
-      for (var i = startIter; i < startIter + 3; i++) {
+      for (let i = startIter; i < startIter + 3; i++) {
         columns[i].hidden = false;
       }
     }

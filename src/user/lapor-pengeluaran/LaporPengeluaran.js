@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import { Button, Card, Container } from "react-bootstrap";
-import { GrDocumentText } from "react-icons/gr";
 import { HiOutlineDocumentDownload } from "react-icons/hi";
 
 export class LaporPengeluaran extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Container

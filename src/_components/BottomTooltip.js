@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export class BottomTooltip extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { children, key, info } = this.props;
     return (

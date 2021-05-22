@@ -8,7 +8,6 @@ import ModalAksiPengeluaran from "./ModalAksiPengeluaran";
 import ButtonAksiPengeluaran from "./ButtonAksiPengeluaran";
 import { Reply, Trash, Download } from "react-bootstrap-icons";
 import { dataPengeluaranTable } from "./data-pengeluaran-table";
-import { FormF11 } from "admin";
 
 export class RiwayatPengeluaran extends Component {
   constructor(props) {
