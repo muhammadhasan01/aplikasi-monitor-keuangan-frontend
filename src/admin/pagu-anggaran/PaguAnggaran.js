@@ -9,7 +9,8 @@ import filterFactory from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import BootstrapTable from "react-bootstrap-table-next";
 import { FiEdit } from "react-icons/fi";
-import { BottomTooltip } from "../../_components";
+import { BottomTooltip } from "_components";
+import { CgFileDocument } from "react-icons/cg";
 
 export class PaguAnggaran extends Component {
   constructor(props) {
@@ -305,11 +306,11 @@ export class PaguAnggaran extends Component {
         <div id="pagu-list">
           <h3 className="float-left mb-2">Pagu Anggaran</h3>
           <Button
-            className="mx-1 mb-2 float-right"
+            className="mx-1 mb-2 float-right d-flex justify-content-center align-items-center"
             variant="success"
             onClick={() => this.showNewADOForm()}
           >
-            Tambah ADO
+            Tambah ADO <CgFileDocument className="ml-1" />
           </Button>
         </div>
         {this.renderPagus()}
