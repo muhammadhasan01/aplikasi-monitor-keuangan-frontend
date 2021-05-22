@@ -47,7 +47,7 @@ class ModalRKAForm extends Component {
     const ado = this.props.ado;
     const year = new Date().getFullYear();
 
-    if (ado == "ALL") {
+    if (ado === "ALL") {
       this.setState({ paguAvailable: true });
     } else {
       PaguDataService.getSisaPagu(unit, subunit, ado, year)
