@@ -85,9 +85,11 @@ export class RiwayatPengeluaran extends Component {
   downloadFormF11 = () => {
     console.log("Download Form F11");
     const { IDPengeluaran } = this.state;
-    this.props.history.push({
-      pathname: `riwayat-pengeluaran/f11/${IDPengeluaran}`,
-    });
+    const win = window.open(
+      `riwayat-pengeluaran/f11/${IDPengeluaran}`,
+      "_blank"
+    );
+    win.focus();
   };
 
   handleOpenUndo = (value) =>
