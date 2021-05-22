@@ -7,9 +7,9 @@ import filterFactory from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import BootstrapTable from "react-bootstrap-table-next";
 import { dataUserTable } from "./data-user-table";
-import { AiOutlineUserAdd, AiFillEdit } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
-import { BottomTooltip } from "../../_components";
+import { TiUserAddOutline, TiUserDeleteOutline } from "react-icons/ti";
+import { FiEdit } from "react-icons/fi";
+import { BottomTooltip } from "_components";
 
 export class AdminPengurusanAkun extends Component {
   constructor(props) {
@@ -403,7 +403,7 @@ export class AdminPengurusanAkun extends Component {
               variant="warning"
               onClick={() => this.editUser(_id)}
             >
-              <AiFillEdit />
+              <FiEdit />
             </Button>
           </BottomTooltip>
           <BottomTooltip key={2} info="Delete User">
@@ -413,7 +413,7 @@ export class AdminPengurusanAkun extends Component {
               disabled={userType === "Admin"}
               onClick={() => this.deleteUser(_id)}
             >
-              <MdDelete />
+              <TiUserDeleteOutline />
             </Button>
           </BottomTooltip>
         </React.Fragment>
@@ -452,7 +452,7 @@ export class AdminPengurusanAkun extends Component {
             variant="success"
             onClick={() => this.showNewUserForm()}
           >
-            Tambah Akun <AiOutlineUserAdd />
+            Tambah Akun <TiUserAddOutline />
           </Button>
           {this.renderUsers()}
         </div>
