@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { authenticationService } from "../_services";
-import { Navbar } from "react-bootstrap";
-import { AiFillHome } from "react-icons/ai";
+import { AiFillHome, AiOutlineForm } from "react-icons/all";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { VscOutput } from "react-icons/vsc";
 
 export class Navigation extends Component {
   adminNavigation() {
     return (
-      <>
-        <Link className="nav" to="/">
-          Home
+      <nav>
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/"
+        >
+          <AiFillHome className="mx-1" /> Home
         </Link>
         <Link className="nav" to="/pagu-anggaran">
           Pagu Anggaran
@@ -23,29 +26,38 @@ export class Navigation extends Component {
         <Link className="nav" to="/input-pengeluaran">
           Input Pengeluaran
         </Link>
-      </>
+      </nav>
     );
   }
 
   userNavigation() {
     return (
-      <Navbar bg="primary">
-        <Link className="nav" to="/">
-          Home
+      <nav>
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/"
+        >
+          <AiFillHome className="mr-2" /> Home
         </Link>
-        <Link className="nav" to="/riwayat-keuangan">
-          Riwayat Keuangan
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/riwayat-keuangan"
+        >
+          <FaMoneyBillWave className="mr-2" /> Riwayat Keuangan
         </Link>
-        <Link className="nav" to="/lapor-pengeluaran">
-          Lapor Pengeluaran
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/lapor-pengeluaran"
+        >
+          <VscOutput className="mr-1" /> Lapor Pengeluaran
         </Link>
-        <Link className="nav" to="/pengisian-rka">
-          Pengisian RKA
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/pengisian-rka"
+        >
+          <AiOutlineForm className="mr-1" /> Pengisian RKA
         </Link>
-        <div className="nav" onClick={() => authenticationService.logout()}>
-          Logout
-        </div>
-      </Navbar>
+      </nav>
     );
   }
 
