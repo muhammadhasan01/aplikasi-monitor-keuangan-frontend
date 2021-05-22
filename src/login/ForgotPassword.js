@@ -1,13 +1,20 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Alert, Container, Card, Form, Button } from "react-bootstrap";
+import {
+  Alert,
+  Container,
+  Card,
+  Form,
+  Button,
+  FormControl,
+} from "react-bootstrap";
 import { authenticationService, AuthDataService } from "_services";
 
 export class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.refUsername = React.createRef();
-    this.state = { feedbackMessage: null };
+    this.state = { inp: "", feedbackMessage: null };
 
     // redirect to home if already logged in
     if (authenticationService.currentUserValue) {
@@ -18,13 +25,12 @@ export class ForgotPassword extends Component {
   handleSubmit = (e) => {
     console.log(e);
     e.preventDefault();
-    const {
-      current: { value },
-    } = this.refUsername;
+    const { inp: value } = this.state;
     const body = { username: value };
+    this.setState({ status: "info", message: "Loading..." });
     AuthDataService.sendResetLink(body)
       .then((resp) => {
-        console.log(resp.data);
+        console.log(resp);
         this.setState({
           feedbackMessage: {
             status: "success",
@@ -41,7 +47,7 @@ export class ForgotPassword extends Component {
   };
 
   render() {
-    const { feedbackMessage } = this.state;
+    const { feedbackMessage, inp } = this.state;
     return (
       <Container className="d-flex justify-content-center align-items-center">
         <Card
@@ -52,17 +58,20 @@ export class ForgotPassword extends Component {
         >
           <Card.Header as="h5">Lupa Kata Sandi</Card.Header>
           <Card.Body>
-            <Form>
+            <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="username-form">
                 Masukkan <b>username</b> Anda!
                 <br />
-                Anda akan mendapatkan <i>email</i> untuk melakukan pengubahan
+                Anda akan mendapatkan <b>email</b> untuk melakukan pengubahan
                 kata sandi.
                 <Form.Control
                   required
                   type="text"
                   placeholder="Enter your username"
-                  ref={this.refUsername}
+                  value={inp}
+                  onChange={({ target: { value } }) =>
+                    this.setState({ inp: value })
+                  }
                 />
               </Form.Group>
               <Button onClick={this.handleSubmit}>Submit</Button>

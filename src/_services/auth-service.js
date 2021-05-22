@@ -1,5 +1,4 @@
 import axios from "axios";
-import authHeader from "_helpers/auth-header";
 import { urlServer } from "_services/api";
 
 export const AuthDataService = {
@@ -10,7 +9,6 @@ export const AuthDataService = {
 function getHttp() {
   return axios.create({
     baseURL: urlServer + "/auths",
-    headers: authHeader(),
   });
 }
 
