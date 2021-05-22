@@ -7,6 +7,9 @@ import filterFactory from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import BootstrapTable from "react-bootstrap-table-next";
 import { dataUserTable } from "./data-user-table";
+import { AiOutlineUserAdd, AiFillEdit } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
+import { BottomTooltip } from "../../_components";
 
 export class AdminPengurusanAkun extends Component {
   constructor(props) {
@@ -394,21 +397,25 @@ export class AdminPengurusanAkun extends Component {
       const { username, name, userType, unit, _id } = user;
       const aksi = (
         <React.Fragment>
-          <Button
-            className="mx-2"
-            variant="warning"
-            onClick={() => this.editUser(_id)}
-          >
-            Edit
-          </Button>
-          <Button
-            className="mx-2"
-            variant="danger"
-            disabled={userType === "Admin"}
-            onClick={() => this.deleteUser(_id)}
-          >
-            Delete
-          </Button>
+          <BottomTooltip key={1} info="Edit User">
+            <Button
+              className="mx-2"
+              variant="warning"
+              onClick={() => this.editUser(_id)}
+            >
+              <AiFillEdit />
+            </Button>
+          </BottomTooltip>
+          <BottomTooltip key={2} info="Delete User">
+            <Button
+              className="mx-2"
+              variant="danger"
+              disabled={userType === "Admin"}
+              onClick={() => this.deleteUser(_id)}
+            >
+              <MdDelete />
+            </Button>
+          </BottomTooltip>
         </React.Fragment>
       );
       return { username, name, userType, unit, aksi };
@@ -441,11 +448,11 @@ export class AdminPengurusanAkun extends Component {
         <div id="user-list" className="mt-4">
           <h2 className="d-inline">Manajemen Akun</h2>
           <Button
-            className="d-inline float-right my-3 p-2"
+            className="d-inline justify-content-center align-items-center float-right my-3 p-2"
             variant="success"
             onClick={() => this.showNewUserForm()}
           >
-            Tambah Akun
+            Tambah Akun <AiOutlineUserAdd />
           </Button>
           {this.renderUsers()}
         </div>
