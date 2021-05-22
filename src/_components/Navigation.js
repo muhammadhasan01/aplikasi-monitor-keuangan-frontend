@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { AiFillHome, AiOutlineForm } from "react-icons/all";
-import { FaMoneyBillWave } from "react-icons/fa";
+import { FaMoneyBillWave, FaUserCog } from "react-icons/fa";
 import { VscOutput } from "react-icons/vsc";
+import { CgFileDocument } from "react-icons/cg";
+import { MdInput } from "react-icons/md";
 
 export class Navigation extends Component {
   adminNavigation() {
@@ -12,19 +14,31 @@ export class Navigation extends Component {
           className="nav d-flex justify-content-center align-items-center"
           to="/"
         >
-          <AiFillHome className="mx-1" /> Home
+          <AiFillHome className="mr-1" /> Home
         </Link>
-        <Link className="nav" to="/pagu-anggaran">
-          Pagu Anggaran
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/pagu-anggaran"
+        >
+          <CgFileDocument className="mr-1" /> Pagu Anggaran
         </Link>
-        <Link className="nav" to="/pengurusan-akun">
-          Pengurusan Akun
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/pengurusan-akun"
+        >
+          <FaUserCog className="mr-1" /> Pengurusan Akun
         </Link>
-        <Link className="nav" to="/riwayat-pengeluaran">
-          Riwayat Pengeluaran & Form F11
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/riwayat-pengeluaran"
+        >
+          <FaMoneyBillWave className="mr-2" /> Riwayat Pengeluaran
         </Link>
-        <Link className="nav" to="/input-pengeluaran">
-          Input Pengeluaran
+        <Link
+          className="nav d-flex justify-content-center align-items-center"
+          to="/input-pengeluaran"
+        >
+          <MdInput className="mr-2" /> Input Pengeluaran
         </Link>
       </nav>
     );
