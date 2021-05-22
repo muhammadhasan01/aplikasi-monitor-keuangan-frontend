@@ -84,6 +84,10 @@ export class RiwayatPengeluaran extends Component {
 
   downloadFormF11 = () => {
     console.log("Download Form F11");
+    const { IDPengeluaran } = this.state;
+    this.props.history.push({
+      pathname: `riwayat-pengeluaran/f11/${IDPengeluaran}`,
+    });
   };
 
   handleOpenUndo = (value) =>
@@ -176,7 +180,6 @@ export class RiwayatPengeluaran extends Component {
       );
       return { _id, jumlah, unit, sub_unit, rincian_belanja, tanggal, action };
     });
-    return <FormF11 />;
     return (
       <Container fluid className="mt-4 mb-5" style={{ width: "90%" }}>
         <h2>Riwayat Pengeluaran</h2>
