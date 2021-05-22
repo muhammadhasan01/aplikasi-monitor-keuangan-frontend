@@ -288,7 +288,6 @@ export class PaguAnggaran extends Component {
     const {
       ADOs,
       Pagus,
-      editMode,
       showNewADOForm,
       showEditPaguForm,
       showConfirmActionModal,
@@ -300,7 +299,7 @@ export class PaguAnggaran extends Component {
       <Container
         fluid
         className="mt-4 mb-5"
-        style={{ width: "90%" }}
+        style={{ width: "95%" }}
         id="pagu-anggaran"
       >
         <div id="pagu-list">
