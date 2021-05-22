@@ -446,7 +446,7 @@ export class AdminPengurusanAkun extends Component {
     return (
       <Container fluid style={{ width: "95%" }}>
         <div id="user-list" className="mt-4">
-          <h2 className="d-inline">Manajemen Akun</h2>
+          <h2 className="d-inline">Pengurusan Akun</h2>
           <Button
             className="d-inline justify-content-center align-items-center float-right my-3 p-2"
             variant="success"
