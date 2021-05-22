@@ -43,7 +43,7 @@ export class FormLogin extends Component {
           text="white"
         >
           <Card.Header as="h5">Login</Card.Header>
-          <Card.Body>
+          <Card.Body style={{ backgroundColor: "rgb(12,131,234)" }}>
             <Formik
               validationSchema={configLoginFormik.getSchema()}
               initialValues={configLoginFormik.getInitialValues()}
