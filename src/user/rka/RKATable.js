@@ -156,8 +156,6 @@ class TableRKA extends Component {
   }
 
   clickButton = () => {
-    console.log("Button Clicked");
-    console.log(columns[9].hidden);
     columns[9].hidden = !columns[9].hidden;
     this.forceUpdate();
   };
