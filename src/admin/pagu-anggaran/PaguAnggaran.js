@@ -51,7 +51,6 @@ export class PaguAnggaran extends Component {
         this.setState({
           ADOs: response.data,
         });
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -64,7 +63,6 @@ export class PaguAnggaran extends Component {
         this.setState({
           Pagus: response.data,
         });
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -77,7 +75,6 @@ export class PaguAnggaran extends Component {
         this.setState({
           Units: response.data,
         });
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -115,7 +112,6 @@ export class PaguAnggaran extends Component {
       currentAction: "Add New ADO",
       showNewADOForm: true,
     });
-    console.log(this.state);
   }
 
   hideNewADOForm() {
@@ -129,10 +125,9 @@ export class PaguAnggaran extends Component {
       name: this.state.newADO.name,
       detail: this.state.newADO.detail,
     };
-    console.log(data);
     ADODataService.createADO(data)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
+        // do nothing
       })
       .catch((e) => {
         console.log(e);
@@ -176,7 +171,6 @@ export class PaguAnggaran extends Component {
       },
       showEditPaguForm: true,
     });
-    console.log(this.state.currentUnit);
   }
 
   hideEditPaguForm() {
@@ -211,7 +205,6 @@ export class PaguAnggaran extends Component {
         };
         PaguDataService.updateAlokasiPagu(unit, subunit, ado, year, data)
           .then((response) => {
-            console.log(response.data);
             this.hideEditPagu();
           })
           .catch((e) => {
@@ -224,15 +217,12 @@ export class PaguAnggaran extends Component {
   }
 
   onChangePagu(e) {
-    console.log(e.target.id);
     let pagu_list = this.state.Pagus;
     pagu_list.forEach((pagu) => {
       let name = pagu.unit + " " + pagu.subunit + " " + pagu.ADO;
       if (name === e.target.id) {
         pagu.alokasi = e.target.value;
         pagu.changed = true;
-        console.log(name);
-        console.log(pagu.alokasi);
       }
     });
     this.setState({
