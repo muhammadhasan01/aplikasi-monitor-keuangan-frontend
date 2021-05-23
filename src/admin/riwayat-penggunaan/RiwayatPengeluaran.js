@@ -78,7 +78,6 @@ export class RiwayatPengeluaran extends Component {
   };
 
   downloadFormPPT = () => {
-    console.log("Download Form PPT");
     const { IDPengeluaran } = this.state;
     const win = window.open(
       `riwayat-pengeluaran/ppt/${IDPengeluaran}`,
@@ -88,7 +87,6 @@ export class RiwayatPengeluaran extends Component {
   };
 
   downloadFormF11 = () => {
-    console.log("Download Form F11");
     const { IDPengeluaran } = this.state;
     const win = window.open(
       `riwayat-pengeluaran/f11/${IDPengeluaran}`,
