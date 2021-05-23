@@ -53,7 +53,6 @@ class ModalRKAForm extends Component {
       PaguDataService.getSisaPagu(unit, subunit, ado, year)
         .then((response) => {
           this.setState({ paguAvailable: true });
-          console.log(response.data);
         })
         .catch((err) => {
           this.setState({ paguAvailable: false });
@@ -91,8 +90,6 @@ class ModalRKAForm extends Component {
         desember: Number(e.target.Desember.value),
       },
     };
-
-    console.log(data);
 
     RKADataService.createRKA(this.props.unit, this.props.subunit, data)
       .then(() => {
