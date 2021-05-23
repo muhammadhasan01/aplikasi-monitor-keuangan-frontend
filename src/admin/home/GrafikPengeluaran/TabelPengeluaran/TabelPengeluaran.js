@@ -36,8 +36,6 @@ export class TabelPengeluaran extends Component {
     }
     const columns = dataPengeluaranTable.getColumns();
     const data = dataPengeluaranTable.getData(RKAs);
-    console.log(columns);
-    console.log(data);
     return (
       <Container fluid style={{ width: "90%" }} className="mb-5">
         <h3 className="mt-4">Tabel Pengeluaran </h3>
