@@ -35,7 +35,13 @@ export class RiwayatKeuangan extends Component {
     if (!pengeluaran) {
       return <Loading info={"riwayat keuangan"} />;
     }
-    const data = dataRiwayatKeuanganTable.getData(pengeluaran);
+    const pengeluaranUnit = pengeluaran.filter((p) => {
+      const {
+        RKA: { unit: curUnit },
+      } = p;
+      return curUnit === unit;
+    });
+    const data = dataRiwayatKeuanganTable.getData(pengeluaranUnit);
     const columns = dataRiwayatKeuanganTable.getColumns();
     return (
       <Container fluid style={{ width: "90%" }}>
