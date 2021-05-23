@@ -12,6 +12,7 @@ import {
   PaguAnggaran,
   RiwayatPengeluaran,
   FormF11,
+  FormPPT,
 } from "admin";
 
 import { User, RKAMain, RiwayatKeuangan, LaporPengeluaran } from "user";
@@ -60,9 +61,15 @@ class App extends Component {
           UserType="Admin"
         />
         <PrivateRoute
-          exat
+          exact
           path="/riwayat-pengeluaran/f11/:id"
           AdminComponent={FormF11}
+          UserType="Admin"
+        />
+        <PrivateRoute
+          exact
+          path="/riwayat-pengeluaran/ppt/:id"
+          AdminComponent={FormPPT}
           UserType="Admin"
         />
         <PrivateRoute

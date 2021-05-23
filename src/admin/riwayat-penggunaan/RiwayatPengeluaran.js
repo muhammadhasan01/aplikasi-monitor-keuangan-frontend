@@ -79,6 +79,12 @@ export class RiwayatPengeluaran extends Component {
 
   downloadFormPPT = () => {
     console.log("Download Form PPT");
+    const { IDPengeluaran } = this.state;
+    const win = window.open(
+      `riwayat-pengeluaran/ppt/${IDPengeluaran}`,
+      "_blank"
+    );
+    win.focus();
   };
 
   downloadFormF11 = () => {

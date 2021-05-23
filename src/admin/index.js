@@ -5,3 +5,4 @@ export * from "./input-pengeluaran/AdminInputPengeluaran";
 export * from "./pagu-anggaran/PaguAnggaran";
 export * from "./riwayat-penggunaan/RiwayatPengeluaran";
 export * from "./form/FormF11";
+export * from "./form/FormPPT";
