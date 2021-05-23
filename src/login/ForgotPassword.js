@@ -30,7 +30,6 @@ export class ForgotPassword extends Component {
     this.setState({ status: "info", message: "Loading..." });
     AuthDataService.sendResetLink(body)
       .then((resp) => {
-        console.log(resp);
         this.setState({
           feedbackMessage: {
             status: "success",
