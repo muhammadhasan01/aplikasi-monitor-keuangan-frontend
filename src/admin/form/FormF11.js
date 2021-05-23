@@ -122,7 +122,7 @@ export class FormF11 extends Component {
             <tbody>
               <td>1</td>
               <td>
-                {kegiatan}/{subkegiatan}
+                -/{kegiatan}/{subkegiatan}
               </td>
               <td> - </td>
               <td>{rincian_belanja}</td>
