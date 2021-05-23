@@ -309,7 +309,6 @@ export class AdminPengurusanAkun extends Component {
 
     UserDataService.createUser(data)
       .then((response) => {
-        console.log(response.data);
         this.hideNewUserForm();
         this.retrieveUsers();
       })
@@ -326,7 +325,6 @@ export class AdminPengurusanAkun extends Component {
         this.setState({
           currentUser: response.data,
         });
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -345,7 +343,6 @@ export class AdminPengurusanAkun extends Component {
     };
     UserDataService.updateUser(this.state.currentUser._id, data)
       .then((response) => {
-        console.log(response.data);
         this.hideEditUserForm();
         this.retrieveUsers();
       })
