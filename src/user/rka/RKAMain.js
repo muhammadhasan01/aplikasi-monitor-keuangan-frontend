@@ -59,8 +59,6 @@ export class RKAMain extends Component {
     const subunit = this.state.subunit;
     const ado = this.currentADO.current.value;
 
-    console.log(ado);
-
     if (ado === "ALL") {
       RKADataService.loadAllRKA(unit, subunit)
         .then((response) => {
@@ -80,7 +78,6 @@ export class RKAMain extends Component {
 
       PaguDataService.getSisaPagu(unit, subunit, ado, new Date().getFullYear())
         .then((response) => {
-          console.log(response.data);
           this.setState({ sisaADO: response.data.value });
         })
         .catch((err) => {
@@ -94,7 +91,6 @@ export class RKAMain extends Component {
         new Date().getFullYear()
       )
         .then((response) => {
-          console.log(response.data);
           this.setState({ alokasiADO: response.data.value });
         })
         .catch((err) => {
@@ -108,7 +104,6 @@ export class RKAMain extends Component {
         new Date().getFullYear()
       )
         .then((response) => {
-          console.log(response.data);
           this.setState({ penggunaanADO: response.data.value });
         })
         .catch((err) => {
