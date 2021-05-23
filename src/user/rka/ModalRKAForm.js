@@ -95,8 +95,8 @@ class ModalRKAForm extends Component {
     console.log(data);
 
     RKADataService.createRKA(this.props.unit, this.props.subunit, data)
-      .then((response) => {
-        alert(response.data);
+      .then(() => {
+        alert("success");
       })
       .catch((err) => {
         alert(err);
