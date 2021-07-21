@@ -2,6 +2,8 @@
 
 **Aplikasi Monitor Keuangan** merupakan sebuah aplikasi untuk melakukan monitor keuangan unit dan subunit yang ada pada Sekolah Teknik Elektro dan Informatika (STEI) ITB. Aplikasi ini dibuat dengan [*ReactJS*](https://reactjs.org/), [*React-Bootstrap*](https://react-bootstrap.github.io/), dan beberapa [*library*](./package.json) tambahan lainnya.
 
+*Aplikasi ini tidak digunakan oleh pihak STEI, dan hanya untuk referensi dan pelaksanaan tugas*
+
 # Tampilan Aplikasi
 
 ## Login
